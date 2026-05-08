@@ -4,8 +4,7 @@ import { memo, useMemo, FC } from "react"
 import { GitBranch, Lock } from "lucide-react"
 import { twMerge } from "tailwind-merge";
 import { HoverTooltip } from "../shared/hover-tooltip";
-import ScalingProgressCircle from "../shared/scaling-progress-circle";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { Progress } from "../ui/progress";
 
 interface ProjectContentProps {
     skeleton?: boolean;
@@ -37,8 +36,15 @@ const ProjectContent: FC<ProjectContentProps> = ({ project }: ProjectContentProp
 
     // Memoized component
     const languages = useMemo(() => project?.languages 
-        ?  Object.entries(project.languages).map(([key, value]) => <ScalingProgressCircle key={key} subtitle={key} value={value}/>
-        ) : (<></>)
+        ?  Object.entries(project.languages).map(([key, value]) => (
+            <div key={key} className="w-full space-y-1">
+                <div className="flex justify-between text-sm">
+                    <span className="font-medium">{key}</span>
+                    <span className="text-gray-600">{value}%</span>
+                </div>
+                <Progress value={value} className="h-2" />
+            </div>
+        )) : (<></>)
     , [project]);
 
     // Memoized component
@@ -53,12 +59,9 @@ const ProjectContent: FC<ProjectContentProps> = ({ project }: ProjectContentProp
             </p>
             <div className="w-full flex flex-col gap-4">
                 <h1 className="text-2xl text-center font-tight font-serif w-full">{$t.projects.languages}</h1>
-                <ScrollArea>
-                    <span className="justify-around gap-4 min-w-fit w-full flex items-center p-4 lg:p-0 sm-tall:max-w-screen sm-tall:flex-wrap lg:flex-wrap lg:min-w-screen">
-                        { languages }
-                    </span>
-                    <ScrollBar orientation="horizontal" />
-                </ScrollArea>
+                <div className="w-full flex flex-col gap-6 p-4 lg:p-0">
+                    { languages }
+                </div>
             </div>
         </div>
     ), [$t, project, link, languages]);
