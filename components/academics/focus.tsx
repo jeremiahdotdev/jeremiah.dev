@@ -1,6 +1,7 @@
 import React, { FC, memo, useMemo } from "react"
 import { ComponentOf } from "../utility/componentOf"
 import { Focus as FocusType} from "@/types/focus"
+import CardBase from "../shared/card-base"
 
 interface FocusProps {
     focus: FocusType,
@@ -9,7 +10,8 @@ interface FocusProps {
 
 const Focus: FC<FocusProps> = ({ focus, gpaLabel }: FocusProps) => {
     const component = useMemo(() => (
-        <article className="h-full rounded-lg border bg-card p-3 shadow-sm md:p-4">
+        <CardBase asChild className="h-full p-3 md:p-4">
+        <article>
             <div className="flex flex-col gap-2 text-left">
                 <span className="flex items-start justify-between gap-3">
                     <span className="min-w-0 text-base font-semibold leading-tight md:text-lg">{focus.name}</span>
@@ -21,6 +23,7 @@ const Focus: FC<FocusProps> = ({ focus, gpaLabel }: FocusProps) => {
                 <ComponentOf jsx={focus.description}/>
             </div>
         </article>
+        </CardBase>
     ), [focus, gpaLabel])
 
     return component

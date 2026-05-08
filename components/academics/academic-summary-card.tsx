@@ -1,6 +1,7 @@
 import { Academics } from "@/types/academics"
 import { FC, memo, useMemo } from "react"
 import { HoverTooltip } from "../shared/hover-tooltip"
+import CardBase from "../shared/card-base"
 
 interface AcademicSummaryCardProps {
     academics: Academics
@@ -11,7 +12,8 @@ const AcademicSummaryCard: FC<AcademicSummaryCardProps> = ({ academics, institut
     const endYear = academics.endDate.split(" ").at(-1) ?? academics.endDate
 
     const component = useMemo(() => (
-        <header className="flex flex-col gap-3 rounded-lg border bg-card p-4 shadow-sm md:p-5">
+        <CardBase asChild className="flex flex-col gap-3 p-4 md:p-5">
+        <header>
             <span className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <span className="flex flex-col">
                     <h2 className="text-2xl font-semibold leading-tight">{academics.degree}</h2>
@@ -27,6 +29,7 @@ const AcademicSummaryCard: FC<AcademicSummaryCardProps> = ({ academics, institut
                 {academics.description}
             </div>
         </header>
+        </CardBase>
     ), [academics, endYear, institutionHref])
 
     return component

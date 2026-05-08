@@ -1,6 +1,7 @@
 import React, { FC, memo, useMemo } from "react"
 import { Commendation as CommendationType } from "@/types/commendation"
 import { ComponentOf } from "../utility/componentOf"
+import CardBase from "../shared/card-base"
 
 interface CommendationProps {
     commendation: CommendationType
@@ -19,13 +20,15 @@ const Commendation: FC<CommendationProps> = ({ commendation }: CommendationProps
     ), [commendation])
 
     const component = useMemo(() => commendation.link ? (
-        <a href={commendation.link} className="flex min-w-0 items-center gap-3 rounded-lg border bg-card p-3 shadow-sm transition-colors hover:bg-muted">
+        <CardBase asChild className="flex min-w-0 items-center gap-3 p-3 transition-colors hover:bg-muted">
+        <a href={commendation.link}>
             {content}
         </a>
+        </CardBase>
     ) : (
-        <div className="flex min-w-0 items-center gap-3 rounded-lg border bg-card p-3 shadow-sm">
+        <CardBase className="flex min-w-0 items-center gap-3 p-3">
             {content}
-        </div>
+        </CardBase>
     ), [commendation, content])
 
     return component

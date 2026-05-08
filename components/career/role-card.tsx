@@ -3,13 +3,15 @@
 import { Job } from "@/types/job"
 import { FC, memo } from "react"
 import { ComponentOf } from "../utility/componentOf"
+import CardBase from "../shared/card-base"
 
 interface RoleCardProps {
     role: Job
 }
 
 const RoleCard: FC<RoleCardProps> = ({role}: RoleCardProps) => (
-    <article className="h-full rounded-lg border bg-card p-3 shadow-sm md:p-4">
+    <CardBase asChild className="h-full p-3 md:p-4">
+    <article>
         <div className="flex w-full flex-col gap-2 text-left">
             <span className="flex items-start justify-between gap-3">
                 <span className="min-w-0 text-base font-semibold leading-tight md:text-lg">{role.title}</span>
@@ -25,6 +27,7 @@ const RoleCard: FC<RoleCardProps> = ({role}: RoleCardProps) => (
             <ComponentOf jsx={role.description}/>
         </div>
     </article>
+    </CardBase>
 )
 
 export default memo(RoleCard)
