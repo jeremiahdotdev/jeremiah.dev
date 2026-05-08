@@ -23,7 +23,7 @@ const AcademicSummaryCard: FC<AcademicSummaryCardProps> = ({ academics, institut
                         </a>
                     </HoverTooltip>
                 </span>
-                <span className="text-base font-semibold text-foreground sm:text-lg">{endYear}</span>
+                <span className="text-base font-semibold text-foreground sm:text-lg">Class of {endYear}</span>
             </span>
             <div className="border-l-2 border-primary/20 pl-3 text-sm leading-5 text-muted-foreground md:pl-4 md:leading-6">
                 {academics.description}
