@@ -16,11 +16,11 @@
         "resume": "View Resume"
     },
     "navigation": [
-        {"id": "home", "heading":"home"},
-        {"id": "career", "heading":"career"},
-        {"id": "academics", "heading":"academics"},
-        {"id": "skills", "heading":"skills"},
-        {"id": "projects", "heading":"projects"}
+        {"id": "home", "heading":"Home"},
+        {"id": "career", "heading":"Career"},
+        {"id": "academics", "heading":"Academics"},
+        {"id": "skills", "heading":"Skills"},
+        {"id": "projects", "heading":"Projects"}
     ],
     "home": {
         "id": "home",
@@ -32,12 +32,12 @@
         "endDateDefault" : "Present"
     },
     "career": {
-        "id": "career",
-        "heading": "career"
+        "id": "areer",
+        "heading": "Career"
     },
     "academics": {
         "id": "academics",
-        "heading": "academics",
+        "heading": "Academics",
         "cofo": "https://www.cofo.edu/",
         "focus": {
             "gpaLabel": "GPA"
@@ -45,7 +45,7 @@
     },
     "projects": {
         "id": "projects",
-        "heading": "projects",
+        "heading": "Projects",
         "description": "A showcase of personal, published projects.",
         "info": "This dashboard seamlessly retrieves projects from my GitHub organization by leveraging the capabilities of the GitHub Public API.",
         "instruction": "Select a project to view",
@@ -61,7 +61,7 @@
     },
     "contact": {
         "id": "contact",
-        "heading": "contact",
+        "heading": "Contact",
         "email" : {
             "name": "email",
             "label": "Email Address",

@@ -46,13 +46,13 @@ const Menu: FC<MenuProps> = () => {
     const Navigation = useMemo(() => {
         const baseOption = (props: BaseOptionProps, id: string, heading: string) => (
             <SheetClose asChild key={id} onClick={togglePressed} className="flex">
-                <Link {...props} className={"flex flex-row-reverse w-full text-2xl font-serif hover:cursor-pointer"}>{heading}</Link>
+                <Link {...props} className={"flex flex-row-reverse text-xl font-serif tracking-widest font-thin text-foreground/80 hover:cursor-pointer hover:underline"}>{heading}</Link>
             </SheetClose>
         )
         const toggleOption = ({id, heading}: {id: string, heading: string}) => {return baseOption({ href: `/#${id}`, scroll:true}, id, heading)}
     
         return (
-            <nav className="flex flex-col gap-4 m-4 pt-4 border-t-2 dark:border-t">
+            <nav className="flex flex-col gap-6 m-4 pt-8 border-t-2 dark:border-t">
                 <>{ $t.navigation.map(toggleOption) }</>
             </nav>
         )
