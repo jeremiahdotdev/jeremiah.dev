@@ -127,9 +127,9 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false}: Timeli
                     toggleExpanded()
                 }
             }}
-            className="group relative grid cursor-pointer grid-cols-[3rem_minmax(0,1fr)] gap-4 md:grid-cols-[4rem_minmax(0,1fr)] md:gap-6"
+            className="group relative grid cursor-pointer grid-cols-1 gap-0 md:grid-cols-[4rem_minmax(0,1fr)] md:gap-6"
         >
-            <div className="flex justify-center">
+            <div className="hidden justify-center md:flex">
                 <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-lg border bg-card text-xs font-bold text-primary shadow-md transition-colors group-hover:bg-muted md:h-16 md:w-16 md:text-sm">
                     {getOrganizationMark(event.employer)}
                 </span>

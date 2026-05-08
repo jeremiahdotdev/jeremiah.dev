@@ -111,7 +111,7 @@ async function LoadGitHubProjects() {
         languages: await getLanguages(el)
     })));
 
-    GITHUB_PROJECTS.value = projects;
+    GITHUB_PROJECTS.value = projects.sort((a: InternalGithubProject, b: InternalGithubProject) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
     GITHUB_PROJECTS.dateUpdated = new Date();
     return true;
 }
