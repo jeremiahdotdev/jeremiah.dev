@@ -68,7 +68,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
                 <CardTitle>
                     <div className="flex max-w-full items-center gap-3 py-1 pr-20 tracking-tight font-mono">
                         <ProjectAvatar icon={project.icon}/>
-                        <span className="break-words lg:max-w-48">
+                        <span className="max-w-full break-words lg:max-w-48">
                             {project.name}    
                         </span>
                     </div>
