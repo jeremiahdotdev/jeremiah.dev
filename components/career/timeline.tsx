@@ -1,29 +1,22 @@
 "use client"
 import { FC, memo, useMemo } from "react"
 import TimelineItem from "./timeline-item"
-import { Job } from "@/types/job"
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
+import { CareerEvent } from "@/types/job"
 
 interface Timeline {
-    events: Job[]
+    events: CareerEvent[]
 }
 
 const Timeline: FC<Timeline> = ({events}: Timeline) => {
     const component = useMemo(() => (
-        <Carousel opts={{
-            align: "start",
-            loop: false,
-          }}
-          className="flex flex-row-reverse w-full">
-            <CarouselContent>
-                <CarouselItem className="hidden md:block md:basis-1/4 lg:basis-1/3 xl:hidden"/>
-                {events.map((job: Job, index: number) => (
-                    <CarouselItem key={job.endDate} className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                        <TimelineItem event={job} firstItem={index == 0} lastItem={index == events.length-1}/>
-                    </CarouselItem>   
+        <div className="w-full px-4 py-8 md:px-8 md:py-10">
+            <div className="relative flex flex-col gap-10 md:gap-16">
+                <span className="absolute bottom-8 left-8 top-8 hidden w-px bg-border md:block"/>
+                {events.map((job: CareerEvent, index: number) => (
+                    <TimelineItem key={job.employer} event={job} defaultExpanded={index === 0}/>
                 ))}
-            </CarouselContent>
-        </Carousel>
+            </div>
+        </div>
     ), [events])
 
     return component

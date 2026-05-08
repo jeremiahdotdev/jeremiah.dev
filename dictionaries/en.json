@@ -25,7 +25,7 @@
     "home": {
         "id": "home",
         "heading":"home",
-        "typeHeading": ["I am a creator", "I am a leader", "I am an engineer"],
+        "typeHeading": ["I am a leader", "I am an engineer"],
         "typeHeadingEnd": "jeremiah.dev"
     },
     "timeline" : {
@@ -40,7 +40,7 @@
         "heading": "academics",
         "cofo": "https://www.cofo.edu/",
         "focus": {
-            "gpaLabel": "GPA: "
+            "gpaLabel": "GPA"
         }
     },
     "projects": {

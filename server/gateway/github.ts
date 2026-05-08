@@ -113,7 +113,6 @@ async function LoadGitHubProjects() {
 
     GITHUB_PROJECTS.value = projects;
     GITHUB_PROJECTS.dateUpdated = new Date();
-    
     return true;
 }
 

@@ -8,7 +8,7 @@ interface CommendationListProps {
 
 const CommendationList: FC<CommendationListProps> = ({ commendations }: CommendationListProps) => {
     const component = useMemo(() => {
-        return (<div className="p-4 flex flex-wrap justify-around w-full gap-4 lg:w-3/4">
+        return (<div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
             { commendations.map((commendation, index) => (
                 <Commendation key={`${commendation.subtitle}-${index}`} commendation={commendation} />
             ))}

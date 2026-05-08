@@ -12,13 +12,26 @@ export type Job = {
     skills: Skill[]
 }
 
-export type ImportedJob = {
+export type CareerEvent = {
+    employer: string,
+    startDate: string,
+    endDate: string,
+    duration: string,
+    location: string,
+    roles: Job[]
+}
+
+export type ImportedRole = {
     title: string, 
     type: string,
-    employer: string,
     startDate: Date,
     endDate?: Date,
-    location: string,
     description: React.ReactNode,
     skills: Skill[]
+}
+
+export type ImportedCareerEvent = {
+    employer: string,
+    location: string,
+    roles: ImportedRole[]
 }

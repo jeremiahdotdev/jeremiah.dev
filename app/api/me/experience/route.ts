@@ -1,8 +1,8 @@
 import { getCareerData } from '@/server/getCareerData';
-import { Job } from '@/types/job';
+import { CareerEvent } from '@/types/job';
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request): Promise<NextResponse<Job[]>> {
+export async function GET(request: Request): Promise<NextResponse<CareerEvent[]>> {
   const data = await getCareerData()
   return NextResponse.json(data)
 }

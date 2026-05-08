@@ -7,20 +7,26 @@ interface CommendationProps {
 }
 
 const Commendation: FC<CommendationProps> = ({ commendation }: CommendationProps) => {
-    const component = useMemo(() => (
-        <div className="flex flex-col items-center justify-center tracking-tight text-md lg:text-lg xl:text-xl">
-            <ComponentOf jsx={commendation.image} style="aspect-square w-32 lg:w-36 xl:w-40" />
-            <h4 className="font-bold font-mono">    
-                {commendation.title}
-            </h4>
-            <h5 className="font-light font-serif">    
-                {commendation.subtitle}
-            </h5>
-            <h5 className="font-semibold font-serif">    
-                {commendation.dates}
-            </h5>
-        </div>
+    const content = useMemo(() => (
+            <>
+                <ComponentOf jsx={commendation.image} style="aspect-square w-10 shrink-0" />
+                <span className="flex min-w-0 flex-col gap-1">
+                    <span className="text-sm font-semibold leading-tight">{commendation.title}</span>
+                    <span className="truncate text-xs text-muted-foreground">{commendation.subtitle}</span>
+                    <span className="text-xs font-medium text-muted-foreground">{commendation.dates}</span>
+                </span>
+            </>
     ), [commendation])
+
+    const component = useMemo(() => commendation.link ? (
+        <a href={commendation.link} className="flex min-w-0 items-center gap-3 rounded-lg border bg-card p-3 shadow-sm transition-colors hover:bg-muted">
+            {content}
+        </a>
+    ) : (
+        <div className="flex min-w-0 items-center gap-3 rounded-lg border bg-card p-3 shadow-sm">
+            {content}
+        </div>
+    ), [commendation, content])
 
     return component
 }
