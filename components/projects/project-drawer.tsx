@@ -29,7 +29,7 @@ const ProjectDrawer: FC<ProjectDrawerProps> = ({ openState, children, setIsOpen 
                 {children}
             </DrawerContent>
         </Drawer>
-    ), [$t, children, openState, setIsOpen, handleClose]);
+    ), [$t, children, openState, setIsOpen]);
 
     return (content);
 };
