@@ -15,7 +15,7 @@ interface BadgeProps {
 
 const Badge: FC<BadgeProps> = ({ badge }: BadgeProps) => {  
     const component = useMemo(() => (
-        <Root variant="outline" className={`flex items-center justify-center gap-2 p-1`}>
+        <Root variant="outline" className={`flex items-center bg-card justify-center gap-2 p-1`}>
             { badge.image && <ComponentOf jsx={badge.image} style="w-4 h-4" />}
             <p>    
                 {badge.subtitle}
