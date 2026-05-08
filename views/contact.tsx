@@ -11,7 +11,7 @@ export default function Contact() {
   const $t = getDictionary();
 
   return (
-    <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary}>
+    <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary} showBorder={true}>
       <PageSectionHeader>{$t.contact.heading}</PageSectionHeader>
       <PageSectionContent>
         <GoogleReCaptchaProvider
