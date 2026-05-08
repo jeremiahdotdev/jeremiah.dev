@@ -7,7 +7,6 @@ import ProjectDrawerButton from "./project-drawer-button";
 import { cn } from "@/lib/utils";
 
 interface ProjectDisplayProps {
-    skeleton?: boolean;
     project?: Project;
 }
   
@@ -55,7 +54,7 @@ const ProjectDisplay: FC<ProjectDisplayProps> = ({ project }: ProjectDisplayProp
             )
         } else if (project?.demo) { 
             return (
-                <div className="relative w-full  rounded-md shadow-inner sm-short:h-40 sm-tall:h-64 lg:h-full">
+                <div className="relative flex h-full min-h-0 w-full flex-1 rounded-md shadow-inner">
                     { overlay }
                     { frameIsLoading && (<Skeleton className="w-full h-full rounded-md" />) }
                     { frame }
@@ -63,12 +62,16 @@ const ProjectDisplay: FC<ProjectDisplayProps> = ({ project }: ProjectDisplayProp
             )
         } else {
             return (
-                <h1 className="w-full h-full flex justify-center items-center bg-dashboard-header text-4xl font-extrabold font-mono text-dashboard rounded-md shadow-inner">{ $t.projects.placeholder }</h1>
+                <h1 className="flex h-full min-h-0 w-full flex-1 items-center justify-center rounded-md bg-dashboard-header text-4xl font-extrabold font-mono text-dashboard shadow-inner">{ $t.projects.placeholder }</h1>
             ) 
         }
     }, [project, $t, frame, frameIsLoading, overlay, isDemoOpen, toggleFullScreen]);
 
-    return (display);
+    return (
+        <div className="flex h-full min-h-0 w-full flex-1">
+            {display}
+        </div>
+    );
 };
 
 export default memo(ProjectDisplay);

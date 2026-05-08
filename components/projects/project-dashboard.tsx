@@ -5,13 +5,9 @@ import ProjectCardList from "./project-card-list";
 import { Info as InfoIcon } from "lucide-react"
 import ProjectDrawer from "./project-drawer";
 import MobileTabletOnly from "../breakpoints/mobile-tablet-only";
-import DesktopOnly from "../breakpoints/desktop-only";
 import ProjectDisplay from "./project-display";
-import ProjectContent from "./project-content";
 import { getDictionary } from "@/dictionaries";
 import { ClickTooltip } from "../shared/click-tooltip";
-import { Skeleton } from "../ui/skeleton";
-import { Skeletons } from "../breakpoints/Skeletons";
 
 interface ProjectDashboardProps {
     projects: Project[];
@@ -34,30 +30,30 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
     
     // Memoized component
     const content = useMemo(() => (
-        <div className="max-h-page-content w-full flex flex-col overflow-hidden rounded-md bg-dashboard shadow-inner border dark:border-border">
-            <div className="min-h-14 p-4 flex flex-row-reverse bg-dashboard-header border-b border-dashboard-header shadow-xl dark:border-border">
+        <div className="h-page-content max-h-page-content w-full flex flex-1 flex-col overflow-hidden rounded-md bg-dashboard shadow-inner border dark:border-border">
+            <div className="min-h-14 p-4 flex items-center justify-between gap-4 bg-dashboard-header border-b border-dashboard-header shadow-xl dark:border-border">
+                <h3 className="text-base font-serif tracking-tight text-dashboard-foreground/70">
+                    ({$t.projects.instruction})
+                </h3>
                 <ClickTooltip tooltip={$t.projects.info} className="font-serif tracking-tight">
                     <InfoIcon onClick={togglePressed} className="cursor-pointer hover:text-muted-foreground"/>
                 </ClickTooltip>
             </div>
-            <div className="w-full flex">
-                <div className="max-h-page-content w-full flex flex-col lg:min-w-dashboard-pane lg:max-w-dashboard-pane">
-                    <ProjectCardList projects={projects} handleClick={selectProject} />
+            <div className="min-h-0 w-full flex flex-1 flex-col lg:flex-row">
+                <div className="min-h-0 w-full flex-1 lg:hidden">
+                    <ProjectCardList orientation="horizontal" projects={projects} handleClick={selectProject} />
                 </div>
-                <div className="hidden m-4 flex-col lg:w-full lg:flex xl:flex-row">
-                    <div className="max-h-dashboard-content h-full w-full xl:h-full">
-                        <ProjectDisplay project={selectedProject}/>
-                    </div>
-                    <div className="w-full h-full px-4 xl:w-dashboard-pane xl:min-w-dashboard-pane">
-                        <ProjectContent project={selectedProject} />
-                    </div>
+                <div className="hidden h-full min-h-0 shrink-0 lg:flex lg:w-80 xl:w-96 2xl:w-96">
+                    <ProjectCardList orientation="vertical" projects={projects} handleClick={selectProject} />
+                </div>
+                <div className="m-4 hidden min-h-0 flex-1 lg:flex">
+                    <ProjectDisplay project={selectedProject}/>
                 </div>
             </div>
             <MobileTabletOnly>
                 <ProjectDrawer openState={!!isDrawerOpen} setIsOpen={setIsDrawerOpen}>
-                    <div className="w-full flex py-2 gap-4 flex-col">
+                    <div className="h-full w-full flex py-2 gap-4 flex-col">
                         <ProjectDisplay project={selectedProject}/>
-                        <ProjectContent project={selectedProject} />
                     </div>
                 </ProjectDrawer>
             </MobileTabletOnly>

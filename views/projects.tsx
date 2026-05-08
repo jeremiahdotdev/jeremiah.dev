@@ -19,7 +19,7 @@ export default async function Projects() {
     <PageSection id={$t.projects.id} variant={PageSectionVariant.Secondary}>
       <PageSectionHeader>{$t.projects.heading}</PageSectionHeader>
       <PageSectionContent>
-        <div className="w-full h-full p-4">
+        <div className="w-full p-4 lg:flex lg:min-h-0 lg:flex-1">
           <ProjectDashboard projects={projects}/>
         </div>
       </PageSectionContent>
