@@ -19,7 +19,7 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, r
     const currentYear = new Date().getFullYear();
 
     useEffect(()=>{ 
-        setColorState(theme === 'light' ? "#d1d1d1" : "#2A2A2A" )
+        setColorState(theme === 'light' ? "#dcdcdc" : "#2A2A2A" )
         setRotationState(rotate)
     }, [theme, rotate])
 
