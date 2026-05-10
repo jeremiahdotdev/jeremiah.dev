@@ -9,7 +9,7 @@ export default function Home() {
   const $t = getDictionary();
 
   return (
-    <PageSection id={$t.home.id} variant={PageSectionVariant.Primary} showBorder={true}>
+    <PageSection id={$t.home.id} variant={PageSectionVariant.Primary} showBorder={true} rotate={true}>
       <PageSectionContent>
           <TypeHeading end={$t.home.typeHeadingEnd} stack={$t.home.typeHeading} className="w-full h-full flex flex-col justify-center items-center h-screen"/>
       </PageSectionContent>

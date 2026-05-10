@@ -8,10 +8,11 @@ export interface PageSectionProps {
     children?: ReactNode | ReactNode[]
     variant: PageSectionVariant
     id: string
-    showBorder?: boolean
+    showBorder?: boolean,
+    rotate?: boolean
 }
 
-const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder}: PageSectionProps) => {
+const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, rotate}: PageSectionProps) => {
     const { theme } = useTheme()
     const [colorState, setColorState] = useState<string>()
     const [rotationState, setRotationState] = useState<boolean>()
@@ -19,8 +20,8 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder}: 
 
     useEffect(()=>{ 
         setColorState(theme === 'light' ? "#d1d1d1" : "#2A2A2A" )
-        setRotationState(Math.random() < 0.5)
-    }, [theme])
+        setRotationState(rotate)
+    }, [theme, rotate])
 
     const getCSSForVariant = (variant: PageSectionVariant) => {
         switch(variant) {
