@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/dictionaries";
 import { ContactFormResponse, ContactFormSchema, ContactFormSchemaType } from "@/types/contact";
 import config from "@/config.json";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import ContactFormField from "./contact-form-field";
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -15,6 +15,7 @@ export function ContactForm() {
   const [responseMessage, setResponseMessage] = useState<string>();
   const [responseFailed, setResponseFailed] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const loggedMessage = useRef(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const enableButton = useCallback(() => { setIsDisabled(false); }, []);
   const $t = getDictionary();
@@ -29,11 +30,10 @@ export function ContactForm() {
     },
   });
 
-  let loggedMessage = false;
   useEffect(()=>{
     // Note to developers on cookie usage for Google Recaptcha. 
-    if (!loggedMessage) console.log($t.dev)
-    loggedMessage = true
+    if (!loggedMessage.current) console.log($t.dev)
+    loggedMessage.current = true
   }, [$t])
 
   const onSubmit = useCallback(

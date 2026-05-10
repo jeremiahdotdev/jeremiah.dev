@@ -21,7 +21,7 @@ const Commendation: FC<CommendationProps> = ({ commendation }: CommendationProps
 
     const component = useMemo(() => commendation.link ? (
         <CardBase asChild className="flex min-w-0 items-center gap-3 p-3 transition-colors hover:bg-muted">
-        <a href={commendation.link}>
+        <a href={commendation.link} target="_blank" rel="noopener noreferrer">
             {content}
         </a>
         </CardBase>

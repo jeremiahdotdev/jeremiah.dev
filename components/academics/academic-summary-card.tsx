@@ -1,6 +1,5 @@
 import { Academics } from "@/types/academics"
 import { FC, memo, useMemo } from "react"
-import { HoverTooltip } from "../shared/hover-tooltip"
 import CardBase from "../shared/card-base"
 
 interface AcademicSummaryCardProps {
@@ -17,11 +16,14 @@ const AcademicSummaryCard: FC<AcademicSummaryCardProps> = ({ academics, institut
             <span className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <span className="flex flex-col">
                     <h2 className="text-2xl font-semibold leading-tight">{academics.degree}</h2>
-                    <HoverTooltip tooltip={institutionHref} className="w-fit">
-                        <a href={institutionHref} className="text-sm text-muted-foreground hover:underline">
-                            {academics.institution} · {academics.location}
-                        </a>
-                    </HoverTooltip>
+                    <a
+                        href={institutionHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-11 w-fit items-center text-sm text-foreground hover:underline"
+                    >
+                        {academics.institution} · {academics.location}
+                    </a>
                 </span>
                 <span className="text-base font-semibold text-foreground sm:text-lg">Class of {endYear}</span>
             </span>

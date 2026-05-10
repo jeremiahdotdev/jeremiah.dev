@@ -29,14 +29,23 @@ const ProjectDisplay: FC<ProjectDisplayProps> = ({ project }: ProjectDisplayProp
     }, [project]);
 
     const frame = useMemo(() => (                    
-        <iframe onLoad={handleLoadFrame} src={project?.demo?.href} className={cn("w-full h-full p-4 rounded-md", frameIsLoading && "hidden")}/>
-    ), [project, handleLoadFrame, frameIsLoading]);
+        <iframe
+            title={project ? `${project.name} demo` : $t.projects.placeholder}
+            onLoad={handleLoadFrame}
+            src={project?.demo?.href}
+            className={cn("w-full h-full p-4 rounded-md", frameIsLoading && "hidden")}
+        />
+    ), [project, $t, handleLoadFrame, frameIsLoading]);
 
     const overlay = useMemo(() => isDemoOpen 
     ? ( <ProjectDrawerButton handleClick={toggleFullScreen}>{$t.projects.closeDemo}</ProjectDrawerButton>) 
-    : ( <div onClick={toggleFullScreen} className="absolute h-full w-full flex justify-center items-center text-white text-2xl font-mono font-extrabold bg-black/70 hover:bg-black/80 hover:cursor-pointer lg:hidden">
-            <h4 className="transition-transform duration-300 transform hover:scale-110">{$t.projects.viewDemo}</h4>
-        </div>
+    : ( <button
+            type="button"
+            onClick={toggleFullScreen}
+            className="absolute h-full w-full flex justify-center items-center text-white text-2xl font-mono font-extrabold bg-black/70 hover:bg-black/80 hover:cursor-pointer lg:hidden"
+        >
+            <span className="transition-transform duration-300 transform hover:scale-110">{$t.projects.viewDemo}</span>
+        </button>
     ), [$t, isDemoOpen, toggleFullScreen]);
 
 
@@ -62,7 +71,7 @@ const ProjectDisplay: FC<ProjectDisplayProps> = ({ project }: ProjectDisplayProp
             )
         } else {
             return (
-                <h1 className="flex h-full min-h-0 w-full flex-1 items-center justify-center rounded-md bg-dashboard-header text-4xl font-extrabold font-mono text-dashboard shadow-inner">{ $t.projects.placeholder }</h1>
+                <div className="flex h-full min-h-0 w-full flex-1 items-center justify-center rounded-md bg-dashboard-header text-4xl font-extrabold font-mono text-dashboard shadow-inner">{ $t.projects.placeholder }</div>
             ) 
         }
     }, [project, $t, frame, frameIsLoading, overlay, isDemoOpen, toggleFullScreen]);

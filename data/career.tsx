@@ -218,7 +218,7 @@ export const experiences = [
                 title: "Software Engineer",
                 type: "Full-time",
                 startDate: new Date(2020, 6, 1),
-                endDate: new Date(2022, 2, 1), 
+                endDate: new Date(2022, 1, 1), 
                 description: (<ul>
                         <li>Participates in the software development life cycle including requirement analysis, planning, software design, development, review, unit/integration testing, and deployment.</li>
                         <li>Identify, implement and support technical solutions to deliver business requirements</li>

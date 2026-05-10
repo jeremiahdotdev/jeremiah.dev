@@ -16,12 +16,7 @@ interface ProjectDashboardProps {
 const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashboardProps) => {
     const $t = getDictionary();
     const [selectedProject, setSelectedProject] = useState<Project>()
-    const [isPressed, setIsPressed] = useState<boolean>()
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>()
-
-    const togglePressed = useCallback(()=>{
-        setIsPressed(value => !!value)
-    }, [])
 
     const selectProject = useCallback((project: Project)=>{
         setIsDrawerOpen(true)
@@ -32,11 +27,11 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
     const content = useMemo(() => (
         <div className="h-page-content max-h-page-content w-full flex flex-1 flex-col overflow-hidden rounded-md bg-dashboard shadow-inner border dark:border-border">
             <div className="min-h-14 p-4 flex items-center justify-between gap-4 bg-dashboard-header border-b border-dashboard-header shadow-xl dark:border-border">
-                <h3 className="text-base font-serif tracking-tight text-dashboard-foreground/70">
+                <p className="text-base font-serif tracking-tight text-dashboard-foreground">
                     ({$t.projects.instruction})
-                </h3>
+                </p>
                 <ClickTooltip tooltip={$t.projects.info} className="font-serif tracking-tight">
-                    <InfoIcon onClick={togglePressed} className="cursor-pointer hover:text-muted-foreground"/>
+                    <InfoIcon className="cursor-pointer hover:text-muted-foreground"/>
                 </ClickTooltip>
             </div>
             <div className="min-h-0 w-full flex flex-1 flex-col lg:flex-row">
@@ -58,7 +53,7 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
                 </ProjectDrawer>
             </MobileTabletOnly>
         </div>
-    ), [$t, projects, selectedProject, isDrawerOpen, selectProject, setIsDrawerOpen, togglePressed]);
+    ), [$t, projects, selectedProject, isDrawerOpen, selectProject, setIsDrawerOpen]);
 
     return (content);
 };

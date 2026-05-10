@@ -97,12 +97,14 @@ const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
                                 event.stopPropagation()
                                 api?.scrollTo(index)
                             }}
-                            className={`h-2.5 w-2.5 rounded-full border transition-colors ${
+                            className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
                                 selectedIndex === index
-                                    ? "border-primary bg-primary"
-                                    : "border-primary/30 bg-background hover:bg-primary/20"
+                                    ? "text-primary"
+                                    : "text-primary/50 hover:text-primary"
                             }`}
-                        />
+                        >
+                            <span className="h-2.5 w-2.5 rounded-full border border-current bg-current" />
+                        </button>
                     ))}
                 </div>
             )}
@@ -138,7 +140,7 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false}: Timeli
                 <header className="relative mb-4 flex flex-col gap-2 md:pl-8">
                     <span className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <span className="flex flex-col">
-                            <h3 className="text-2xl font-semibold leading-tight">{event.employer}</h3>
+                            <h2 className="text-2xl font-semibold leading-tight">{event.employer}</h2>
                             <span className="text-sm text-muted-foreground">{event.location}</span>
                         </span>
                         <span className="flex flex-wrap items-center gap-2 text-sm font-medium text-muted-foreground sm:justify-end">

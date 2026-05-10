@@ -1,5 +1,5 @@
 import { Project } from "@/types/project";
-import { memo, useMemo, FC, useCallback } from "react"
+import { memo, useMemo, FC, useCallback, KeyboardEvent } from "react"
 import {
     Card,
     CardDescription,
@@ -22,10 +22,17 @@ interface ProjectCardProps {
 const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCardProps) => {
     const $t = getDictionary();
     const badges = project.topics?.map(el =>({ subtitle: el}))
-    const linkStyle = "text-sm font-tight font-serif flex gap-1 text-blue-600 absolute top-3 right-3"
+    const linkStyle = "absolute right-3 top-3 z-10 flex min-h-11 items-center gap-1 text-sm font-tight font-serif text-blue-800 dark:text-blue-200"
 
     const onSelect = useCallback(()=>{
         handleClick(project)
+    }, [handleClick, project])
+
+    const onSelectWithKeyboard = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault()
+            handleClick(project)
+        }
     }, [handleClick, project])
 
     // Memoized GitHub link component
@@ -38,8 +45,15 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
                 </HoverTooltip>
               )
             : (
-                <HoverTooltip tooltip={$t.projects.github.public}>
-                    <a href={project?.link.href} target="_blank" className={twMerge(linkStyle, "hover:underline")}>
+                <HoverTooltip tooltip={$t.projects.github.public} asChild>
+                    <a
+                        href={project?.link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`View ${project.name} on GitHub`}
+                        onClick={(event) => event.stopPropagation()}
+                        className={twMerge(linkStyle, "hover:underline")}
+                    >
                         {$t.projects.github.link}
                         <GitBranch size={16} />
                     </a>
@@ -53,39 +67,48 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
             <div key={key} className="w-full space-y-1">
                 <div className="flex justify-between text-xs">
                     <span className="font-medium">{key}</span>
-                    <span className="text-gray-600">{value}%</span>
+                    <span className="text-foreground">{value}%</span>
                 </div>
-                <Progress value={value} className="h-1" />
+                <Progress value={value} aria-label={`${project.name} ${key} usage`} className="h-1" />
             </div>
         )) : null
     , [project]);
 
     // Memoized component
     const content = useMemo(() => (
-        <Card onClick={onSelect} className="rounded-xl hover:cursor-pointer hover:shadow-outer h-full max-h-full w-full flex flex-col overflow-hidden relative">
+        <Card
+            role="button"
+            tabIndex={0}
+            aria-label={`View details for ${project.name}`}
+            onClick={onSelect}
+            onKeyDown={onSelectWithKeyboard}
+            className="rounded-xl border-black/30 hover:cursor-pointer hover:shadow-outer h-full max-h-full w-full flex flex-col overflow-hidden relative dark:border-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
             <CardHeader className="min-h-64 px-5 pb-4 pt-5 lg:min-h-0">
                 {link}
-                <CardTitle>
-                    <div className="flex max-w-full items-center gap-3 py-1 pr-20 tracking-tight font-mono">
-                        <ProjectAvatar icon={project.icon}/>
-                        <span className="max-w-full break-words lg:max-w-48">
-                            {project.name}    
+                <div className="flex min-h-44 w-full flex-col items-start rounded-md text-left">
+                    <CardTitle>
+                        <span className="flex max-w-full items-center gap-3 py-1 pr-20 tracking-tight font-mono">
+                            <ProjectAvatar icon={project.icon}/>
+                            <span className="max-w-full break-words lg:max-w-48">
+                                {project.name}    
+                            </span>
                         </span>
-                    </div>
-                </CardTitle>
-                <CardDescription className="mb-2">{project.description}</CardDescription>
-                <BadgeList badges={badges}/>
+                    </CardTitle>
+                    <CardDescription className="mb-2 text-foreground">{project.description}</CardDescription>
+                    <BadgeList badges={badges}/>
+                </div>
             </CardHeader>
             {languages && (
-                <div className="bg-card rounded-b-xl p-4">
-                    <h4 className="text-sm font-semibold font-serif mb-3">{$t.projects.languages}</h4>
+                <div className="bg-card rounded-b-xl border-t border-black/20 p-4 dark:border-white/30">
+                    <p className="text-sm font-semibold font-serif mb-3">{$t.projects.languages}</p>
                     <div className="w-full flex flex-col gap-2">
                         {languages}
                     </div>
                 </div>
             )}
         </Card>
-    ), [project, onSelect, badges, link, languages, $t]);
+    ), [project, onSelect, onSelectWithKeyboard, badges, link, languages, $t]);
 
     return (content);
 };

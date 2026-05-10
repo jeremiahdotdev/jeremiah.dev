@@ -13,8 +13,8 @@ interface IconLinkProps {
 const IconLink: FC<IconLinkProps> = ({Icon, tooltip, url, className}: IconLinkProps) => {
   // Memoized button component
   const toggle = useMemo(() => (
-    <HoverTooltip className={`aspect-square ${className} hover:text-muted-foreground`} tooltip={tooltip}>
-      <a target="_blank" href={url}  aria-label={tooltip}>
+    <HoverTooltip className={`aspect-square ${className} hover:text-muted-foreground`} tooltip={tooltip} asChild>
+      <a target="_blank" rel="noopener noreferrer" href={url} aria-label={tooltip}>
         <Icon className="h-[1.4rem] w-[1.4rem]"/>
       </a>
     </HoverTooltip>
