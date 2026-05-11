@@ -87,10 +87,12 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
             <CardHeader className="min-h-64 px-5 pb-4 pt-5 lg:min-h-0">
                 {link}
                 <div className="flex min-h-44 w-full flex-col items-start rounded-md text-left">
-                    <CardTitle>
-                        <span className="flex max-w-full items-center gap-3 py-1 pr-20 tracking-tight font-mono">
-                            <ProjectAvatar icon={project.icon}/>
-                            <span className="max-w-full break-words lg:max-w-48">
+                    <CardTitle className="w-full">
+                        <span className="flex min-w-0 max-w-full items-center gap-3 py-1 pr-20 tracking-tight font-mono">
+                            <span className="shrink-0">
+                                <ProjectAvatar icon={project.icon}/>
+                            </span>
+                            <span className="min-w-0 max-w-full break-words [overflow-wrap:anywhere]">
                                 {project.name}    
                             </span>
                         </span>
