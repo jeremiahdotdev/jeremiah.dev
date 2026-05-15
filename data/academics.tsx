@@ -27,18 +27,6 @@ export const academics = {
                 </p>
             </div>) 
     },{
-        type: "Minor",
-        name: "Christian Apologetics",
-        gpa: "3.71",
-        description: (<div>
-            <p>
-                My minor in Christian Apologetics allowed me to engage deeply with philosophical and theological concepts, enhancing my understanding of faith and reason. I studied key arguments for the validity of Christianity, examining historical, ethical, and scientific perspectives.
-            </p>
-            <p>
-                This coursework not only strengthened my ability to articulate and defend my beliefs but also cultivated critical thinking and persuasive communication skills. My experience in this field has enriched my worldview and informed my interactions with ethical perspectives in both personal and professional contexts.
-            </p>
-        </div>)
-    },{
         type: "Major",
         name: "Mathematics",
         gpa: "3.91",
@@ -49,6 +37,18 @@ export const academics = {
             <p>
                 This major taught me to approach challenges with both abstract and practical thinking. I was honored with the Mathematics Achievement Award for my excellence in upper-division courses and creativity in problem-solving.
             </p>      
+        </div>)
+    },{
+        type: "Minor",
+        name: "Christian Apologetics",
+        gpa: "3.71",
+        description: (<div>
+            <p>
+                My minor in Christian Apologetics allowed me to engage deeply with philosophical and theological concepts, enhancing my understanding of faith and reason. I studied key arguments for the validity of Christianity, examining historical, ethical, and scientific perspectives.
+            </p>
+            <p>
+                This coursework not only strengthened my ability to articulate and defend my beliefs but also cultivated critical thinking and persuasive communication skills. My experience in this field has enriched my worldview and informed my interactions with ethical perspectives in both personal and professional contexts.
+            </p>
         </div>)
     }],
     description: (<span>Received a liberal arts degree. Has proficiency in the arts, including expressing oneself orally and through composition.</span>),
