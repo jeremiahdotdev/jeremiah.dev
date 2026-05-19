@@ -23,7 +23,7 @@ export function HoverTooltip({ children, tooltip, className, asChild = false }: 
             <TooltipBase>
                 <TooltipTrigger
                     asChild={asChild}
-                    className={cn("inline-flex min-h-11 min-w-11 items-center justify-center", className)}
+                    className={cn("inline-flex min-h-6 min-w-11 items-center justify-center", className)}
                 >
                     {children}
                 </TooltipTrigger>
