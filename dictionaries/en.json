@@ -19,8 +19,8 @@
         {"id": "home", "heading":"Home"},
         {"id": "career", "heading":"Career"},
         {"id": "academics", "heading":"Academics"},
-        {"id": "skills", "heading":"Skills"},
-        {"id": "projects", "heading":"Projects"}
+        {"id": "projects", "heading":"Projects"},
+        {"id": "contact", "heading":"Contact"}
     ],
     "home": {
         "id": "home",
@@ -32,7 +32,7 @@
         "endDateDefault" : "Present"
     },
     "career": {
-        "id": "areer",
+        "id": "career",
         "heading": "Career"
     },
     "academics": {

@@ -82,7 +82,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
             aria-label={`View details for ${project.name}`}
             onClick={onSelect}
             onKeyDown={onSelectWithKeyboard}
-            className="rounded-xl border-black/30 hover:cursor-pointer hover:shadow-outer h-full max-h-full w-full flex flex-col overflow-hidden relative dark:border-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="rounded-xl hover:cursor-pointer hover:shadow-outer h-full max-h-full w-full flex flex-col overflow-hidden relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
             <CardHeader className="min-h-64 px-5 pb-4 pt-5 lg:min-h-0">
                 {link}
@@ -102,7 +102,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
                 </div>
             </CardHeader>
             {languages && (
-                <div className="bg-card rounded-b-xl border-t border-black/20 p-4 dark:border-white/30">
+                <div className="bg-card rounded-b-xl border-t p-4 0">
                     <p className="text-sm font-semibold font-serif mb-3">{$t.projects.languages}</p>
                     <div className="w-full flex flex-col gap-2">
                         {languages}

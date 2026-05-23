@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot"
 
 import { cn } from "@/lib/utils"
 
-export const cardBaseClassName = "rounded-lg border border-black/10 bg-card text-card-foreground shadow-sm dark:border-white/10"
+export const cardBaseClassName = "rounded-lg border bg-card text-card-foreground shadow-sm shadow-foreground/20 border-foreground/20"
 
 interface CardBaseProps extends React.HTMLAttributes<HTMLDivElement> {
     asChild?: boolean
