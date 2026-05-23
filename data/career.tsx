@@ -151,6 +151,7 @@ export const experiences = [
                 title: "Scrum Master",
                 type: "Part-time",
                 startDate: new Date(2025, 5, 1),
+                endDate: new Date(2025, 2, 1),
                 description: (<ul>
                     <li>Facilitates Agile and Scrum practices to help teams deliver high-quality solutions efficiently.</li>
                     <li>Coaches teams on Scrum principles, removes impediments, and fosters continuous improvement.</li>
