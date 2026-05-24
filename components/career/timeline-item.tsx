@@ -1,6 +1,7 @@
 "use client"
 
 import { FC, ReactNode, memo, useEffect, useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel"
 import RoleCard from "./role-card"
 import type { ClientCareerEvent, ClientJob } from "./timeline"
@@ -125,9 +126,12 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, childre
             className="group relative grid cursor-pointer grid-cols-1 gap-0 md:grid-cols-[4rem_minmax(0,1fr)] md:gap-6"
         >
             <div className="hidden justify-center md:flex">
-                <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-lg border bg-card text-xs font-bold text-primary shadow-md transition-colors group-hover:bg-muted md:h-16 md:w-16 md:text-sm">
-                    {getOrganizationMark(event.employer)}
-                </span>
+                <Avatar className="relative z-10 h-12 w-12 rounded-lg border bg-card p-2 shadow-md transition-colors group-hover:bg-muted md:h-16 md:w-16">
+                    <AvatarImage src={event.icon?.src} alt={event.icon?.alt || event.employer} className="object-contain" />
+                    <AvatarFallback className="rounded-md bg-transparent text-xs font-bold text-primary md:text-sm">
+                        {getOrganizationMark(event.employer)}
+                    </AvatarFallback>
+                </Avatar>
             </div>
             <article className="min-w-0">
                 <header className="relative mb-4 flex flex-col gap-2 md:pl-8">

@@ -26,6 +26,7 @@ export const blogPostBySlugQuery = groq`*[_type == "blogPost" && slug.current ==
 export const careerEmployersQuery = groq`*[_type == "careerEmployer"] | order(orderRank asc, name asc) {
   name,
   location,
+  icon{asset->{url}},
   roles[] {
     title,
     employmentType,

@@ -29,6 +29,7 @@ export function parseCareerEvent(event: ImportedCareerEvent, endDateDefault: str
 
     return {
         employer: event.employer,
+        icon: event.icon,
         location: event.location,
         roles,
         startDate: parseDate(startDate),

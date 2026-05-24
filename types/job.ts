@@ -1,4 +1,5 @@
 import { Skill } from "./skill"
+import { Icon } from "./icon"
 
 export type Job = {
     title: string, 
@@ -14,6 +15,7 @@ export type Job = {
 
 export type CareerEvent = {
     employer: string,
+    icon?: Icon,
     startDate: string,
     endDate: string,
     duration: string,
@@ -32,6 +34,7 @@ export type ImportedRole = {
 
 export type ImportedCareerEvent = {
     employer: string,
+    icon?: Icon,
     location: string,
     roles: ImportedRole[]
 }

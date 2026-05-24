@@ -7,6 +7,14 @@ export const careerEmployer = defineType({
   fields: [
     defineField({name: 'name', title: 'Employer', type: 'string', validation: (Rule) => Rule.required()}),
     defineField({name: 'location', title: 'Location', type: 'string'}),
+    defineField({
+      name: 'icon',
+      title: 'Timeline icon',
+      type: 'file',
+      options: {
+        accept: 'image/svg+xml,image/png,image/jpeg,image/webp',
+      },
+    }),
     defineField({name: 'orderRank', title: 'Sort order', type: 'number'}),
     defineField({
       name: 'roles',

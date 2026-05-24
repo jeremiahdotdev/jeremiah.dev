@@ -21,6 +21,11 @@ type SanitySkill = {
 type SanityCareerEmployer = {
   name?: string
   location?: string
+  icon?: {
+    asset?: {
+      url?: string
+    }
+  }
   roles?: Array<{
     title?: string
     employmentType?: string
@@ -62,6 +67,10 @@ export async function getCareerContent(): Promise<ImportedCareerEvent[]> {
 
     return employers.map((employer) => ({
       employer: employer.name || '',
+      icon: employer.icon?.asset?.url ? {
+        src: employer.icon.asset.url,
+        alt: employer.name || '',
+      } : undefined,
       location: employer.location || '',
       roles: (employer.roles || []).map((role) => ({
         title: role.title || '',
