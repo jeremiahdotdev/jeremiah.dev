@@ -1,6 +1,9 @@
 import { parseAcademia } from '@/server/service/parseAcademics';
-import { academics } from '@/data/academics'
+import { getSiteDictionary } from '@/sanity/lib/getSiteSettings';
+import { getAcademicContent } from '@/sanity/lib/getAcademicContent';
 
 export async function getAcademicData() { 
-  return parseAcademia(academics) 
+  const $t = await getSiteDictionary()
+  const academics = await getAcademicContent()
+  return parseAcademia(academics, $t.timeline.endDateDefault) 
 }

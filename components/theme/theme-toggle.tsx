@@ -3,7 +3,7 @@
 import { memo, useMemo, useCallback, FC, useState, useEffect } from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes";
-import { getDictionary } from '@/dictionaries';
+import { useDictionary } from '@/components/content/content-provider';
 import { Toggle } from "../ui/toggle";
 
 interface ThemeToggleProps {
@@ -13,7 +13,7 @@ interface ThemeToggleProps {
 const ThemeToggle: FC<ThemeToggleProps> = ({className}: ThemeToggleProps) => {
   const { setTheme, theme } = useTheme();
   const [isPressed, setIsPressed] = useState<boolean>()
-  const $t = getDictionary();
+  const $t = useDictionary();
 
   useEffect(() => {
     setIsPressed(theme === "light")

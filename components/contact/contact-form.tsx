@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { getDictionary } from "@/dictionaries";
+import { useDictionary } from "@/components/content/content-provider";
 import { ContactFormResponse, ContactFormSchema, ContactFormSchemaType } from "@/types/contact";
 import config from "@/config.json";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -18,7 +18,7 @@ export function ContactForm() {
   const loggedMessage = useRef(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const enableButton = useCallback(() => { setIsDisabled(false); }, []);
-  const $t = getDictionary();
+  const $t = useDictionary();
   const attemptThreshold = 1;
 
   const form = useForm<ContactFormSchemaType>({

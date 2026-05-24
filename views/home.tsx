@@ -1,12 +1,12 @@
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
 import TypeHeading from "@/components/shared/type-heading";
-import { getDictionary } from '@/dictionaries';
 import DevNote from "@/components/developer/dev-note";
 import PageSectionContent from "@/components/page/page-section-content";
+import { getSiteDictionary } from "@/sanity/lib/getSiteSettings";
 
-export default function Home() {
-  const $t = getDictionary();
+export default async function Home() {
+  const $t = await getSiteDictionary();
 
   return (
     <PageSection id={$t.home.id} variant={PageSectionVariant.Primary} showBorder={true} rotate={true}>

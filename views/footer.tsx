@@ -1,10 +1,10 @@
 import PageSection from '@/components/page/page-section';
 import { TypographyMuted } from '@/components/ui/typography';
-import { getDictionary } from '@/dictionaries';
+import { getSiteDictionary } from '@/sanity/lib/getSiteSettings';
 import { PageSectionVariant } from '@/types/page';
 
-export default function Footer() {
-  const $t = getDictionary();
+export default async function Footer() {
+  const $t = await getSiteDictionary();
   const currentYear = new Date().getFullYear();
 
   return (

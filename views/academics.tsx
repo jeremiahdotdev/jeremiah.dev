@@ -3,11 +3,11 @@ import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
 import PageSectionContent from "@/components/page/page-section-content";
 import PageSectionHeader from "@/components/page/page-section-header";
-import { getDictionary } from '@/dictionaries';
 import { Academics as AcademicsType } from "@/types/academics";
 import { getAcademicData } from '@/server/getAcademicData';
 import AcademicSummaryCard from "@/components/academics/academic-summary-card";
 import FocusList from "@/components/academics/focus-list";
+import { getSiteDictionary } from "@/sanity/lib/getSiteSettings";
 
 async function loadAcademicData() {
   const data = await getAcademicData()
@@ -16,7 +16,7 @@ async function loadAcademicData() {
 
 export default async function Academics() {
   const academics: AcademicsType = await loadAcademicData()
-  const $t = getDictionary();
+  const $t = await getSiteDictionary();
 
   return (
     <PageSection id={$t.academics.id} variant={PageSectionVariant.Primary} showBorder={true}>

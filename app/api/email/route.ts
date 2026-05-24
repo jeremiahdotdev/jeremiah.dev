@@ -1,8 +1,8 @@
 import { sendEmail } from '@/server/gateway/aws-ses';
 import { ContactFormSchemaType } from '@/types/contact';
 import { NextRequest, NextResponse } from 'next/server';
-import { getDictionary } from '@/dictionaries';
 import { verifyCaptcha } from '@/server/gateway/google-captcha';
+import { getSiteDictionary } from '@/sanity/lib/getSiteSettings';
 
 let requestCount = 0; // Global request counter
 let lastResetTime = Date.now(); // Last reset timestamp
@@ -11,7 +11,7 @@ const requestLimit = 50; // Request limit
 const timeWindow = 3600000; // 1 hour in milliseconds
 
 export async function POST(request: NextRequest) {
-    const $t = getDictionary();
+    const $t = await getSiteDictionary();
     const contactFormData: ContactFormSchemaType = await request.json();
     const token: string | null = request.headers.get("token");
 

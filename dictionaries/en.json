@@ -59,6 +59,11 @@
             "private": "This repository is private."
         }
     },
+    "blog": {
+        "id": "blog",
+        "heading": "Blog",
+        "empty": "No posts published yet."
+    },
     "contact": {
         "id": "contact",
         "heading": "Contact",

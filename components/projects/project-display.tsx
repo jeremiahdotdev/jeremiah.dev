@@ -1,4 +1,4 @@
-import { getDictionary } from "@/dictionaries";
+import { useDictionary } from "@/components/content/content-provider";
 import { Project } from "@/types/project";
 import { memo, useMemo, FC, useState, useCallback, useEffect } from "react"
 import { Skeleton } from "../ui/skeleton";
@@ -13,7 +13,7 @@ interface ProjectDisplayProps {
 const ProjectDisplay: FC<ProjectDisplayProps> = ({ project }: ProjectDisplayProps) => {
     const [frameIsLoading, setIsFrameLoading] = useState<boolean>(true)
     const [isDemoOpen, setIsDemoOpen] = useState<boolean>(false)
-    const $t = getDictionary();
+    const $t = useDictionary();
     
     const handleLoadFrame = useCallback(()=>{ 
         setIsFrameLoading(false) 

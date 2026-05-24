@@ -1,7 +1,7 @@
 "use client"
 import { memo, FC } from "react"
 import { FileText } from "lucide-react"
-import { getDictionary } from '@/dictionaries';
+import { useDictionary } from '@/components/content/content-provider';
 import IconLink from "../shared/icon-link";
 
 interface ResumeProps {
@@ -9,7 +9,7 @@ interface ResumeProps {
 }
 
 const Resume: FC<ResumeProps> = ({className}: ResumeProps) => {
-  const $t = getDictionary();
+  const $t = useDictionary();
   return (<IconLink Icon={FileText} tooltip={$t.controls.resume} url={$t.links.resume} className={className} />);
 };
 

@@ -6,7 +6,7 @@ import { Info as InfoIcon } from "lucide-react"
 import ProjectDrawer from "./project-drawer";
 import MobileTabletOnly from "../breakpoints/mobile-tablet-only";
 import ProjectDisplay from "./project-display";
-import { getDictionary } from "@/dictionaries";
+import { useDictionary } from "@/components/content/content-provider";
 import { ClickTooltip } from "../shared/click-tooltip";
 import { TypographyP } from "../ui/typography";
 
@@ -15,7 +15,7 @@ interface ProjectDashboardProps {
 }
   
 const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashboardProps) => {
-    const $t = getDictionary();
+    const $t = useDictionary();
     const [selectedProject, setSelectedProject] = useState<Project>()
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>()
 

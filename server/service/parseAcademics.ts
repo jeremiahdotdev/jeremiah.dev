@@ -1,22 +1,19 @@
-import { getDictionary } from "@/dictionaries";
 import { getDurationBetweenDates } from "./getDurationBetweenDates";
 import { Academics, ImportedAcademics } from "@/types/academics";
 
 
-export function parseAcademia(academics: ImportedAcademics): Academics {
-    const $t = getDictionary()
-
+export function parseAcademia(academics: ImportedAcademics, endDateDefault: string): Academics {
     const parseDate = (date: Date) => date.toLocaleString('default', { month: 'short', year: 'numeric' })
     
     const parsedAcademics: Academics = {
         ...academics,
         startDate: parseDate(academics.startDate),
-        endDate: academics.endDate ? parseDate(academics.endDate) : $t.timeline.endDateDefault,
+        endDate: academics.endDate ? parseDate(academics.endDate) : endDateDefault,
         duration: getDurationBetweenDates(academics.startDate, academics.endDate ?? new Date())
     }
     return parsedAcademics
 }
 
-export function parseAcademics(academics: ImportedAcademics[]): Academics[] {
-    return academics.map(parseAcademia)
+export function parseAcademics(academics: ImportedAcademics[], endDateDefault: string): Academics[] {
+    return academics.map((record) => parseAcademia(record, endDateDefault))
 }

@@ -1,13 +1,13 @@
 
 import { cn } from "@/lib/utils"
-import { ReactElement, createElement, JSX, ReactNode } from "react"
+import { createElement, JSX, ReactNode } from "react"
 
 export function ComponentOf({jsx, style}: {jsx: any, style?: string}) {
   let index = 0;
   return componentOfElement(jsx, style, index)
 }
 
-export function componentOfElement(el: ReactElement, style?: string, index?: number): JSX.Element | ReactNode {
+export function componentOfElement(el: any, style?: string, index?: number): JSX.Element | ReactNode {
   const hasChildren = el?.props?.children
   const hasChildrenArray = hasChildren && Array.isArray(hasChildren)
 

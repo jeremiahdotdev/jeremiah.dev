@@ -1,6 +1,4 @@
 "use client"
-import { getDictionary } from "@/dictionaries"
-import { useTheme } from "next-themes"
 import { FC, ReactNode, memo, useMemo } from "react"
 import DevOnly from "./dev-only"
 import {

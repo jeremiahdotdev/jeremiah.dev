@@ -1,6 +1,9 @@
-import { experiences } from '@/data/career'
 import { parseJobs } from './service/parseJobs';
+import { getSiteDictionary } from '@/sanity/lib/getSiteSettings';
+import { getCareerContent } from '@/sanity/lib/getCareerContent';
 
 export async function getCareerData() { 
-  return parseJobs(experiences) 
+  const $t = await getSiteDictionary()
+  const experiences = await getCareerContent()
+  return parseJobs(experiences, $t.timeline.endDateDefault) 
 }

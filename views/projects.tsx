@@ -1,10 +1,10 @@
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
 import PageSectionHeader from "@/components/page/page-section-header";
-import { getDictionary } from '@/dictionaries';
 import PageSectionContent from "@/components/page/page-section-content";
 import ProjectDashboard from "@/components/projects/project-dashboard";
 import { getProjectsData } from "@/server/getProjectsData";
+import { getSiteDictionary } from "@/sanity/lib/getSiteSettings";
 
 async function loadProjectData() {
   const data = await getProjectsData()
@@ -12,7 +12,7 @@ async function loadProjectData() {
 }
 
 export default async function Projects() {
-  const $t = getDictionary();
+  const $t = await getSiteDictionary();
   const projects = await loadProjectData()
 
   return (

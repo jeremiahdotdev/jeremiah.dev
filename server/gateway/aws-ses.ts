@@ -1,14 +1,14 @@
 import { ContactFormResponse, ContactFormSchemaType } from '@/types/contact'
 import config from '@/config.json'
 import {SESClient, SendEmailCommand} from '@aws-sdk/client-ses'
-import { getDictionary } from '@/dictionaries'
+import { getSiteDictionary } from '@/sanity/lib/getSiteSettings'
 
 export async function sendEmail(contact: ContactFormSchemaType): Promise<ContactFormResponse> {
     if (!process.env.SES_RECIPIENT_ADDRESS) {
         throw new Error(`ERROR: Environment variable process.env.SES_RECIPIENT_ADDRESS is not set.`);
     }
     
-    const $t = getDictionary()
+    const $t = await getSiteDictionary()
 
     const awsConfig = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,

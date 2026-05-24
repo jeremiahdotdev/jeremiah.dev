@@ -7,7 +7,7 @@ import {
     SheetTitle,
   } from "@/components/ui/sheet"
 import { memo, useMemo, FC, useCallback, useState } from "react"
-import { getDictionary } from "@/dictionaries";
+import { useDictionary } from "@/components/content/content-provider";
 import { Toggle } from "@radix-ui/react-toggle";
 import { Menu as MenuIcon } from "lucide-react"
 import Link from "next/link";
@@ -37,7 +37,7 @@ const BaseLink: FC<BaseLinkProps> = ({id, heading, className}: BaseLinkProps) =>
 
 const Menu: FC<MenuProps> = () => {
     const [isPressed, setIsPressed] = useState<boolean>(false)
-    const $t = getDictionary();
+    const $t = useDictionary();
 
     const setChangeDrawerOpen = useCallback((isPressed: boolean) => {
       setIsPressed(isPressed)

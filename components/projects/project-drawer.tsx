@@ -1,4 +1,4 @@
-import { getDictionary } from "@/dictionaries";
+import { useDictionary } from "@/components/content/content-provider";
 import { memo, useMemo, FC, ReactNode, useCallback } from "react"
 import {
     Drawer,
@@ -15,7 +15,7 @@ interface ProjectDrawerProps {
 }
   
 const ProjectDrawer: FC<ProjectDrawerProps> = ({ openState, children, setIsOpen }: ProjectDrawerProps) => {
-    const $t = getDictionary();
+    const $t = useDictionary();
     const handleClose = useCallback(()=> {
         setIsOpen(false)
     }, [setIsOpen])

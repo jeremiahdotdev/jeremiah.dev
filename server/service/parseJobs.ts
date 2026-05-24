@@ -1,24 +1,21 @@
-import { getDictionary } from "@/dictionaries";
 import { CareerEvent, ImportedCareerEvent, ImportedRole, Job } from "@/types/job";
 import { getDurationBetweenDates } from "./getDurationBetweenDates";
 
-export function parseJob(job: ImportedRole, employer: string, location: string): Job {
-    const $t = getDictionary()
-
+export function parseJob(job: ImportedRole, employer: string, location: string, endDateDefault: string): Job {
     const parseDate = (date: Date) => date.toLocaleString('default', { month: 'short', year: 'numeric' })
     const parsedJob: Job = {
         ...job,
         employer,
         location,
         startDate: parseDate(job.startDate),
-        endDate: job.endDate ? parseDate(job.endDate) : $t.timeline.endDateDefault,
+        endDate: job.endDate ? parseDate(job.endDate) : endDateDefault,
         duration: getDurationBetweenDates(job.startDate, job.endDate ?? new Date())
     }
     return parsedJob
 }
 
-export function parseCareerEvent(event: ImportedCareerEvent): CareerEvent {
-    const roles = event.roles.map((role) => parseJob(role, event.employer, event.location))
+export function parseCareerEvent(event: ImportedCareerEvent, endDateDefault: string): CareerEvent {
+    const roles = event.roles.map((role) => parseJob(role, event.employer, event.location, endDateDefault))
     const sortedRoles = [...event.roles].sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
     const startDate = sortedRoles[0]?.startDate ?? new Date()
     const hasCurrentRole = event.roles.some((role) => !role.endDate)
@@ -28,7 +25,6 @@ export function parseCareerEvent(event: ImportedCareerEvent): CareerEvent {
             .map((role) => role.endDate)
             .filter((date): date is Date => Boolean(date))
             .sort((a, b) => b.getTime() - a.getTime())[0]
-    const $t = getDictionary()
     const parseDate = (date: Date) => date.toLocaleString('default', { month: 'short', year: 'numeric' })
 
     return {
@@ -36,11 +32,11 @@ export function parseCareerEvent(event: ImportedCareerEvent): CareerEvent {
         location: event.location,
         roles,
         startDate: parseDate(startDate),
-        endDate: endDate ? parseDate(endDate) : $t.timeline.endDateDefault,
+        endDate: endDate ? parseDate(endDate) : endDateDefault,
         duration: getDurationBetweenDates(startDate, endDate ?? new Date())
     }
 }
 
-export function parseJobs(events: ImportedCareerEvent[]): CareerEvent[] {
-    return events.map(parseCareerEvent)
+export function parseJobs(events: ImportedCareerEvent[], endDateDefault: string): CareerEvent[] {
+    return events.map((event) => parseCareerEvent(event, endDateDefault))
 }

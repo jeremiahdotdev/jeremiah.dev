@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card"
 import ProjectAvatar from "./project-avatar";
 import BadgeList from "../shared/badge-list";
-import { getDictionary } from "@/dictionaries";
+import { useDictionary } from "@/components/content/content-provider";
 import { GitBranch, Lock } from "lucide-react"
 import { twMerge } from "tailwind-merge";
 import { HoverTooltip } from "../shared/hover-tooltip";
@@ -21,7 +21,7 @@ interface ProjectCardProps {
 }
   
 const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCardProps) => {
-    const $t = getDictionary();
+    const $t = useDictionary();
     const badges = project.topics?.map(el =>({ subtitle: el}))
     const linkStyle = "absolute right-3 top-3 z-10 flex min-h-11 items-center gap-1 text-sm font-tight font-serif text-blue-800 dark:text-blue-200"
 

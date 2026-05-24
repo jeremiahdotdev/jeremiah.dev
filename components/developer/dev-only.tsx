@@ -1,5 +1,5 @@
 "use client"
-import { getDictionary } from "@/dictionaries"
+import { useDictionary } from "@/components/content/content-provider"
 import { useTheme } from "next-themes"
 import { FC, ReactNode, memo, useMemo } from "react"
 
@@ -9,7 +9,7 @@ interface ThemeOnlyProps {
 
 const DevOnly: FC<ThemeOnlyProps> = ({children}: ThemeOnlyProps) => {
     const {theme} = useTheme()
-    const $t = getDictionary()
+    const $t = useDictionary()
 
     const devOnlyComponent = useMemo(() => {
         if (theme === $t.theme.keys.dev) {
