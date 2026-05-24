@@ -37,6 +37,7 @@ export const careerEmployersQuery = groq`*[_type == "careerEmployer"] | order(or
       subtitle,
       tooltip,
       iconKey,
+      icon{asset->{url}},
       href
     }
   }

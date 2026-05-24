@@ -8,6 +8,14 @@ export const skill = defineType({
     defineField({name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required()}),
     defineField({name: 'subtitle', title: 'Badge subtitle', type: 'string'}),
     defineField({name: 'tooltip', title: 'Tooltip', type: 'string'}),
+    defineField({
+      name: 'icon',
+      title: 'Badge icon',
+      type: 'file',
+      options: {
+        accept: 'image/svg+xml',
+      },
+    }),
     defineField({name: 'iconKey', title: 'Icon key', type: 'string'}),
     defineField({name: 'href', title: 'URL', type: 'url'}),
   ],

@@ -45,6 +45,36 @@ const bullets = (items) => items.map((text) => ({
 
 const ref = (_ref) => ({_type: 'reference', _ref})
 
+const skillIconsDir = path.join(process.cwd(), 'scripts', 'skill-icons')
+
+const findExistingSvgAsset = async (filename) => {
+  return client.fetch(
+    '*[_type == "sanity.fileAsset" && originalFilename == $filename && mimeType == "image/svg+xml"][0]{_id}',
+    {filename},
+  )
+}
+
+const uploadSkillIconAsset = async (iconKey) => {
+  const filename = `${iconKey}.svg`
+  const filePath = path.join(skillIconsDir, filename)
+
+  if (!fs.existsSync(filePath)) {
+    return null
+  }
+
+  const existingAsset = await findExistingSvgAsset(filename)
+  if (existingAsset?._id) {
+    console.log(`Re-using existing SVG asset for ${iconKey}`)
+    return existingAsset
+  }
+
+  console.log(`Uploading SVG asset for ${iconKey} from ${filePath}`)
+  return client.assets.upload('file', fs.createReadStream(filePath), {
+    filename,
+    contentType: 'image/svg+xml',
+  })
+}
+
 const skills = [
   ['skill.javascript', 'JavaScript', 'JavaScript', 'javascript', 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'],
   ['skill.html5', 'HTML 5', 'HTML 5', 'html5', 'https://developer.mozilla.org/en-US/docs/Web/HTML'],
@@ -279,7 +309,28 @@ async function seed() {
   const transaction = client.transaction()
 
   transaction.createOrReplace(siteSettings)
-  for (const skill of skills) transaction.createOrReplace(skill)
+
+  for (const skill of skills) {
+    if (skill.iconKey) {
+      try {
+        const asset = await uploadSkillIconAsset(skill.iconKey)
+        if (asset?._id) {
+          skill.icon = {
+            _type: 'file',
+            asset: {
+              _type: 'reference',
+              _ref: asset._id,
+            },
+          }
+        }
+      } catch (error) {
+        console.warn(`Failed to upload SVG asset for ${skill.iconKey}:`, error)
+      }
+    }
+
+    transaction.createOrReplace(skill)
+  }
+
   for (const employer of careerEmployers) transaction.createOrReplace(employer)
   transaction.createOrReplace(academicRecord)
 

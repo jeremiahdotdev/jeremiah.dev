@@ -13,6 +13,11 @@ type SanitySkill = {
   tooltip?: string
   iconKey?: string
   href?: string
+  icon?: {
+    asset?: {
+      url?: string
+    }
+  }
 }
 
 type SanityCareerEmployer = {
@@ -29,10 +34,14 @@ type SanityCareerEmployer = {
 }
 
 function toSkill(skill: SanitySkill): Skill {
+  const iconUrl = skill.icon?.asset?.url
+
   return {
     subtitle: skill.subtitle || skill.title || '',
     tooltip: skill.tooltip,
-    image: getSkillIcon(skill.iconKey),
+    image: iconUrl ? (
+      <img src={iconUrl} alt={skill.subtitle || skill.title || ''} className="h-4 w-4" />
+    ) : getSkillIcon(skill.iconKey),
     href: skill.href || '#',
   }
 }
