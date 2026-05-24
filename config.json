@@ -2,12 +2,7 @@
     "api": {
         "site": "jeremiah.dev",
         "protocol": "https",
-        "email": "/api/email",
-        "me": {
-            "career" : "/api/me/experience",
-            "academics" : "/api/me/academia",
-            "projects" : "/api/me/projects"
-        }
+        "email": "/api/email"
     },
     "captcha": "https://recaptchaenterprise.googleapis.com/v1/projects/jeremiah-dev/assessments",
     "github": {

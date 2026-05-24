@@ -6,9 +6,9 @@ import { getDictionary } from "@/dictionaries";
 import { ContactFormResponse, ContactFormSchema, ContactFormSchemaType } from "@/types/contact";
 import config from "@/config.json";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
 import ContactFormField from "./contact-form-field";
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { TypographyMuted } from "../ui/typography";
 
 export function ContactForm() {
   const [timesUsed, setTimesUsed] = useState<number>(-1);
@@ -73,9 +73,9 @@ export function ContactForm() {
           <Button disabled={isDisabled} type="submit" className="w-full md:w-1/2">
             {((timesUsed < attemptThreshold) || !isDisabled) ? $t.contact.button.label : $t.contact.button.pastAttemptThreshold}
           </Button>
-          <div className={cn("flex w-full md:w-1/2 justify-end items-center", responseFailed ? "text-red-600" : "")}>
+          <TypographyMuted variant="status" tone={responseFailed ? "destructive" : "default"} className="flex w-full md:w-1/2 justify-end items-center">
             {responseMessage}
-          </div>
+          </TypographyMuted>
         </form>
       </FormProvider>
   );

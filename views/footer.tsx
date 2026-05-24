@@ -1,4 +1,5 @@
 import PageSection from '@/components/page/page-section';
+import { TypographyMuted } from '@/components/ui/typography';
 import { getDictionary } from '@/dictionaries';
 import { PageSectionVariant } from '@/types/page';
 
@@ -8,14 +9,14 @@ export default function Footer() {
 
   return (
     <PageSection id="footer" variant={PageSectionVariant.Footer}>
-      <span className='p-2 font-thin tracking-tight text-sm flex flex-wrap gap-1 items-center justify-center w-full dark:text-muted-foreground'>
-        <p>
+      <div className='p-2 flex flex-wrap gap-1 items-center justify-between w-full'>
+        <TypographyMuted variant="footer">
           &copy; {currentYear} {$t.footer.copyright}
-        </p>
-        <p>
+        </TypographyMuted>
+        <TypographyMuted variant="footer">
           {$t.footer.captcha.label} <a href={$t.footer.captcha.url} target="_blank" rel="noopener noreferrer" className='underline'>{$t.footer.captcha.captcha}</a>
-        </p>
-      </span>
+        </TypographyMuted>
+      </div>
     </PageSection>
   );
 }

@@ -8,6 +8,7 @@ import MobileTabletOnly from "../breakpoints/mobile-tablet-only";
 import ProjectDisplay from "./project-display";
 import { getDictionary } from "@/dictionaries";
 import { ClickTooltip } from "../shared/click-tooltip";
+import { TypographyP } from "../ui/typography";
 
 interface ProjectDashboardProps {
     projects: Project[];
@@ -27,9 +28,9 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
     const content = useMemo(() => (
         <div className="h-page-content max-h-page-content w-full flex flex-1 flex-col overflow-hidden rounded-md bg-dashboard shadow-inner border dark:border-border">
             <div className="min-h-14 p-4 flex items-center justify-between gap-4 bg-dashboard-header border-b border-dashboard-header shadow-xl dark:border-border">
-                <p className="text-base font-serif tracking-tight text-dashboard-foreground">
+                <TypographyP variant="dashboard">
                     ({$t.projects.instruction})
-                </p>
+                </TypographyP>
                 <ClickTooltip tooltip={$t.projects.info} className="font-serif tracking-tight">
                     <InfoIcon className="cursor-pointer hover:text-muted-foreground"/>
                 </ClickTooltip>

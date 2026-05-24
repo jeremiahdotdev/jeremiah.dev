@@ -1,3 +1,4 @@
+import { TypographyH2 } from "@/components/ui/typography"
 import { memo, useMemo, FC, ReactNode } from "react"
 
 export interface PageSectionHeaderProps {
@@ -7,9 +8,9 @@ export interface PageSectionHeaderProps {
 const PageSectionHeader: FC<PageSectionHeaderProps> = ({children}: PageSectionHeaderProps) => {
     // Memoized component
     const header = useMemo(() => (
-        <h2 className={"p-4 flex flex-col text-2xl w-full font-serif font-thin tracking-widest text-foreground/80 items-center justify-center sm:justify-end sm:align-start sm:px-16"}>
+        <TypographyH2 variant="section">
             {children}
-        </h2>
+        </TypographyH2>
     ), [children]);
 
     return (header);

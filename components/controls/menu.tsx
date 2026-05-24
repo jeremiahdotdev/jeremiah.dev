@@ -12,20 +12,30 @@ import { Toggle } from "@radix-ui/react-toggle";
 import { Menu as MenuIcon } from "lucide-react"
 import Link from "next/link";
 import ThemeToggle from "../theme/theme-toggle";
-import { useTheme } from "next-themes";
 import LinkedIn from "./linked-in";
 import Resume from "./resume";
+import MobileTabletOnly from "../breakpoints/mobile-tablet-only";
+import DesktopOnly from "../breakpoints/desktop-only";
 
-export interface BaseOptionProps {
-    href: string;
-    scroll?: boolean;
-    onClick?: () => void;
+interface BaseLinkProps {
+    id: string;
+    heading: string;
+    className: string;
 }
 
 export interface MenuProps {}
 
+const BaseLink: FC<BaseLinkProps> = ({id, heading, className}: BaseLinkProps) => (
+    <Link
+        href={`/#${id}`} 
+        scroll
+        className={className}
+    >
+        {heading}
+    </Link>
+)
+
 const Menu: FC<MenuProps> = () => {
-    const { setTheme, theme } = useTheme();
     const [isPressed, setIsPressed] = useState<boolean>(false)
     const $t = getDictionary();
 
@@ -43,23 +53,36 @@ const Menu: FC<MenuProps> = () => {
         </Toggle>
     ), [$t, isPressed, setChangeDrawerOpen])
 
-    const Navigation = useMemo(() => {
-        const baseOption = (props: BaseOptionProps, id: string, heading: string) => (
+    const MobileTabletNavigation = useMemo(() => {
+        const mobileTabletOption = ({id, heading}: {id: string, heading: string}) => (
             <SheetClose asChild key={id} onClick={togglePressed} className="flex">
-                <Link {...props} className={"flex flex-row-reverse text-xl font-serif tracking-widest font-thin text-foreground/80 hover:cursor-pointer hover:underline"}>{heading}</Link>
+                <BaseLink id={id} heading={heading} className="flex flex-row-reverse text-xl font-serif tracking-widest font-thin text-foreground/80 hover:cursor-pointer hover:underline" />
             </SheetClose>
         )
-        const toggleOption = ({id, heading}: {id: string, heading: string}) => {return baseOption({ href: `/#${id}`, scroll:true}, id, heading)}
-    
+        
         return (
             <nav className="flex flex-col gap-6 m-4 pt-8 border-t-2 dark:border-t">
-                <>{ $t.navigation.map(toggleOption) }</>
+                <>{ $t.navigation.map(mobileTabletOption) }</>
             </nav>
         )
     }, [$t, togglePressed])
+    
+    const DesktopNavigation = useMemo(() => {
+        const desktopOption = ({id, heading}: {id: string, heading: string}) => (
+            <BaseLink key={id} id={id} heading={heading} className="px-4 py-2 font-serif text-sm tracking-widest text-foreground/75 hover:cursor-pointer hover:underline" />
+        )
+        return (
+            <nav
+                aria-label={$t.menu.description}
+                className="fixed left-1/2 bottom-4 z-50 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/40 border-foreground/10 bg-background/90 px-2 py-1.5 shadow-sm shadow-foreground/10"
+            >
+                {$t.navigation.map(desktopOption)}
+            </nav>
+        )
+    }, [$t])
 
     // Memoized component
-    const menu = useMemo(() => (
+    const MobileTabletMenu = useMemo(() => (
         <Sheet open={isPressed}>
             <div className="fixed left-0 top-0" >
                 {MenuToggle}
@@ -68,7 +91,7 @@ const Menu: FC<MenuProps> = () => {
                 <SheetDescription className="sr-only">
                     {$t.menu.description}
                 </SheetDescription>
-                { Navigation }
+                { MobileTabletNavigation }
                 <SheetClose asChild className="absolute left-0 right-0 top-0">
                     <SheetTitle className="flex justify-between items-center p-0 pl-4 font-serif text-md font-serif">
                         {$t.menu.heading} 
@@ -82,9 +105,16 @@ const Menu: FC<MenuProps> = () => {
                 </span>
             </SheetContent>
         </Sheet>
-    ), [$t, MenuToggle, Navigation, isPressed]);
+    ), [$t, MenuToggle, MobileTabletNavigation, isPressed]);
 
-    return (menu);
+    return (<>
+        <MobileTabletOnly>
+            {MobileTabletMenu}
+        </MobileTabletOnly>
+        <DesktopOnly>
+            { DesktopNavigation }
+        </DesktopOnly>
+    </>)
 };
 
 export default memo(Menu);

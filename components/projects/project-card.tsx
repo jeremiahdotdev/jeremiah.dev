@@ -13,6 +13,7 @@ import { GitBranch, Lock } from "lucide-react"
 import { twMerge } from "tailwind-merge";
 import { HoverTooltip } from "../shared/hover-tooltip";
 import { Progress } from "../ui/progress";
+import { TypographySmall } from "../ui/typography";
 
 interface ProjectCardProps {
     project: Project;
@@ -103,7 +104,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
             </CardHeader>
             {languages && (
                 <div className="bg-card rounded-b-xl border-t p-4 0">
-                    <p className="text-sm font-semibold font-serif mb-3">{$t.projects.languages}</p>
+                    <TypographySmall variant="label" className="mb-3">{$t.projects.languages}</TypographySmall>
                     <div className="w-full flex flex-col gap-2">
                         {languages}
                     </div>
