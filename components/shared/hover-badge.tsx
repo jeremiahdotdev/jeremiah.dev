@@ -1,3 +1,5 @@
+"use client"
+
 import { HoverTooltip } from "./hover-tooltip"
 import Badge, { Badging } from "./badge"
 

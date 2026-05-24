@@ -1,5 +1,6 @@
 import { FC, memo, useMemo } from "react"
 import { ChevronRight, ChevronLeft } from "lucide-react"
+import { TypographyH3, TypographySmall } from "@/components/ui/typography"
 interface EventBubble {
     heading: string
     subheading: string
@@ -12,8 +13,10 @@ const EventBubble: FC<EventBubble> = ({heading, subheading, showLeftArrow, showR
         <span className="flex items-center justify-center">
             { showLeftArrow && <ChevronLeft className="sm:hidden"/> }
             <button className="rounded-full bg-lime-400/80 px-4 py-2">
-                <h3>{heading}</h3>
-                <h4>{subheading}</h4>
+                <TypographyH3 text={heading} />
+                <TypographySmall asChild>
+                    <span>{subheading}</span>
+                </TypographySmall>
             </button>
             { showRightArrow && <ChevronRight className="sm:hidden"/> }
         </span>

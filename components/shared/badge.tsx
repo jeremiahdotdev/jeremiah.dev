@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import { TypographySmall } from "@/components/ui/typography"
 import { Badge as Root } from "@/components/ui/badge"
 
 export type Badging = {
@@ -19,9 +20,11 @@ export default function Badge({ badge }: BadgeProps) {
                     {badge.image}
                 </span>
             )}
-            <p>
-                {badge.subtitle}
-            </p>
+            <TypographySmall asChild>
+                <span>
+                    {badge.subtitle}
+                </span>
+            </TypographySmall>
         </Root>
     )
 }

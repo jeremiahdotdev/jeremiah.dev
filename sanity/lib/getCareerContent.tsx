@@ -81,7 +81,7 @@ export async function getCareerContent(): Promise<ImportedCareerEvent[]> {
         skills: (role.skills || []).map(toSkill),
       })),
     }))
-  } catch {
+  } catch (error) {
     return fallbackExperiences
   }
 }

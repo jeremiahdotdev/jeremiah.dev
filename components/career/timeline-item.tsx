@@ -2,6 +2,7 @@
 
 import { FC, ReactNode, memo, useEffect, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { TypographyH2, TypographyMuted, TypographySmall } from "@/components/ui/typography"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel"
 import RoleCard from "./role-card"
 import type { ClientCareerEvent, ClientJob } from "./timeline"
@@ -135,17 +136,23 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, childre
             </div>
             <article className="min-w-0">
                 <header className="relative mb-4 flex flex-col gap-2 md:pl-8">
-                    <span className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <span className="flex flex-col">
-                            <h2 className="text-2xl font-semibold leading-tight">{event.employer}</h2>
-                            <span className="text-sm text-muted-foreground">{event.location}</span>
-                        </span>
-                        <span className="flex flex-wrap items-center gap-2 text-sm font-medium text-muted-foreground sm:justify-end">
-                            <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">{event.startDate} - {event.endDate}</span>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="flex flex-col">
+                            <TypographyH2 text={event.employer} className="border-b-0 p-0 text-2xl font-semibold leading-tight tracking-normal" />
+                            <TypographyMuted asChild>
+                                {event.location}
+                            </TypographyMuted>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-muted-foreground sm:justify-end">
+                            <TypographySmall className="text-muted-foreground whitespace-nowrap">
+                                {event.startDate} - {event.endDate}
+                            </TypographySmall>
                             <span aria-hidden="true">·</span>
-                            <span className="whitespace-nowrap">{event.duration}</span>
-                        </span>
-                    </span>
+                            <TypographySmall className="text-muted-foreground whitespace-nowrap">
+                                {event.duration}
+                            </TypographySmall>
+                        </div>
+                    </div>
                 </header>
                 <div className="min-w-0 md:pl-8">
                     <div
