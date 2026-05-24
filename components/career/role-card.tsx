@@ -1,11 +1,11 @@
 "use client"
 
-import { Job } from "@/types/job"
 import { FC, memo } from "react"
 import CardBase from "../shared/card-base"
+import type { ClientJob } from "./timeline"
 
 interface RoleCardProps {
-    role: Job
+    role: ClientJob
 }
 
 const RoleCard: FC<RoleCardProps> = ({role}: RoleCardProps) => (

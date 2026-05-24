@@ -1,20 +1,16 @@
-import { FC, memo, useMemo } from "react"
-import Badge, { Badging } from "./hover-badge"
+import HoverBadge from "./hover-badge"
+import { Badging } from "./badge"
 
 interface BadgeListProps {
     badges?: Badging[]
 }
 
-const HoverBadgeList: FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
-    const component = useMemo(() => {
-        return (<div className="flex flex-wrap gap-2">
-            { badges?.map((badge, index) => (
-                <Badge key={`${badge.subtitle}-${index}`} badge={badge} />
+export default function HoverBadgeList({ badges }: BadgeListProps) {
+    return (
+        <div className="flex flex-wrap gap-2">
+            {badges?.map((badge, index) => (
+                <HoverBadge key={`${badge.subtitle}-${index}`} badge={badge} />
             ))}
-        </div>)
-    }, [badges])
-
-    return component
+        </div>
+    )
 }
-
-export default memo(HoverBadgeList)

@@ -1,28 +1,21 @@
 "use client"
 
-import { CareerEvent, Job } from "@/types/job"
-import { FC, memo, useEffect, useState } from "react"
-import HoverBadgeList from "../shared/hover-badge-list"
+import { FC, ReactNode, memo, useEffect, useState } from "react"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel"
 import RoleCard from "./role-card"
+import type { ClientCareerEvent, ClientJob } from "./timeline"
 
 interface TimelineItem {
-    event: CareerEvent
+    event: ClientCareerEvent
     defaultExpanded?: boolean
+    children?: ReactNode
 }
 
 interface RoleCarousel {
-    roles: Job[]
+    roles: ClientJob[]
 }
 
-const getUniqueSkills = (event: CareerEvent) => {
-    const skills = event.roles.flatMap((role) => role.skills)
-    return skills.filter((skill, index) => (
-        skills.findIndex((existingSkill) => existingSkill.subtitle === skill.subtitle) === index
-    ))
-}
-
-const getRoleId = (role: Job) => `${role.title}-${role.startDate}`
+const getRoleId = (role: ClientJob) => `${role.title}-${role.startDate}`
 
 const getRoleItemClassName = (roleCount: number) => {
     if (roleCount === 1) {
@@ -112,7 +105,7 @@ const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
     )
 }
 
-const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false}: TimelineItem) => {
+const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, children}: TimelineItem) => {
     const [expanded, setExpanded] = useState(defaultExpanded)
     const toggleExpanded = () => setExpanded((current) => !current)
 
@@ -168,7 +161,7 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false}: Timeli
                             onKeyDown={(event) => event.stopPropagation()}
                         >
                             <hr></hr>
-                            <HoverBadgeList badges={getUniqueSkills(event)}/>
+                            {children}
                         </div>
                     )}
                 </div>

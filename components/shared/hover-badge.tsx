@@ -1,20 +1,12 @@
-"use client"
-import React, { FC, ReactNode, memo, useMemo } from "react"
 import { HoverTooltip } from "./hover-tooltip"
-import Badge from "./badge"
-
-export type Badging = {
-    subtitle?: string,
-    image?: ReactNode,
-    href?: string,
-}
+import Badge, { Badging } from "./badge"
 
 interface HoverBadgeProps {
     badge: Badging
 }
 
-const HoverBadge: FC<HoverBadgeProps> = ({ badge }: HoverBadgeProps) => {  
-    const component = useMemo(() => (
+export default function HoverBadge({ badge }: HoverBadgeProps) {
+    return (
         <HoverTooltip tooltip={badge.href} asChild>
             <a
                 href={badge.href}
@@ -25,9 +17,5 @@ const HoverBadge: FC<HoverBadgeProps> = ({ badge }: HoverBadgeProps) => {
                 <Badge badge={badge}/>
             </a>
         </HoverTooltip>
-    ), [badge])
-
-    return component
+    )
 }
-
-export default memo(HoverBadge)
