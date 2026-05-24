@@ -1,126 +1,83 @@
-import {
-    DotNetCore, 
-    HTML5, 
-    JavaScript, 
-    Telerik, 
-    TypeScript, 
-    DynamoDB, 
-    React, 
-    Vue, 
-    GoogleTagManager, 
-    JQuery, 
-    LaTeX, 
-    Mathematica, 
-    PSPP, 
-    MatLab, 
-    Geogabra, 
-    GoLang, 
-    Thymeleaf,
-    Docker,
-    GoogleCloudPlatform,
-    NodeJS,
-} from '@/components/utility/SVGs'
-
 export const skills = {
     JavaScript: {
         subtitle: "JavaScript",
-        image: JavaScript(),
         href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
     },
     HTML5: {
         subtitle: "HTML 5",
-        image: HTML5(),
         href: "https://developer.mozilla.org/en-US/docs/Web/HTML"
     },
     JQuery: {
         subtitle: "jQuery",
-        image: JQuery(),
         href: "https://jquery.com/"
     },
     VueJS: {
         subtitle: "VueJS",
-        image: Vue(),
         href: "https://vuejs.org/"
     },
     GoogleTagManager: {
         subtitle: "GTM",
         tooltip: "Google Tag Manager",
-        image: GoogleTagManager(),
         href: "https://support.google.com/tagmanager/"
     },
     DynamoDB: {
         subtitle: "DynamoDB",
-        image: DynamoDB(),
         href: "https://aws.amazon.com/dynamodb/"
     },
     ReactJs: {
         subtitle: "ReactJS",
-        image: React(),
         href: "https://reactjs.org/"
     },
     TypeScript: {
         subtitle: "TypeScript",
-        image: TypeScript(),
         href: "https://www.typescriptlang.org/"
     },
     Telerik: {
         subtitle: "KendoUI",
-        image: Telerik(),
         href: "https://www.telerik.com/kendo-ui"
     },
     DotNetCore: {
         subtitle: ".NET Core",
-        image: DotNetCore(),
         href: "https://docs.microsoft.com/en-us/dotnet/core/"
     },
     LaTeX: {
         subtitle: "LaTeX",
-        image: LaTeX(),
         href: "https://www.latex-project.org/"
     },
     Mathematica: {
         subtitle: "Mathematica",
-        image: Mathematica(),
         href: "https://www.wolfram.com/mathematica/"
     },
     PSPP: {
         subtitle: "PSPP",
-        image: PSPP(),
         href: "https://www.gnu.org/software/pspp/"
     },
     MatLab: {
         subtitle: "MatLab",
-        image: MatLab(),
         href: "https://www.mathworks.com/products/matlab.html"
     },
     Geogabra: {
         subtitle: "Geogabra",
-        image: Geogabra(),
         href: "https://www.geogebra.org/"
     },
     GoLang: {
         subtitle: "GoLang",
-        image: GoLang(),
         href: "https://golang.org/"
     },
     Thymeleaf: {
         subtitle: "Thymeleaf",
-        image: Thymeleaf(),
         href: "https://www.thymeleaf.org/"
     },
     Docker: {
         subtitle: "Docker",
-        image: Docker(),
         href: "https://www.docker.com/"
     },
     GoogleCloudPlatform: {
         subtitle: "GCP",
-        image: GoogleCloudPlatform(),
         href: "https://cloud.google.com/"
     },
     NodeJS: {
         subtitle: "NodeJS",
-        image: NodeJS(),
         href: "https://nodejs.org/"
     },
 };

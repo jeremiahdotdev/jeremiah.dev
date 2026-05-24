@@ -4,14 +4,12 @@ import { Skill } from '@/types/skill'
 import { client } from '../client'
 import { hasSanityConfig } from '../env'
 import { careerEmployersQuery } from '../queries'
-import { getSkillIcon } from './iconMaps'
 import { PortableTextValue, renderPortableText } from './portableText'
 
 type SanitySkill = {
   title?: string
   subtitle?: string
   tooltip?: string
-  iconKey?: string
   href?: string
   icon?: {
     asset?: {
@@ -41,7 +39,7 @@ function toSkill(skill: SanitySkill): Skill {
     tooltip: skill.tooltip,
     image: iconUrl ? (
       <img src={iconUrl} alt={skill.subtitle || skill.title || ''} className="h-4 w-4" />
-    ) : getSkillIcon(skill.iconKey),
+    ) : undefined,
     href: skill.href || '#',
   }
 }
