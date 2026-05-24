@@ -3,13 +3,16 @@ import * as ProgressPrimitive from "@radix-ui/react-progress"
 
 import { cn } from "@/lib/utils"
 
-const getRandomVibrantColor = () => {
-  let colors = [256, 256, 0, 0]
-  colors.sort(() => Math.random() - 0.5);
-  return { 
-    start: `rgb(${colors[0]}, ${colors[1]}, ${colors[2]})`, 
-    end: `rgb(${colors[1]}, ${colors[2]}, ${colors[3]})`, 
-  };
+const colorPairs = [
+  {start: "rgb(256, 256, 0)", end: "rgb(256, 0, 0)"},
+  {start: "rgb(256, 0, 256)", end: "rgb(0, 256, 0)"},
+  {start: "rgb(0, 256, 256)", end: "rgb(256, 0, 256)"},
+  {start: "rgb(256, 128, 0)", end: "rgb(0, 128, 256)"},
+]
+
+const getStableVibrantColor = (label: string) => {
+  const hash = Array.from(label).reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  return colorPairs[hash % colorPairs.length]
 };
 
 const Progress = React.forwardRef<
@@ -18,7 +21,7 @@ const Progress = React.forwardRef<
 >(({ className, value, "aria-label": ariaLabel, ...props }, ref) => {
   const labelId = React.useId();
   const label = ariaLabel ?? "Progress";
-  const { start: colorStart, end: colorEnd } = getRandomVibrantColor();
+  const { start: colorStart, end: colorEnd } = getStableVibrantColor(label);
   
   return (
     <>

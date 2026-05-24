@@ -26,6 +26,8 @@
 
       --inlay: 222.2 84% 4.9%;
       --inlay-secondary: 222.2 84% 10%;;
+      --circuit: 0 0% 86%;
+      --circuit-secondary: 0 0% 78%;
 
       --muted: 210 40% 96.1%;
       --muted-foreground: 215.4 16.3% 46.9%;
@@ -64,8 +66,10 @@
       --secondary: 217.2 32.6% 17.5%;
       --secondary-foreground: 210 40% 98%;
 
-      --inlay: red;
-      --inlay-secondary: red;
+      --inlay: 222.2 0% 16%;
+      --inlay-secondary: 222.2 0% 12%;
+      --circuit: 222.2 0% 20%;
+      --circuit-secondary: 222.2 0% 24%;
 
       --muted: 217.2 32.6% 17.5%;
       --muted-foreground: 215 10.2% 65.1%;

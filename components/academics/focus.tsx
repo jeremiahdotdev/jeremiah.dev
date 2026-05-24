@@ -1,5 +1,4 @@
 import React, { FC, memo, useMemo } from "react"
-import { ComponentOf } from "../utility/componentOf"
 import { Focus as FocusType} from "@/types/focus"
 import CardBase from "../shared/card-base"
 
@@ -20,7 +19,7 @@ const Focus: FC<FocusProps> = ({ focus, gpaLabel }: FocusProps) => {
                 <span className="text-xs font-medium text-muted-foreground">{gpaLabel} {focus.gpa}</span>
             </div>
             <div className="mt-3 border-l-2 border-primary/20 pl-3 text-sm leading-5 text-muted-foreground md:pl-4 md:leading-6 [&_p+_p]:mt-3">
-                <ComponentOf jsx={focus.description}/>
+                {focus.description}
             </div>
         </article>
         </CardBase>

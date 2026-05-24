@@ -63,6 +63,10 @@ const config = {
           DEFAULT: "hsl(var(--inlay))",
           secondary: "hsl(var(--inlay-secondary))",
         },
+        circuit: {
+          DEFAULT: "hsl(var(--circuit))",
+          secondary: "hsl(var(--circuit-secondary))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

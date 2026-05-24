@@ -17,7 +17,7 @@ interface ProjectDashboardProps {
 const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashboardProps) => {
     const $t = useDictionary();
     const [selectedProject, setSelectedProject] = useState<Project>()
-    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>()
+    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
 
     const selectProject = useCallback((project: Project)=>{
         setIsDrawerOpen(true)

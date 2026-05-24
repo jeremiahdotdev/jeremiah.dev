@@ -2,7 +2,6 @@
 
 import { Job } from "@/types/job"
 import { FC, memo } from "react"
-import { ComponentOf } from "../utility/componentOf"
 import CardBase from "../shared/card-base"
 
 interface RoleCardProps {
@@ -24,7 +23,7 @@ const RoleCard: FC<RoleCardProps> = ({role}: RoleCardProps) => (
                 </span>
             </div>
             <div className="mt-3 border-l-2 border-primary/20 pl-3 text-sm leading-5 text-muted-foreground md:pl-4 md:leading-6 [&_ul]:ml-4 [&_ul]:list-disc [&_ul]:space-y-1 [&_li]:pl-1">
-                <ComponentOf jsx={role.description}/>
+                {role.description}
             </div>
         </article>
     </CardBase>

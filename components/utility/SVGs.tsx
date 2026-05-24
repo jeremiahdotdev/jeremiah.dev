@@ -384,7 +384,7 @@ export const AssociationForComputingMachinery = () => {
     )
 };
 
-export const CircuitBorder = ({color}: { color?: string }) => {
+export const CircuitBorder = ({color = "currentColor"}: { color?: string }) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 900 900" width={200} height={200}>
         <g transform="matrix(.000628 1 1-.000628-1487.959962 172.88481)">
@@ -479,7 +479,7 @@ export const CircuitBorder = ({color}: { color?: string }) => {
     )
 };
 
-export const CircuitBorder2 = ({color}: { color?: string }) => {
+export const CircuitBorder2 = ({color = "currentColor"}: { color?: string }) => {
 
     return (
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" id="eB0dfeK2LoW1" viewBox="0 0 900 900"width={200} height={200}>

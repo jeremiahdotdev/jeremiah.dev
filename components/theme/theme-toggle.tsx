@@ -12,7 +12,7 @@ interface ThemeToggleProps {
 
 const ThemeToggle: FC<ThemeToggleProps> = ({className}: ThemeToggleProps) => {
   const { setTheme, theme } = useTheme();
-  const [isPressed, setIsPressed] = useState<boolean>()
+  const [isPressed, setIsPressed] = useState<boolean>(false)
   const $t = useDictionary();
 
   useEffect(() => {

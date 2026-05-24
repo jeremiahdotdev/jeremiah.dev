@@ -1,8 +1,7 @@
 "use client"
 import { CircuitBorder, CircuitBorder2 } from "@/components/utility/SVGs";
 import { PageSectionVariant } from "@/types/page";
-import { useTheme } from "next-themes";
-import { memo, useMemo, FC, ReactNode, useState, useEffect } from "react"
+import { memo, useMemo, FC, ReactNode } from "react"
 
 export interface PageSectionProps {
     children?: ReactNode | ReactNode[]
@@ -13,16 +12,6 @@ export interface PageSectionProps {
 }
 
 const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, rotate}: PageSectionProps) => {
-    const { theme } = useTheme()
-    const [colorState, setColorState] = useState<string>()
-    const [rotationState, setRotationState] = useState<boolean>()
-    const currentYear = new Date().getFullYear();
-
-    useEffect(()=>{ 
-        setColorState(theme === 'light' ? "#dcdcdc" : "#2A2A2A" )
-        setRotationState(rotate)
-    }, [theme, rotate])
-
     const getCSSForVariant = (variant: PageSectionVariant) => {
         switch(variant) {
             case PageSectionVariant.Primary:
@@ -37,9 +26,9 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, r
     const getBorderCSSForVariant = (variant: PageSectionVariant) => {
         switch(variant) {
             case PageSectionVariant.Primary:
-                return "color-background"
+                return "text-circuit"
             case PageSectionVariant.Secondary:
-                return "color-inlay-secondary"
+                return "text-circuit-secondary"
             case PageSectionVariant.Footer:
                 return "border-black/10"
         }
@@ -51,18 +40,18 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, r
 
         return (
             <div className="">
-                <div className={`${baseCSS} ${borderCSS} top-0 left-0 ${rotationState ? "-rotate-180" : "rotate-90"}`}>
-                    <CircuitBorder color={colorState}/>
+                <div className={`${baseCSS} ${borderCSS} top-0 left-0 ${rotate ? "-rotate-180" : "rotate-90"}`}>
+                    <CircuitBorder/>
                 </div>
-                <div className={`${baseCSS} ${borderCSS} bottom-0 left-0 ${rotationState ? "rotate-90" : ""}`}>
-                    <CircuitBorder2 color={colorState}/>
+                <div className={`${baseCSS} ${borderCSS} bottom-0 left-0 ${rotate ? "rotate-90" : ""}`}>
+                    <CircuitBorder2/>
                 </div>
-                <div className={`${baseCSS} ${borderCSS} bottom-0 right-0 ${rotationState ? "" : "-rotate-90"}`}>
-                    <CircuitBorder color={colorState}/>
+                <div className={`${baseCSS} ${borderCSS} bottom-0 right-0 ${rotate ? "" : "-rotate-90"}`}>
+                    <CircuitBorder/>
                 </div>
             </div>
         )
-    }, [variant, colorState, rotationState]);
+    }, [variant, rotate]);
 
     const section = useMemo(() => (
         <section id={id} className={`relative w-full flex flex-col h-full min-h-screen ${getCSSForVariant(variant)}`}>
