@@ -45,7 +45,7 @@ export default function RecaptchaProvider({ children }: RecaptchaProviderProps) 
           scriptProps={{
             async: true,
             defer: true,
-            appendTo: "body",
+            appendTo: "head",
           }}
         >
           {children}
