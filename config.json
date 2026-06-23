@@ -7,8 +7,8 @@
     "captcha": "https://recaptchaenterprise.googleapis.com/v1/projects/jeremiah-dev/assessments",
     "github": {
         "thumbnailName": "thumbnail.png",
-        "org": "anchoredapplications",
+        "org": "jeremiahdotdev",
         "api": "https://api.github.com",
-        "repos": "/orgs/anchoredapplications/repos"
+        "repos": "/orgs/jeremiahdotdev/repos"
     }
 }
