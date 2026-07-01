@@ -23,7 +23,7 @@ interface ProjectCardProps {
 const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCardProps) => {
     const $t = useDictionary();
     const badges = project.topics?.map(el =>({ subtitle: el}))
-    const linkStyle = "items-center gap-1 text-sm font-tight font-serif text-blue-800 dark:text-blue-200"
+    const linkStyle = "text-sm font-tight font-serif text-blue-800 dark:text-blue-200"
 
     const onSelect = useCallback(()=>{
         handleClick(project)
@@ -104,7 +104,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
             {languages && (
                 <div className="rounded-b-xl border-t border-border/60 bg-card p-4 0">
                     <span className="flex items-center gap-2 mb-2 justify-between">
-                        <TypographySmall variant="label" className="mb-3">{$t.projects.repository}</TypographySmall>
+                        <TypographySmall variant="label">{$t.projects.repository}</TypographySmall>
                         {link}
                     </span>
                     <div className="w-full flex flex-col gap-2">
