@@ -11,7 +11,7 @@ export default function Commendation({ commendation }: CommendationProps) {
             <span className="flex aspect-square w-10 shrink-0 items-center justify-center [&_svg]:h-10 [&_svg]:w-10">
                 {commendation.image}
             </span>
-            <span className="flex w-fullflex-col gap-1">
+            <span className="flex w-full flex-col gap-1">
                 <span className="flex w-full items-center gap-2 justify-between">
                     <span className="text-md font-bold leading-tight">{commendation.title}</span>
                     <span className="truncate text-xs font-semibold text-muted-foreground">({commendation.dates})</span>
