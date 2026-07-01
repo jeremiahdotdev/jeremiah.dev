@@ -5,5 +5,5 @@ interface MobileTabletOnlyProps {
 }
 
 export default function MobileTabletOnly({ children }: MobileTabletOnlyProps) {
-  return <div className="lg:hidden">{children}</div>
+  return <div className="relative lg:hidden">{children}</div>
 }

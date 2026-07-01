@@ -20,6 +20,12 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
 
     const selectProject = useCallback((project: Project)=>{
+        setIsDrawerOpen(false)
+        setSelectedProject(project)
+    }, [setSelectedProject, setIsDrawerOpen])
+    
+
+    const selectProjectMobile = useCallback((project: Project)=>{
         setIsDrawerOpen(true)
         setSelectedProject(project)
     }, [setSelectedProject, setIsDrawerOpen])
@@ -37,7 +43,7 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
             </div>
             <div className="min-h-0 w-full flex flex-1 flex-col lg:flex-row">
                 <div className="min-h-0 w-full flex-1 lg:hidden">
-                    <ProjectCardList orientation="horizontal" projects={projects} handleClick={selectProject} />
+                    <ProjectCardList orientation="horizontal" projects={projects} handleClick={selectProjectMobile} />
                 </div>
                 <div className="hidden h-full min-h-0 shrink-0 lg:flex lg:w-80 xl:w-96 2xl:w-96">
                     <ProjectCardList orientation="vertical" projects={projects} handleClick={selectProject} />
