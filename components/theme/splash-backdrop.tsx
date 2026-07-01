@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import styles from "./splash-backdrop.module.css"
 
 export default function SplashBackdrop() {
@@ -9,18 +9,20 @@ export default function SplashBackdrop() {
   const [darkLoaded, setDarkLoaded] = useState(false)
 
   const dir = "/flat"
-  const darkSrc = "/splash-dark-mud"
-  const lightSrc = "/splash-light"
-  const mainExt = ".png"
-  const loadingExt = ".svg"
+  const darkSrc = "/splash-dark.png"
+  const lightSrc = "/splash-light.png"
+
+  const Placeholder = useMemo(() => (
+    <div className={styles.placeholder} />
+  ), [])
 
   return (
     <div aria-hidden="true" className={styles.backdrop}>
       <div className={styles.layer} data-theme="light">
-        <img className={`${styles.asset} ${styles.svg}`} src={`${dir}${lightSrc}${loadingExt}`} alt="" />
+        {!lightLoaded && Placeholder}
         <Image
           className={`${styles.asset} ${styles.image} ${lightLoaded ? styles.imageLoaded : ""}`}
-          src={`${dir}${lightSrc}${mainExt}`}
+          src={`${dir}${lightSrc}`}
           alt=""
           fill
           sizes="100vw"
@@ -28,12 +30,11 @@ export default function SplashBackdrop() {
           onLoad={() => setLightLoaded(true)}
         />
       </div>
-
       <div className={styles.layer} data-theme="dark">
-        <img className={`${styles.asset} ${styles.svg}`} src={`${dir}${darkSrc}${loadingExt}`} alt="" />
+        {!darkLoaded && Placeholder}
         <Image
           className={`${styles.asset} ${styles.image} ${darkLoaded ? styles.imageLoaded : ""}`}
-          src={`${dir}${darkSrc}${mainExt}`}
+          src={`${dir}${darkSrc}`}
           alt=""
           fill
           sizes="100vw"

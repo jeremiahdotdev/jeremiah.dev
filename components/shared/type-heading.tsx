@@ -1,5 +1,5 @@
 "use client"
-import { FC, useEffect, useState, memo, useMemo } from "react";
+import { FC, useEffect, useState, memo, useMemo, useRef } from "react";
 
 interface ThemeToggleProps {
     className?: string,
@@ -11,32 +11,40 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
     // the duration in milliseconds
     const duration = 5000;
 
-    // the string that is shared between all the values in the stack
-    let sharedText = ""
-    const minLength = Math.min(...stack.map(i => i.length))
-    for (let x = 0; x < minLength; x++) {
-        const stringToCheck = stack[0].substring(0, x)
-        if (!stack.some(val => {
-            return val.substring(0, x) !== stack[0].substring(0, x)
-        })) {
-            sharedText = stringToCheck.substring(0, stringToCheck.length-1)
+    const { sharedText, newStack } = useMemo(() => {
+        let nextSharedText = ""
+        const minLength = Math.min(...stack.map(i => i.length))
+
+        for (let x = 0; x < minLength; x++) {
+            const stringToCheck = stack[0].substring(0, x)
+            if (!stack.some(val => {
+                return val.substring(0, x) !== stack[0].substring(0, x)
+            })) {
+                nextSharedText = stringToCheck.substring(0, stringToCheck.length-1)
+            }
         }
-    }
-    // the stack without the shared string
-    const newStack = stack.map(val => val.replace(sharedText, ''));
+
+        return {
+            sharedText: nextSharedText,
+            newStack: stack.map(val => val.replace(nextSharedText, '')),
+        }
+    }, [stack])
+
     const [title, setTitle] = useState<string>("")
 
     const [heading, setHeading] = useState<string>("")
     const [complete, setComplete] = useState<boolean>(false)
+    const timeoutIds = useRef<number[]>([])
     
     const typeAhead = (index: number, length: number) => ((index % 2 === 0) || (index === length - 1)) ? "" : "|"
 
     const typeWord = (word: string, action=setHeading) => {
         const wordArray = word.split("");
         wordArray.forEach((character, index) => {
-            setTimeout(() => { 
+            const timeoutId = window.setTimeout(() => { 
                 action(`${wordArray.slice(0, index+1).join("")}${typeAhead(index, wordArray.length)}`)
             }, index * 150)
+            timeoutIds.current.push(timeoutId)
             
             // When you reach the end of the stack, cease typing. 
             if (index === wordArray.length - 1) return;
@@ -46,9 +54,10 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
     const untypeWord = (word: string) => {
         const wordArray = word.split("");
         wordArray.forEach((character, index) => {
-            setTimeout(() => { 
+            const timeoutId = window.setTimeout(() => { 
                 setHeading(`${wordArray.slice(0, wordArray.length-index-1).join("")}${typeAhead(index, wordArray.length)}`)
             }, index * 150 + (duration/2))
+            timeoutIds.current.push(timeoutId)
         })    
     }
 
@@ -56,20 +65,29 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
         if (complete) return
 
         newStack.forEach((sentence, index) => {
-            setTimeout(() => { 
+            const timeoutId = window.setTimeout(() => { 
                 if (index < newStack.length) typeWord(sentence)
                 if (index < newStack.length) untypeWord(sentence)
             }, index * duration)
+            timeoutIds.current.push(timeoutId)
 
             // When you reach the end of the stack, cease typing. 
             if (index === newStack.length - 1) return setComplete(true)
         })
-        setTimeout(() => { 
+        const timeoutId = window.setTimeout(() => { 
             typeWord(end, setTitle)
         }, newStack.length * duration)
+        timeoutIds.current.push(timeoutId)
     }
 
-    useEffect(typeEffect)
+    useEffect(() => {
+        typeEffect()
+
+        return () => {
+            timeoutIds.current.forEach((timeoutId) => window.clearTimeout(timeoutId))
+            timeoutIds.current = []
+        }
+    }, [end, complete, newStack])
 
     const typeHeading = useMemo(() => (
         <span className={`font-serif flex items-center justify-center ${className}`}>
