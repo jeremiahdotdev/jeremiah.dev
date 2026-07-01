@@ -1,4 +1,4 @@
-import DeferredContactSection from "@/components/contact/deferred-contact-section";
+import ContactSectionClient from "@/components/contact/contact-section-client";
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
 import PageSectionHeader from "@/components/page/page-section-header";
@@ -16,7 +16,7 @@ export default function Contact({ dictionary }: ContactProps) {
     <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary} showBorder={true} rotate={true}>
       <PageSectionHeader>{$t.contact.heading}</PageSectionHeader>
       <PageSectionContent>
-        <DeferredContactSection />
+        <ContactSectionClient />
       </PageSectionContent>
     </PageSection>
   );

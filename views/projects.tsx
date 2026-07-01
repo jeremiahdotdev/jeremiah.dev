@@ -1,4 +1,4 @@
-import DeferredProjectDashboard from "@/components/projects/deferred-project-dashboard";
+import ProjectDashboard from "@/components/projects/project-dashboard";
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
 import PageSectionHeader from "@/components/page/page-section-header";
@@ -24,7 +24,7 @@ export default async function Projects({ dictionary }: ProjectsProps) {
       <PageSectionHeader>{$t.projects.heading}</PageSectionHeader>
       <PageSectionContent>
         <div className="w-full p-4 lg:flex lg:min-h-0 lg:flex-1">
-          <DeferredProjectDashboard projects={projects}/>
+          <ProjectDashboard projects={projects}/>
         </div>
       </PageSectionContent>
     </PageSection>

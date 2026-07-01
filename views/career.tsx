@@ -1,6 +1,6 @@
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
-import DeferredTimeline from "@/components/career/deferred-timeline";
+import Timeline from "@/components/career/timeline";
 import { CareerEvent } from "@/types/job";
 import PageSectionContent from "@/components/page/page-section-content";
 import PageSectionHeader from "@/components/page/page-section-header";
@@ -24,7 +24,7 @@ export default async function Career({ dictionary }: CareerProps) {
     <PageSection id={$t.career.id} variant={PageSectionVariant.Secondary}>
       <PageSectionHeader>{$t.career.heading}</PageSectionHeader>
       <PageSectionContent>
-        <DeferredTimeline events={jobs} />
+        <Timeline events={jobs} />
       </PageSectionContent>
     </PageSection>
   );
