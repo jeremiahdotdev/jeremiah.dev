@@ -17,32 +17,9 @@
 }
 
 .layer[data-theme="light"] .placeholder {
-  background:
-    radial-gradient(circle at 16% 18%, hsl(210 4% 34% / 0.48) 0 22px, transparent 24px),
-    radial-gradient(circle at 48% 44%, hsl(210 4% 30% / 0.44) 0 18px, transparent 20px),
-    radial-gradient(circle at 84% 28%, hsl(210 4% 32% / 0.4) 0 26px, transparent 28px),
-    radial-gradient(circle at 68% 74%, hsl(210 4% 28% / 0.42) 0 20px, transparent 22px),
-    linear-gradient(135deg, hsl(210 10% 74% / 0.9), hsl(210 5% 42% / 0.34) 42%, hsl(210 10% 80% / 0.92)),
-    repeating-linear-gradient(
-      152deg,
-      hsl(210 4% 24% / 0.48) 0 2px,
-      transparent 2px 14px,
-      hsl(210 4% 32% / 0.24) 14px 16px,
-      transparent 16px 30px
-    ),
-    repeating-linear-gradient(
-      28deg,
-      hsl(210 8% 92% / 0) 0 18px,
-      hsl(210 4% 26% / 0.28) 18px 20px,
-      hsl(210 8% 92% / 0) 20px 42px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      hsl(210 4% 22% / 0.22) 0 1px,
-      transparent 1px 10px
-    );
-  filter: blur(10px) saturate(0.78);
-  opacity: 0.96;
+  background: hsl(210 6% 68% / 0.68);
+  filter: blur(18px) saturate(0.85);
+  opacity: 0.78;
 }
 
 .layer[data-theme="dark"] {
@@ -59,119 +36,16 @@
   object-position: center 40%;
 }
 
-.placeholder {
-  position: absolute;
-  inset: -8%;
-  background:
-    radial-gradient(circle at 16% 18%, hsl(var(--foreground) / 0.08) 0 22px, transparent 24px),
-    radial-gradient(circle at 48% 44%, hsl(var(--foreground) / 0.07) 0 18px, transparent 20px),
-    radial-gradient(circle at 84% 28%, hsl(var(--foreground) / 0.06) 0 26px, transparent 28px),
-    radial-gradient(circle at 68% 74%, hsl(var(--foreground) / 0.07) 0 20px, transparent 22px),
-    linear-gradient(135deg, hsl(var(--background) / 0.7), hsl(var(--foreground) / 0.03) 42%, hsl(var(--background) / 0.78)),
-    repeating-linear-gradient(
-      152deg,
-      hsl(var(--foreground) / 0.08) 0 2px,
-      transparent 2px 14px,
-      hsl(var(--foreground) / 0.045) 14px 16px,
-      transparent 16px 30px
-    ),
-    repeating-linear-gradient(
-      28deg,
-      hsl(var(--background) / 0) 0 18px,
-      hsl(var(--foreground) / 0.035) 18px 20px,
-      hsl(var(--background) / 0) 20px 42px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      hsl(var(--foreground) / 0.03) 0 1px,
-      transparent 1px 10px
-    );
-  background-size:
-    220px 220px,
-    260px 260px,
-    240px 240px,
-    280px 280px,
-    100% 100%,
-    180px 180px,
-    320px 320px,
-    120px 120px;
-  filter: blur(18px) saturate(0.9);
-  opacity: 0.62;
-  transform: scale(1.04);
-  animation:
-    pulsePlaceholder 2600ms ease-in-out infinite,
-    driftPlaceholder 7000ms linear infinite;
-}
-
 .image {
   opacity: 0;
-  filter: blur(16px);
-  transform: scale(1.03);
-  transition:
-    opacity 1200ms ease-out,
-    filter 1200ms ease-out,
-    transform 1200ms ease-out;
+  transition: opacity 1200ms ease-out;
 }
 
 .imageLoaded {
   opacity: 1;
-  filter: blur(0);
-  transform: scale(1);
 }
 
 .section {
   background-color: hsl(var(--background) / var(--page-section-splash-overlay));
   transition: background-color 1200ms ease-out;
-}
-
-@keyframes pulsePlaceholder {
-  0%,
-  100% {
-    opacity: 0.48;
-    transform: scale(1.02) translate3d(0, 0, 0);
-    filter: blur(22px) saturate(0.88);
-  }
-
-  50% {
-    opacity: 0.7;
-    transform: scale(1.05) translate3d(0, -0.6%, 0);
-    filter: blur(12px) saturate(1);
-  }
-}
-
-@keyframes driftPlaceholder {
-  0% {
-    background-position:
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0;
-  }
-
-  50% {
-    background-position:
-      8px -4px,
-      -6px 8px,
-      10px -6px,
-      -8px 10px,
-      0 0,
-      18px 12px,
-      -12px 18px,
-      0 0;
-  }
-
-  100% {
-    background-position:
-      16px -8px,
-      -12px 16px,
-      20px -12px,
-      -16px 20px,
-      0 0,
-      36px 24px,
-      -24px 36px,
-      0 0;
-  }
 }

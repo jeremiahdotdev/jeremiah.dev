@@ -51,7 +51,7 @@
     .dark {
       --page-section-splash-overlay: 0.62;
       --page-section-splash-light-opacity: 0;
-      --page-section-splash-dark-opacity: 0.6;
+      --page-section-splash-dark-opacity: 0.5;
       --background: 210 5% 4%;
       --background-secondary: 210 6% 7%;
       --foreground: 0 0% 94%;
