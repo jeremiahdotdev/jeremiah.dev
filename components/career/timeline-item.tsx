@@ -98,7 +98,7 @@ const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
                                     : "text-primary/50 hover:text-primary"
                             }`}
                         >
-                            <span className="h-2.5 w-2.5 rounded-full border border-current bg-current" />
+                            <span className="h-2.5 w-2.5 rounded-full border border-border bg-current" />
                         </button>
                     ))}
                 </div>
@@ -127,7 +127,7 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, childre
             className="group relative grid cursor-pointer grid-cols-1 gap-0 md:grid-cols-[4rem_minmax(0,1fr)] md:gap-6"
         >
             <div className="hidden justify-center md:flex">
-                <Avatar className="relative z-10 h-12 w-12 rounded-lg border bg-card p-2 shadow-md transition-colors group-hover:bg-muted md:h-16 md:w-16">
+                <Avatar className="relative z-10 h-12 w-12 rounded-lg border border-border bg-card p-2 shadow-md transition-colors group-hover:bg-muted md:h-16 md:w-16">
                     <AvatarImage src={event.icon?.src} alt={event.icon?.alt || event.employer} className="object-contain" />
                     <AvatarFallback className="rounded-md bg-transparent text-xs font-bold text-primary md:text-sm">
                         {getOrganizationMark(event.employer)}

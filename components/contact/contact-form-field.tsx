@@ -27,7 +27,7 @@ const ContactFormField: FC<ContactFormFieldProps> = ({ type, name, label, descri
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem  className="w-full md:w-1/2">
+        <FormItem  className="w-full">
           <FormLabel>{label}</FormLabel>
           <FormControl>
             {type === "textarea" 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import SplashBackdrop from "@/components/theme/splash-backdrop";
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { ContentProvider } from "@/components/content/content-provider";
 import { getSiteSettings } from "@/sanity/lib/getSiteSettings";
@@ -33,11 +34,13 @@ export default async function RootLayout({ children }:  Readonly<{
             attribute="class"
             defaultTheme="system"
             enableSystem
-            disableTransitionOnChange
           >
-            <ContentProvider dictionary={settings.dictionary}>
-              {children}
-            </ContentProvider>
+            <SplashBackdrop />
+            <div className="relative z-10">
+              <ContentProvider dictionary={settings.dictionary}>
+                {children}
+              </ContentProvider>
+            </div>
           </ThemeProvider>
         </body>
       </html>

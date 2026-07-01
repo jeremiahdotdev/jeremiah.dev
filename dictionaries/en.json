@@ -52,7 +52,7 @@
         "placeholder": "P R O J E C T",
         "viewDemo": "VIEW LIVE DEMO",
         "closeDemo": "Close",
-        "languages": "languages",
+        "repository": "repository",
         "github": {
             "link": "Github",
             "public": "View source on Github.",
@@ -95,7 +95,7 @@
         "tooManyRequests": "Too many requests. Try again later."    
     },
     "footer": {
-        "copyright": "Jeremiah D. Gage. All Rights Reserved.",
+        "copyright": "jeremiah.dev",
         "captcha": {
             "url": "https://www.google.com/recaptcha",
             "label": "This site uses",

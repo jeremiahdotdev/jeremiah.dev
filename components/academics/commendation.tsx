@@ -12,9 +12,11 @@ export default function Commendation({ commendation }: CommendationProps) {
                 {commendation.image}
             </span>
             <span className="flex min-w-0 flex-col gap-1">
-                <span className="text-sm font-semibold leading-tight">{commendation.title}</span>
-                <span className="truncate text-xs text-muted-foreground">{commendation.subtitle}</span>
-                <span className="text-xs font-medium text-muted-foreground">{commendation.dates}</span>
+                <span className="flex w-full items-center gap-2 justify-between">
+                    <span className="text-md font-bold leading-tight">{commendation.title}</span>
+                    <span className="truncate text-xs font-semibold text-muted-foreground">({commendation.dates})</span>
+                </span>
+                <span className="truncate text-sm text-muted-foreground">{commendation.subtitle}</span>
             </span>
         </>
     )

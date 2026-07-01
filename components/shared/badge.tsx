@@ -14,7 +14,7 @@ interface BadgeProps {
 
 export default function Badge({ badge }: BadgeProps) {
     return (
-        <Root variant="outline" className="flex items-center justify-center gap-1 border-foreground/20 bg-card p-1 shadow-sm shadow-foreground/20">
+        <Root variant="outline" className="flex items-center justify-center gap-1 border-border/60 bg-card p-1 shadow-sm shadow-foreground/10">
             {badge.image && (
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center [&_svg]:h-4 [&_svg]:w-4">
                     {badge.image}

@@ -27,7 +27,6 @@ export default async function Academics() {
             <AcademicSummaryCard academics={academics} institutionHref={$t.academics.cofo}/>
             <FocusList focuses={academics.focuses} gpaLabel={$t.academics.focus.gpaLabel}/>
             <div className="flex flex-col gap-3">
-              <hr></hr>
               <CommendationList commendations={academics.commendations || []} />
             </div>
           </div>

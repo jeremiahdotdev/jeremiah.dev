@@ -61,7 +61,7 @@ const Menu: FC<MenuProps> = () => {
         )
         
         return (
-            <nav className="flex flex-col gap-6 m-4 pt-8 border-t-2 dark:border-t">
+            <nav className="m-4 flex flex-col gap-6 border-t-2 border-border pt-8">
                 <>{ $t.navigation.map(mobileTabletOption) }</>
             </nav>
         )
@@ -74,7 +74,7 @@ const Menu: FC<MenuProps> = () => {
         return (
             <nav
                 aria-label={$t.menu.description}
-                className="fixed left-1/2 bottom-4 z-50 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/40 border-foreground/10 bg-background/90 px-2 py-1.5 shadow-sm shadow-foreground/10"
+                className="fixed left-1/2 bottom-4 z-50 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 shadow-sm shadow-foreground/10"
             >
                 {$t.navigation.map(desktopOption)}
             </nav>
@@ -87,7 +87,7 @@ const Menu: FC<MenuProps> = () => {
             <div className="fixed left-0 top-0" >
                 {MenuToggle}
             </div>
-            <SheetContent side={"left"} className="dark:border-border">
+            <SheetContent side={"left"}>
                 <SheetDescription className="sr-only">
                     {$t.menu.description}
                 </SheetDescription>

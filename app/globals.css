@@ -4,85 +4,91 @@
 
   @layer base {
     :root {
-      --background: 0 0% 100%;
-      --background-secondary: 0 3% 97%;
-      --foreground: 222.2 84% 4.9%;
+      --page-section-splash-overlay: 0.20;
+      --page-section-splash-light-opacity: 0.5;
+      --page-section-splash-dark-opacity: 0;
+      --background: 210 6% 99%;
+      --background-secondary: 210 7% 96%;
+      --foreground: 0 0% 12%;
 
-      --dashboard: 0 0% 95%;
-      --dashboard-header: 0 0% 90%;
-      --dashboard-foreground: 222.2 84% 4.9%;
+      --dashboard: 210 6% 97%;
+      --dashboard-header: 210 7% 93%;
+      --dashboard-foreground: 0 0% 12%;
 
       --card: 0 0% 100%;
-      --card-foreground: 222.2 84% 4.9%;
+      --card-foreground: 0 0% 12%;
 
       --popover: 0 0% 100%;
-      --popover-foreground: 222.2 84% 4.9%;
+      --popover-foreground: 0 0% 12%;
 
-      --primary: 222.2 47.4% 11.2%;
-      --primary-foreground: 210 40% 98%;
+      --primary: 0 0% 14%;
+      --primary-foreground: 0 0% 98%;
 
-      --secondary: 222.2 84% 4.9%;
-      --secondary-foreground: 222.2 47.4% 11.2%;
+      --secondary: 0 0% 90%;
+      --secondary-foreground: 0 0% 14%;
 
-      --inlay: 222.2 84% 4.9%;
-      --inlay-secondary: 222.2 84% 10%;;
-      --circuit: 0 0% 86%;
-      --circuit-secondary: 0 0% 78%;
+      --inlay: 0 0% 16%;
+      --inlay-secondary: 0 0% 22%;
+      --circuit: 0 0% 88%;
+      --circuit-secondary: 0 0% 80%;
 
-      --muted: 210 40% 96.1%;
-      --muted-foreground: 215.4 16.3% 46.9%;
+      --muted: 0 0% 95%;
+      --muted-foreground: 0 0% 34%;
 
-      --accent: 210 40% 96.1%;
-      --accent-foreground: 222.2 47.4% 11.2%;
+      --accent: 0 0% 94%;
+      --accent-foreground: 0 0% 14%;
 
       --destructive: 0 84.2% 60.2%;
       --destructive-foreground: 210 40% 98%;
 
-      --border: #4B5563; 
-      --input: 214.3 31.8% 91.4%;
-      --ring: 222.2 84% 4.9%;
+      --border: 0 0% 82%;
+      --input: 0 0% 96%;
+      --ring: 0 0% 20%;
 
       --radius: 0.5rem;
     }
 
     .dark {
-      --background: 222.2 0% 5%;
-      --background-secondary: 222.2 3% 8%;
-      --foreground: 210 40% 98%;
+      --page-section-splash-overlay: 0.62;
+      --page-section-splash-light-opacity: 0;
+      --page-section-splash-dark-opacity: 0.6;
+      --background: 210 5% 4%;
+      --background-secondary: 210 6% 7%;
+      --foreground: 0 0% 94%;
       
-      --dashboard: 222.2 0% 15%;
-      --dashboard-header: 222.2 0% 10%;
-      --dashboard-foreground: 210 40% 90%;
+      --dashboard: 210 5% 9%;
+      --dashboard-header: 210 6% 6%;
+      --dashboard-foreground: 0 0% 94%;
 
-      --card: 222.2 0% 10%;
-      --card-foreground: 210 40% 98%;
+      --card: 0 0% 8%;
+      --card-foreground: 0 0% 94%;
 
-      --popover: 222.2 0% 10%;
-      --popover-foreground: 210 40% 98%;
+      --popover: 0 0% 8%;
+      --popover-foreground: 0 0% 94%;
 
-      --primary: 210 40% 98%;
-      --primary-foreground: 222.2 47.4% 11.2%;
+      --primary: 0 0% 96%;
+      --primary-foreground: 0 0% 8%;
 
-      --secondary: 217.2 32.6% 17.5%;
-      --secondary-foreground: 210 40% 98%;
+      --secondary: 0 0% 14%;
+      --secondary-foreground: 0 0% 94%;
 
-      --inlay: 222.2 0% 16%;
-      --inlay-secondary: 222.2 0% 12%;
-      --circuit: 222.2 0% 20%;
-      --circuit-secondary: 222.2 0% 24%;
+      --inlay: 0 0% 12%;
+      --inlay-secondary: 0 0% 9%;
+      --circuit: 0 0% 14%;
+      --circuit-secondary: 0 0% 18%;
 
-      --muted: 217.2 32.6% 17.5%;
-      --muted-foreground: 215 10.2% 65.1%;
+      --muted: 0 0% 12%;
+      --muted-foreground: 0 0% 70%;
 
-      --accent: 217.2 32.6% 17.5%;
-      --accent-foreground: 210 40% 98%;
+      --accent: 0 0% 13%;
+      --accent-foreground: 0 0% 94%;
 
       --destructive: 0 62.8% 30.6%;
       --destructive-foreground: 210 40% 98%;
 
-      --border: #1F2937; 
-      --input: 217.2 32.6% 17.5%;
-      --ring: 212.7 26.8% 83.9%;
+      --border: 0 0% 20%;
+      --input: 0 0% 10%;
+      --ring: 0 0% 30%;
     }
   }
 
@@ -97,4 +103,13 @@
 
 .grecaptcha-badge {
   visibility: hidden;
+}
+
+body,
+body *,
+body *::before,
+body *::after {
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, box-shadow;
+  transition-duration: 1200ms;
+  transition-timing-function: ease-out;
 }

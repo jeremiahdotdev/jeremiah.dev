@@ -11,7 +11,7 @@ export default async function Footer() {
 
   return (
     <PageSection id="footer" variant={PageSectionVariant.Footer}>
-      <div className='p-2 flex flex-wrap gap-1 items-center justify-between w-full'>
+      <div className='p-2 flex flex-col gap-1 items-center justify-between w-full sm:flex-row'>
         <TypographyMuted variant="footer">
           &copy; {currentYear} {$t.footer.copyright}
         </TypographyMuted>

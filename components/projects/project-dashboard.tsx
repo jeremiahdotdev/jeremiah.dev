@@ -26,8 +26,8 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
     
     // Memoized component
     const content = useMemo(() => (
-        <div className="h-page-content max-h-page-content w-full flex flex-1 flex-col overflow-hidden rounded-md bg-dashboard shadow-inner border dark:border-border">
-            <div className="min-h-14 p-4 flex items-center justify-between gap-4 bg-dashboard-header border-b border-dashboard-header shadow-xl dark:border-border">
+        <div className="h-page-content max-h-page-content w-full flex flex-1 flex-col overflow-hidden rounded-md border border-border bg-dashboard shadow-inner">
+            <div className="min-h-14 p-4 flex items-center justify-between gap-4 border-b border-border bg-dashboard-header shadow-xl">
                 <TypographyP variant="dashboard">
                     ({$t.projects.instruction})
                 </TypographyP>

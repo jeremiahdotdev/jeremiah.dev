@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ContactFormField from "./contact-form-field";
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { TypographyMuted } from "../ui/typography";
+import { Card } from "../ui/card";
 
 export function ContactForm() {
   const [timesUsed, setTimesUsed] = useState<number>(-1);
@@ -65,18 +66,20 @@ export function ContactForm() {
   );
       
   return (
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-3/4 flex flex-col items-center justify-center gap-2">
-          <ContactFormField name="email" type="email" label={$t.contact.email.label} placeholder={$t.contact.email.placeholder} description={$t.contact.email.description} />
-          <ContactFormField name="subject" type="text" label={$t.contact.subject.label} placeholder={$t.contact.subject.placeholder} description={$t.contact.subject.description} />
-          <ContactFormField name="body" type="textarea" label={$t.contact.body.label} placeholder={$t.contact.body.placeholder} description={$t.contact.body.description} />
-          <Button disabled={isDisabled} type="submit" className="w-full md:w-1/2">
-            {((timesUsed < attemptThreshold) || !isDisabled) ? $t.contact.button.label : $t.contact.button.pastAttemptThreshold}
-          </Button>
-          <TypographyMuted variant="status" tone={responseFailed ? "destructive" : "default"} className="flex w-full md:w-1/2 justify-end items-center">
-            {responseMessage}
-          </TypographyMuted>
-        </form>
-      </FormProvider>
+      <Card className="w-full p-8 flex flex-col items-center justify-center gap-2 max-w-screen-sm mx-4">
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col w-full gap-2">
+            <ContactFormField name="email" type="email" label={$t.contact.email.label} placeholder={$t.contact.email.placeholder} description={$t.contact.email.description} />
+            <ContactFormField name="subject" type="text" label={$t.contact.subject.label} placeholder={$t.contact.subject.placeholder} description={$t.contact.subject.description} />
+            <ContactFormField name="body" type="textarea" label={$t.contact.body.label} placeholder={$t.contact.body.placeholder} description={$t.contact.body.description} />
+            <Button disabled={isDisabled} type="submit">
+              {((timesUsed < attemptThreshold) || !isDisabled) ? $t.contact.button.label : $t.contact.button.pastAttemptThreshold}
+            </Button>
+            <TypographyMuted variant="status" tone={responseFailed ? "destructive" : "default"} className="flex justify-end items-center">
+              {responseMessage}
+            </TypographyMuted>
+          </form>
+        </FormProvider>
+      </Card>
   );
 }

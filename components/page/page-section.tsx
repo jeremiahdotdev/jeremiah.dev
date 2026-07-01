@@ -1,7 +1,7 @@
 "use client"
-import { CircuitBorder, CircuitBorder2 } from "@/components/utility/SVGs";
 import { PageSectionVariant } from "@/types/page";
 import { memo, useMemo, FC, ReactNode } from "react"
+import splashStyles from "@/components/theme/splash-backdrop.module.css";
 
 export interface PageSectionProps {
     children?: ReactNode | ReactNode[]
@@ -12,6 +12,8 @@ export interface PageSectionProps {
 }
 
 const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, rotate}: PageSectionProps) => {
+    const hasSplashBackdrop = variant === PageSectionVariant.Primary
+
     const getCSSForVariant = (variant: PageSectionVariant) => {
         switch(variant) {
             case PageSectionVariant.Primary:
@@ -30,37 +32,17 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, r
             case PageSectionVariant.Secondary:
                 return "text-circuit-secondary"
             case PageSectionVariant.Footer:
-                return "border-black/10"
+                return "border-border/60"
         }
     }
 
-    const border = useMemo(() => {
-        const baseCSS = 'absolute z-0'
-        const borderCSS = getBorderCSSForVariant(variant)
-
-        return (
-            <div className="">
-                <div className={`${baseCSS} ${borderCSS} top-0 left-0 ${rotate ? "-rotate-180" : "rotate-90"}`}>
-                    <CircuitBorder/>
-                </div>
-                <div className={`${baseCSS} ${borderCSS} bottom-0 left-0 ${rotate ? "rotate-90" : ""}`}>
-                    <CircuitBorder2/>
-                </div>
-                <div className={`${baseCSS} ${borderCSS} bottom-0 right-0 ${rotate ? "" : "-rotate-90"}`}>
-                    <CircuitBorder/>
-                </div>
-            </div>
-        )
-    }, [variant, rotate]);
-
     const section = useMemo(() => (
-        <section id={id} className={`relative w-full flex flex-col h-full min-h-screen ${getCSSForVariant(variant)}`}>
-            { showBorder && border}
-            <div className="z-10 h-full w-full flex flex-col flex-grow">
+        <section id={id} className={`relative flex h-full min-h-screen w-full flex-col ${getCSSForVariant(variant)} ${hasSplashBackdrop ? splashStyles.section : "border-y border-border/60 shadow-lg"}`}>
+            <div className="z-20 h-full w-full flex flex-col flex-grow">
                 {children}
             </div>
         </section>
-    ), [id, showBorder, children, variant, border]);
+    ), [id, children, variant, hasSplashBackdrop]);
 
     const footer = useMemo(() => (
         <footer className={`py-2 border-t ${getBorderCSSForVariant(variant)} ${getCSSForVariant(variant)}`}>

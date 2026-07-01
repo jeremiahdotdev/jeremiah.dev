@@ -23,7 +23,7 @@ interface ProjectCardProps {
 const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCardProps) => {
     const $t = useDictionary();
     const badges = project.topics?.map(el =>({ subtitle: el}))
-    const linkStyle = "absolute right-3 top-3 z-10 flex min-h-11 items-center gap-1 text-sm font-tight font-serif text-blue-800 dark:text-blue-200"
+    const linkStyle = "items-center gap-1 text-sm font-tight font-serif text-blue-800 dark:text-blue-200"
 
     const onSelect = useCallback(()=>{
         handleClick(project)
@@ -73,7 +73,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
                 <Progress value={value} aria-label={`${project.name} ${key} usage`} className="h-1" />
             </div>
         )) : null
-    , [project]);
+    , [$t, project]);
 
     // Memoized component
     const content = useMemo(() => (
@@ -86,10 +86,9 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
             className="rounded-xl hover:cursor-pointer hover:shadow-outer h-full max-h-full w-full flex flex-col overflow-hidden relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
             <CardHeader className="min-h-64 px-5 pb-4 pt-5 lg:min-h-0">
-                {link}
                 <div className="flex min-h-44 w-full flex-col items-start rounded-md text-left">
                     <CardTitle className="w-full">
-                        <span className="flex min-w-0 max-w-full items-center gap-3 py-1 pr-20 tracking-tight font-mono">
+                        <span className="flex min-w-0 max-w-full items-center gap-3 py-1 tracking-tight font-mono">
                             <span className="shrink-0">
                                 <ProjectAvatar icon={project.icon}/>
                             </span>
@@ -103,8 +102,11 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCard
                 </div>
             </CardHeader>
             {languages && (
-                <div className="bg-card rounded-b-xl border-t p-4 0">
-                    <TypographySmall variant="label" className="mb-3">{$t.projects.languages}</TypographySmall>
+                <div className="rounded-b-xl border-t border-border/60 bg-card p-4 0">
+                    <span className="flex items-center gap-2 mb-2 justify-between">
+                        <TypographySmall variant="label" className="mb-3">{$t.projects.repository}</TypographySmall>
+                        {link}
+                    </span>
                     <div className="w-full flex flex-col gap-2">
                         {languages}
                     </div>

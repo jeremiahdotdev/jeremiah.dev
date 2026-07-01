@@ -66,7 +66,7 @@ export const siteSettings = defineType({
           {name: 'placeholder', title: 'Placeholder', type: 'string'},
           {name: 'viewDemo', title: 'View demo label', type: 'string'},
           {name: 'closeDemo', title: 'Close demo label', type: 'string'},
-          {name: 'languages', title: 'Languages label', type: 'string'},
+          {name: 'repository', title: 'Repository label', type: 'string'},
           {name: 'github', title: 'GitHub labels', type: 'object', fields: [
             {name: 'link', title: 'Link label', type: 'string'},
             {name: 'public', title: 'Public label', type: 'string'},
