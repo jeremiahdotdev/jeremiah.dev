@@ -9,7 +9,7 @@
   position: absolute;
   inset: 0;
   opacity: 0.12;
-  transition: opacity 2800ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 1200ms ease-out;
 }
 
 .layer[data-theme="light"] {
@@ -39,9 +39,9 @@
   filter: blur(16px);
   transform: scale(1.03);
   transition:
-    opacity 1800ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 1800ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1800ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 1200ms ease-out,
+    filter 1200ms ease-out,
+    transform 1200ms ease-out;
 }
 
 .imageLoaded {
@@ -52,5 +52,5 @@
 
 .section {
   background-color: hsl(var(--background) / var(--page-section-splash-overlay));
-  transition: background-color 2800ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 1200ms ease-out;
 }
