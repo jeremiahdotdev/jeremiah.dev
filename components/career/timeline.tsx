@@ -1,3 +1,5 @@
+"use client"
+
 import TimelineItem from "./timeline-item"
 import { CareerEvent, Job } from "@/types/job"
 import { Skill } from "@/types/skill"

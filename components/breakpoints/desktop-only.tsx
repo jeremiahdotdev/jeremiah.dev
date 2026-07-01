@@ -1,7 +1,9 @@
-import { memo } from "react"
-import {getBreakpointComponent} from "./base"
-import { AspectRatio } from "@/globals/aspect-ratio"
+import type { ReactNode } from "react"
 
-const DesktopOnly = getBreakpointComponent(AspectRatio.LG, AspectRatio.MAX)
+interface DesktopOnlyProps {
+  children: ReactNode
+}
 
-export default memo(DesktopOnly)
+export default function DesktopOnly({ children }: DesktopOnlyProps) {
+  return <div className="hidden lg:block">{children}</div>
+}

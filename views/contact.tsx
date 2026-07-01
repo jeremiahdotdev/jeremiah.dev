@@ -1,22 +1,22 @@
-"use client"
+import DeferredContactSection from "@/components/contact/deferred-contact-section";
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
 import PageSectionHeader from "@/components/page/page-section-header";
 import PageSectionContent from "@/components/page/page-section-content";
-import { ContactForm } from "@/components/contact/contact-form";
-import RecaptchaProvider from "@/components/contact/recaptcha-provider";
-import { useDictionary } from "@/components/content/content-provider";
+import type { Dictionary } from "@/types/dictionary";
 
-export default function Contact() {
-  const $t = useDictionary();
+interface ContactProps {
+  dictionary: Dictionary
+}
+
+export default function Contact({ dictionary }: ContactProps) {
+  const $t = dictionary;
 
   return (
     <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary} showBorder={true} rotate={true}>
       <PageSectionHeader>{$t.contact.heading}</PageSectionHeader>
       <PageSectionContent>
-        <RecaptchaProvider>
-          <ContactForm />
-        </RecaptchaProvider>
+        <DeferredContactSection />
       </PageSectionContent>
     </PageSection>
   );

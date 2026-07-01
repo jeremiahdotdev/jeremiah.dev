@@ -1,6 +1,5 @@
-"use client"
 import { PageSectionVariant } from "@/types/page";
-import { memo, useMemo, FC, ReactNode } from "react"
+import type { FC, ReactNode } from "react"
 import splashStyles from "@/components/theme/splash-backdrop.module.css";
 
 export interface PageSectionProps {
@@ -36,27 +35,23 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, r
         }
     }
 
-    const section = useMemo(() => (
-        <section id={id} className={`relative flex h-full min-h-screen w-full flex-col ${getCSSForVariant(variant)} ${hasSplashBackdrop ? splashStyles.section : "border-y border-border/60 shadow-lg"}`}>
-            <div className="relative z-0 h-full w-full flex flex-col flex-grow">
-                {children}
-            </div>
-        </section>
-    ), [id, children, variant, hasSplashBackdrop]);
-
-    const footer = useMemo(() => (
-        <footer className={`py-2 border-t ${getBorderCSSForVariant(variant)} ${getCSSForVariant(variant)}`}>
-            <div className="container mx-auto text-center">
-                {children}
-            </div>
-        </footer>
-    ), [children, variant]);
-
     if (variant === PageSectionVariant.Footer) {
-        return footer;
+        return (
+            <footer className={`py-2 border-t ${getBorderCSSForVariant(variant)} ${getCSSForVariant(variant)}`}>
+                <div className="container mx-auto text-center">
+                    {children}
+                </div>
+            </footer>
+        );
     } else {
-        return section
+        return (
+            <section id={id} className={`relative flex h-full min-h-screen w-full flex-col ${getCSSForVariant(variant)} ${hasSplashBackdrop ? splashStyles.section : "border-y border-border/60 shadow-lg"}`}>
+                <div className="relative z-0 h-full w-full flex flex-col flex-grow">
+                    {children}
+                </div>
+            </section>
+        )
     }
 };
 
-export default memo(PageSection);
+export default PageSection;

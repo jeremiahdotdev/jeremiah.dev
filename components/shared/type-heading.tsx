@@ -31,8 +31,7 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
     }, [stack])
 
     const [title, setTitle] = useState<string>("")
-
-    const [heading, setHeading] = useState<string>("")
+    const [heading, setHeading] = useState<string>(" ")
     const timeoutIds = useRef<number[]>([])
     const hasStarted = useRef(false)
     
@@ -67,8 +66,8 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
 
         newStack.forEach((sentence, index) => {
             const timeoutId = window.setTimeout(() => { 
-                if (index < newStack.length) typeWord(sentence)
-                if (index < newStack.length) untypeWord(sentence)
+                typeWord(sentence)
+                untypeWord(sentence)
             }, index * duration)
             timeoutIds.current.push(timeoutId)
         })

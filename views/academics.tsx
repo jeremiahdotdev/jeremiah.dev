@@ -7,16 +7,20 @@ import { Academics as AcademicsType } from "@/types/academics";
 import { getAcademicData } from '@/server/getAcademicData';
 import AcademicSummaryCard from "@/components/academics/academic-summary-card";
 import FocusList from "@/components/academics/focus-list";
-import { getSiteDictionary } from "@/sanity/lib/getSiteSettings";
+import type { Dictionary } from "@/types/dictionary";
 
-async function loadAcademicData() {
-  const data = await getAcademicData()
+async function loadAcademicData(endDateDefault: string) {
+  const data = await getAcademicData(endDateDefault)
   return data
 }
 
-export default async function Academics() {
-  const academics: AcademicsType = await loadAcademicData()
-  const $t = await getSiteDictionary();
+interface AcademicsProps {
+  dictionary: Dictionary
+}
+
+export default async function Academics({ dictionary }: AcademicsProps) {
+  const $t = dictionary;
+  const academics: AcademicsType = await loadAcademicData($t.timeline.endDateDefault)
 
   return (
     <PageSection id={$t.academics.id} variant={PageSectionVariant.Primary} showBorder={true}>

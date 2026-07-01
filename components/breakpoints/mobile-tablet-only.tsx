@@ -1,7 +1,9 @@
-import { memo } from "react"
-import {getBreakpointComponent} from "./base"
-import { AspectRatio } from "@/globals/aspect-ratio"
+import type { ReactNode } from "react"
 
-const MobileTabletOnly = getBreakpointComponent(AspectRatio.MIN, AspectRatio.LG)
+interface MobileTabletOnlyProps {
+  children: ReactNode
+}
 
-export default memo(MobileTabletOnly)
+export default function MobileTabletOnly({ children }: MobileTabletOnlyProps) {
+  return <div className="lg:hidden">{children}</div>
+}

@@ -8,8 +8,8 @@ export default function SplashBackdrop() {
   const [lightLoaded, setLightLoaded] = useState(false)
   const [darkLoaded, setDarkLoaded] = useState(false)
   const dir = "/flat"
-  const darkSrc = "/splash-dark.png"
-  const lightSrc = "/splash-light.png"
+  const darkSrc = "/splash-dark.webp"
+  const lightSrc = "/splash-light.webp"
   const lightBlurDataURL = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSI5Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iOSIgcng9IjEiIGZpbGw9IiNkMWQyZDUiLz48L3N2Zz4="
   const darkBlurDataURL = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSI5Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iOSIgcng9IjEiIGZpbGw9IiMyMjIyMjQiLz48L3N2Zz4="
 

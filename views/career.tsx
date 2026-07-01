@@ -1,26 +1,30 @@
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
-import Timeline from "@/components/career/timeline";
+import DeferredTimeline from "@/components/career/deferred-timeline";
 import { CareerEvent } from "@/types/job";
 import PageSectionContent from "@/components/page/page-section-content";
 import PageSectionHeader from "@/components/page/page-section-header";
 import { getCareerData } from "@/server/getCareerData";
-import { getSiteDictionary } from "@/sanity/lib/getSiteSettings";
+import type { Dictionary } from "@/types/dictionary";
 
-async function loadCareerData() {
-  const data = await getCareerData()
+async function loadCareerData(endDateDefault: string) {
+  const data = await getCareerData(endDateDefault)
   return data
 }
 
-export default async function Career() {
-  const jobs: CareerEvent[] = await loadCareerData()
-  const $t = await getSiteDictionary();
+interface CareerProps {
+  dictionary: Dictionary
+}
+
+export default async function Career({ dictionary }: CareerProps) {
+  const $t = dictionary;
+  const jobs: CareerEvent[] = await loadCareerData($t.timeline.endDateDefault)
 
   return (
     <PageSection id={$t.career.id} variant={PageSectionVariant.Secondary}>
       <PageSectionHeader>{$t.career.heading}</PageSectionHeader>
       <PageSectionContent>
-        <Timeline events={jobs}></Timeline>
+        <DeferredTimeline events={jobs} />
       </PageSectionContent>
     </PageSection>
   );

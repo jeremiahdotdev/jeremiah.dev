@@ -1,8 +1,9 @@
-"use client"
-import { memo } from "react"
-import {getBreakpointComponent} from "./base"
-import { AspectRatio } from "@/globals/aspect-ratio"
+import type { ReactNode } from "react"
 
-const MobileOnly = getBreakpointComponent(AspectRatio.MIN, AspectRatio.MD)
+interface MobileOnlyProps {
+  children: ReactNode
+}
 
-export default memo(MobileOnly)
+export default function MobileOnly({ children }: MobileOnlyProps) {
+  return <div className="md:hidden">{children}</div>
+}

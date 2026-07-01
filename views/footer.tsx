@@ -1,11 +1,15 @@
 import PageSection from '@/components/page/page-section';
 import { TypographyMuted } from '@/components/ui/typography';
-import { getSiteDictionary } from '@/sanity/lib/getSiteSettings';
 import { PageSectionVariant } from '@/types/page';
+import type { Dictionary } from '@/types/dictionary';
 import packageJson from '@/package.json';
 
-export default async function Footer() {
-  const $t = await getSiteDictionary();
+interface FooterProps {
+  dictionary: Dictionary
+}
+
+export default function Footer({ dictionary }: FooterProps) {
+  const $t = dictionary;
   const currentYear = new Date().getFullYear();
   const sanityVersion = packageJson.dependencies.sanity.replace(/^[^\d]*/, '');
 
