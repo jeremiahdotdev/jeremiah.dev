@@ -33,8 +33,8 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
     const [title, setTitle] = useState<string>("")
 
     const [heading, setHeading] = useState<string>("")
-    const [complete, setComplete] = useState<boolean>(false)
     const timeoutIds = useRef<number[]>([])
+    const hasStarted = useRef(false)
     
     const typeAhead = (index: number, length: number) => ((index % 2 === 0) || (index === length - 1)) ? "" : "|"
 
@@ -62,7 +62,8 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
     }
 
     const typeEffect = () => {
-        if (complete) return
+        if (hasStarted.current) return
+        hasStarted.current = true
 
         newStack.forEach((sentence, index) => {
             const timeoutId = window.setTimeout(() => { 
@@ -70,9 +71,6 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
                 if (index < newStack.length) untypeWord(sentence)
             }, index * duration)
             timeoutIds.current.push(timeoutId)
-
-            // When you reach the end of the stack, cease typing. 
-            if (index === newStack.length - 1) return setComplete(true)
         })
         const timeoutId = window.setTimeout(() => { 
             typeWord(end, setTitle)
@@ -86,8 +84,9 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
         return () => {
             timeoutIds.current.forEach((timeoutId) => window.clearTimeout(timeoutId))
             timeoutIds.current = []
+            hasStarted.current = false
         }
-    }, [end, complete, newStack])
+    }, [end, newStack])
 
     const typeHeading = useMemo(() => (
         <span className={`font-serif flex items-center justify-center ${className}`}>
