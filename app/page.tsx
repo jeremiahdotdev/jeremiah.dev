@@ -1,4 +1,4 @@
-import { getSiteSettings } from "@/sanity/lib/getSiteSettings";
+import { getCachedSiteSettings } from "@/sanity/lib/getCachedSiteSettings";
 import Academics from "@/views/academics";
 import Career from "@/views/career";
 import Home from "@/views/home";
@@ -8,11 +8,11 @@ import Footer from "@/views/footer";
 import Controls from "@/views/controls";
 
 export default async function Page() {
-  const settings = await getSiteSettings();
+  const settings = await getCachedSiteSettings();
   const { dictionary } = settings;
 
   return (
-    <main className="w-full flex min-h-screen flex-col">
+    <main className="home-transition-scope w-full flex min-h-screen flex-col">
       <Controls />
       {/* Sections */}
       <Home dictionary={dictionary} />

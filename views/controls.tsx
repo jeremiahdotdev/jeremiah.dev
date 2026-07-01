@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/theme/theme-toggle";
 
 export default function Controls() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-30 isolate">
+    <div className="absolute h-screen pointer-events-none fixed inset-0 z-30 isolate">
         <div className="pointer-events-auto">
           <Menu/>
         </div>

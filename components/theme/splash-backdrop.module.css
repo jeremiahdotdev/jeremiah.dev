@@ -9,7 +9,7 @@
   position: absolute;
   inset: 0;
   opacity: 0.12;
-  transition: opacity 1200ms ease-out;
+  transition: opacity 600ms ease-out;
 }
 
 .layer[data-theme="light"] {
@@ -38,7 +38,7 @@
 
 .image {
   opacity: 0;
-  transition: opacity 1200ms ease-out;
+  transition: opacity 600ms ease-out;
 }
 
 .imageLoaded {
@@ -47,5 +47,5 @@
 
 .section {
   background-color: hsl(var(--background) / var(--page-section-splash-overlay));
-  transition: background-color 1200ms ease-out;
+  transition: background-color 600ms ease-out;
 }

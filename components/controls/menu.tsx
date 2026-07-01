@@ -48,7 +48,7 @@ const Menu: FC<MenuProps> = () => {
     }, [])
 
     const MenuToggle = useMemo(() =>(
-        <Toggle className={`aspect-square rounded-md border border-border/60 bg-background/90 p-2 shadow-sm shadow-foreground/10 backdrop-blur-sm`} aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
+        <Toggle className={`aspect-square rounded-md p-2`} aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
           <MenuIcon className={`${isPressed ? "rotate-90" : "rotate-0"} transition-all`}/>
         </Toggle>
     ), [$t, isPressed, setChangeDrawerOpen])
@@ -101,7 +101,6 @@ const Menu: FC<MenuProps> = () => {
                 <span className="flex items-center absolute right-0 bottom-0">
                     <LinkedIn className="px-3"/>
                     <Resume/>
-                    <ThemeToggle />
                 </span>
             </SheetContent>
         </Sheet>

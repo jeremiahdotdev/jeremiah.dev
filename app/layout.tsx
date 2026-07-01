@@ -4,7 +4,7 @@ import "./globals.css";
 import SplashBackdrop from "@/components/theme/splash-backdrop";
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { ContentProvider } from "@/components/content/content-provider";
-import { getSiteSettings } from "@/sanity/lib/getSiteSettings";
+import { getCachedSiteSettings } from "@/sanity/lib/getCachedSiteSettings";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
+  const settings = await getCachedSiteSettings();
 
   return {
     title: settings.title,
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }:  Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSiteSettings();
+  const settings = await getCachedSiteSettings();
 
   return (
       <html lang="en" suppressHydrationWarning>

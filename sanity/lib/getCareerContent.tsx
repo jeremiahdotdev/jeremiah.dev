@@ -43,7 +43,14 @@ function toSkill(skill: SanitySkill): Skill {
     subtitle: skill.subtitle || skill.title || '',
     tooltip: skill.tooltip,
     image: iconUrl ? (
-      <img src={iconUrl} alt={skill.subtitle || skill.title || ''} className="h-4 w-4" />
+      <img
+        src={iconUrl}
+        alt={skill.subtitle || skill.title || ''}
+        className="h-4 w-4"
+        loading="lazy"
+        decoding="async"
+        fetchPriority="low"
+      />
     ) : undefined,
     href: skill.href || '#',
   }
