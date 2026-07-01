@@ -38,7 +38,7 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, r
 
     const section = useMemo(() => (
         <section id={id} className={`relative flex h-full min-h-screen w-full flex-col ${getCSSForVariant(variant)} ${hasSplashBackdrop ? splashStyles.section : "border-y border-border/60 shadow-lg"}`}>
-            <div className="z-20 h-full w-full flex flex-col flex-grow">
+            <div className="relative z-0 h-full w-full flex flex-col flex-grow">
                 {children}
             </div>
         </section>

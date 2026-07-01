@@ -48,7 +48,7 @@ const Menu: FC<MenuProps> = () => {
     }, [])
 
     const MenuToggle = useMemo(() =>(
-        <Toggle className={`aspect-square p-2`} aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
+        <Toggle className={`aspect-square rounded-md border border-border/60 bg-background/90 p-2 shadow-sm shadow-foreground/10 backdrop-blur-sm`} aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
           <MenuIcon className={`${isPressed ? "rotate-90" : "rotate-0"} transition-all`}/>
         </Toggle>
     ), [$t, isPressed, setChangeDrawerOpen])
@@ -74,7 +74,7 @@ const Menu: FC<MenuProps> = () => {
         return (
             <nav
                 aria-label={$t.menu.description}
-                className="fixed left-1/2 bottom-4 z-50 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 shadow-sm shadow-foreground/10"
+                className="fixed left-1/2 bottom-4 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 shadow-sm shadow-foreground/10"
             >
                 {$t.navigation.map(desktopOption)}
             </nav>
@@ -84,7 +84,7 @@ const Menu: FC<MenuProps> = () => {
     // Memoized component
     const MobileTabletMenu = useMemo(() => (
         <Sheet open={isPressed}>
-            <div className="fixed left-0 top-0" >
+            <div className="fixed left-0 top-0 z-40 p-2" >
                 {MenuToggle}
             </div>
             <SheetContent side={"left"}>
