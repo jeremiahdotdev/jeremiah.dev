@@ -122,6 +122,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       }
       style={themeStyle}
       data-portfolio-theme={project.name}
+      data-portfolio-has-dark-image={project.theme?.cardDarkSrc ? "true" : "false"}
       className={cardClassName}
     >
       {project.theme?.css && (
@@ -136,7 +137,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
             </span>
             <div className="min-w-0">
               <TypographyH3
-                className="break-words leading-tight"
+                className="portfolio-card-title break-words leading-tight"
                 style={{ fontSize: getTitleSize(project.name) }}
               >
                 {project.name}
