@@ -1,0 +1,23 @@
+.dark .portfolio-card-background {
+  background-image: var(
+    --portfolio-card-dark-image,
+    var(--portfolio-card-image, none)
+  );
+}
+
+.dark [data-portfolio-has-dark-theme="false"] .portfolio-card-title {
+  color: #111827;
+}
+
+.dark
+  [data-portfolio-has-dark-theme="false"]
+  .portfolio-language-meter-value,
+.dark
+  [data-portfolio-has-dark-theme="false"]
+  .portfolio-language-meter-row
+  .portfolio-language-meter-value,
+.dark
+  [data-portfolio-has-dark-theme="false"]
+  .portfolio-language-meter-row {
+  color: #111827;
+}

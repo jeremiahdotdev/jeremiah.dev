@@ -4,6 +4,8 @@ import { Link } from "./link";
 
 export type ProjectTheme = {
   css?: string;
+  darkCss?: string;
+  hasDarkTheme?: boolean;
   cardSrc?: string;
   cardDarkSrc?: string;
 };

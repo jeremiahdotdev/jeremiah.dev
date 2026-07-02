@@ -37,6 +37,7 @@ Add these files to a project repository when creating a custom portfolio card:
 
 - `public/portfolio/thumbnail.png`: Project avatar/thumbnail shown on the card.
 - `public/portfolio/portfolio.css`: Optional card theme CSS. If this file is missing, the default portfolio theme is used.
+- `public/portfolio/portfolio-dark.css`: Optional dark-mode overrides for card theme CSS.
 - `public/portfolio/card.webp`: Optional light-mode card background image.
 - `public/portfolio/card-dark.webp`: Optional dark-mode card background image.
 
@@ -45,8 +46,8 @@ Add these files to a project repository when creating a custom portfolio card:
 `portfolio.css` can style these classes:
 
 - `.portfolio-card-background`: The absolute card background layer.
-- `.portfolio-surface`: Shared surface style for description, badges, footer overlay, and icon block.
-- `.portfolio-surface p`: Description typography.
+- `.portfolio-surface`: Shared surface style for description and badges.
+- `.portfolio-footer-surface`: Shared footer overlay and footer icon block style.
 - `.portfolio-url`: GitHub and `View Site` links.
 - `.portfolio-url:hover`: Optional link hover override. The component already provides a universal opacity hover.
 
@@ -64,7 +65,7 @@ For private repositories, include the same files in `public/portfolio`; do not r
 
 ### Defaults
 
-If no `portfolio.css` exists, the default theme in `components/projects/theme.css` is used.
+If no repository theme exists, the default theme is loaded from `components/projects/portfolio.css` and `components/projects/portfolio-dark.css`.
 
 The default theme:
 

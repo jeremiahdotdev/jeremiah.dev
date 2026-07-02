@@ -1,9 +1,17 @@
 import postcss from "postcss";
 
-function scopeSelector(selector: string, scope: string) {
+function scopeSelector(selector: string, scope: string, dark = false) {
   const trimmedSelector = selector.trim();
 
   if (!trimmedSelector) return selector;
+
+  if (dark) {
+    if (trimmedSelector.startsWith(".dark ")) {
+      return `.dark ${scope} ${trimmedSelector.slice(6)}`;
+    }
+
+    return `.dark ${scope} ${trimmedSelector}`;
+  }
 
   if (trimmedSelector.startsWith(".dark ")) {
     return `.dark ${scope} ${trimmedSelector.slice(6)}`;
@@ -12,7 +20,11 @@ function scopeSelector(selector: string, scope: string) {
   return `${scope} ${trimmedSelector}`;
 }
 
-export async function scopePortfolioTheme(css: string, scopeId: string) {
+export async function scopePortfolioTheme(
+  css: string,
+  scopeId: string,
+  dark = false,
+) {
   const scope = `[data-portfolio-theme="${scopeId}"]`;
   const root = postcss.parse(css);
 
@@ -23,7 +35,7 @@ export async function scopePortfolioTheme(css: string, scopeId: string) {
     if (parentName && /keyframes$/i.test(parentName)) return;
 
     rule.selectors = rule.selectors.map((selector) =>
-      scopeSelector(selector, scope),
+      scopeSelector(selector, scope, dark),
     );
   });
 

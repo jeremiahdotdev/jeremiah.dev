@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import "@/components/projects/theme.css";
+import "@/components/projects/portfolio.css";
+import "@/components/projects/portfolio-dark.css";
 import SplashBackdrop from "@/components/theme/splash-backdrop";
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { ContentProvider } from "@/components/content/content-provider";

@@ -18,6 +18,8 @@ export type InternalGithubProject = GithubRepository & {
     languages?: RawGithubLanguages
     theme?: {
         css?: string
+        darkCss?: string
+        hasDarkTheme?: boolean
         cardSrc?: string
         cardDarkSrc?: string
     }

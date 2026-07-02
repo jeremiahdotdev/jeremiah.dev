@@ -45,6 +45,10 @@ function getTitleSize(name: string) {
   return name.length > 22 ? "clamp(1rem, 5vw, 1.25rem)" : "clamp(1.25rem, 5vw, 1.5rem)";
 }
 
+function getProjectInitials(name: string) {
+  return name.trim().charAt(0).toUpperCase();
+}
+
 const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
   const $t = useDictionary();
 
@@ -54,6 +58,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
 
   const hasTopics = topics.length > 0;
   const isSelectable = !!handleClick;
+  const fallbackText = getProjectInitials(project.name);
 
   const projectLabel = (template: string) =>
     template.replace("{project}", project.name);
@@ -122,17 +127,18 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       }
       style={themeStyle}
       data-portfolio-theme={project.name}
+      data-portfolio-has-dark-theme={project.theme?.hasDarkTheme ? "true" : "false"}
       className={cardClassName}
     >
-      {project.theme?.css && (
-        <style>{project.theme.css}</style>
+      {(project.theme?.css || project.theme?.darkCss) && (
+        <style>{`${project.theme?.css ?? ""}\n${project.theme?.darkCss ?? ""}`}</style>
       )}
       <div className="portfolio-card-background absolute inset-0" />
       <div className="relative z-10 flex min-h-full w-full flex-col">
         <div className="flex flex-1 flex-col p-5">
           <header className="mb-4 flex items-start gap-3">
             <span className="shrink-0">
-              <ProjectAvatar icon={project.icon} />
+              <ProjectAvatar icon={project.icon} fallbackText={fallbackText} />
             </span>
             <div className="min-w-0">
               <TypographyH3
