@@ -47,3 +47,7 @@
 .dark [data-portfolio-has-dark-image="false"] .portfolio-card-title {
   color: #111827;
 }
+
+.dark [data-portfolio-has-dark-image="false"] .portfolio-language-meter-value {
+  color: #111827;
+}

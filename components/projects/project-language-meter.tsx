@@ -148,7 +148,7 @@ export default function ProjectLanguageMeter({
 
   return (
     <div
-      className="relative grid place-items-center rounded-full"
+      className="portfolio-language-meter relative grid place-items-center rounded-full"
       style={{ width: size, height: size }}
       title={languages
         .map((language) => `${language.name}: ${language.value}%`)
@@ -196,12 +196,12 @@ export default function ProjectLanguageMeter({
             {languages.map((language) => (
               <span
                 key={language.name}
-                className="flex items-center justify-between gap-3 text-sm font-semibold"
+                className="portfolio-language-meter-row flex items-center justify-between gap-3 text-sm font-semibold"
               >
                 <span className="truncate" style={{ color: language.color }}>
                   {language.name}
                 </span>
-                <span className="shrink-0 text-foreground">
+                <span className="portfolio-language-meter-value shrink-0 text-foreground">
                   {language.value}%
                 </span>
               </span>
@@ -210,12 +210,12 @@ export default function ProjectLanguageMeter({
         ) : (
           <>
             <span
-              className="transition-colors duration-300 text-md font-bold"
+              className="portfolio-language-meter-name transition-colors duration-300 text-md font-bold"
               style={{ color: activeLanguage.color }}
             >
               {activeLanguage.name}
             </span>
-            <span className="transition-colors duration-300 text-lg font-foreground font-bold">
+            <span className="portfolio-language-meter-value transition-colors duration-300 text-lg font-foreground font-bold">
               {activeLanguage.value}%
             </span>
           </>
