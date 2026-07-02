@@ -3,7 +3,7 @@ import { Languages } from "./languages";
 import { Link } from "./link";
 
 export type ProjectTheme = {
-  href?: string;
+  css?: string;
   cardSrc?: string;
   cardDarkSrc?: string;
 };

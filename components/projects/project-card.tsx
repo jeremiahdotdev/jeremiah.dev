@@ -119,10 +119,11 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
           : undefined
       }
       style={themeStyle}
+      data-portfolio-theme={project.name}
       className={cardClassName}
     >
-      {project.theme?.href && (
-        <link rel="stylesheet" href={project.theme.href} />
+      {project.theme?.css && (
+        <style>{project.theme.css}</style>
       )}
       <div className="portfolio-card-background absolute inset-0" />
       <div className="relative z-10 flex min-h-full w-full flex-col">
