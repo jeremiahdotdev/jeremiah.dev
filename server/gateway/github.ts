@@ -165,6 +165,7 @@ async function LoadGitHubProjects() {
                 ? {
                     css,
                     darkCss,
+                    hasTheme: hasTheme || hasCard,
                     hasDarkTheme: hasDarkTheme || hasCardDark,
                     cardSrc: hasCard
                         ? `${rawPortfolioPath}/${portfolioConfig.card}`
@@ -204,6 +205,7 @@ async function LoadGitHubProjects() {
                 ? {
                     css,
                     darkCss,
+                    hasTheme: hasTheme || hasFile(portfolioConfig.card),
                     hasDarkTheme: hasDarkTheme || hasFile(portfolioConfig.cardDark),
                     cardSrc,
                     cardDarkSrc

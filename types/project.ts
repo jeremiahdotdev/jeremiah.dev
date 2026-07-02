@@ -5,6 +5,7 @@ import { Link } from "./link";
 export type ProjectTheme = {
   css?: string;
   darkCss?: string;
+  hasTheme?: boolean;
   hasDarkTheme?: boolean;
   cardSrc?: string;
   cardDarkSrc?: string;
