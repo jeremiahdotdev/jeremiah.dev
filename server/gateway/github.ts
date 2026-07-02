@@ -142,9 +142,12 @@ async function LoadGitHubProjects() {
         const owner = repo.owner?.login;
         if (!owner) return {};
 
-        const rawPortfolioPath = `${config.github.raw}/${owner}/${repo.name}/main/${portfolioConfig.path}`;
+        const branch = repo.default_branch ?? "main";
+        const rawPortfolioPath = `${config.github.raw}/${owner}/${repo.name}/${branch}/${portfolioConfig.path}`;
         const { hasFile } = await getPortfolioFiles(repo);
         const hasTheme = hasFile(portfolioConfig.theme);
+        const hasCard = hasFile(portfolioConfig.card);
+        const hasCardDark = hasFile(portfolioConfig.cardDark);
         const css = hasTheme
             ? await getPortfolioThemeCss(repo)
             : undefined;
@@ -154,8 +157,12 @@ async function LoadGitHubProjects() {
             theme: css
                 ? {
                     css,
-                    cardSrc: `${rawPortfolioPath}/${portfolioConfig.card}`,
-                    cardDarkSrc: `${rawPortfolioPath}/${portfolioConfig.cardDark}`
+                    cardSrc: hasCard
+                        ? `${rawPortfolioPath}/${portfolioConfig.card}`
+                        : undefined,
+                    cardDarkSrc: hasCardDark
+                        ? `${rawPortfolioPath}/${portfolioConfig.cardDark}`
+                        : undefined
                 }
                 : undefined
         };

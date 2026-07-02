@@ -17,7 +17,7 @@ export type InternalGithubProject = GithubRepository & {
     image?: string 
     languages?: RawGithubLanguages
     theme?: {
-        href?: string
+        css?: string
         cardSrc?: string
         cardDarkSrc?: string
     }
