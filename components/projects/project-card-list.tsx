@@ -21,9 +21,9 @@ const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick, orientat
                     align: "start",
                     loop: false,
                 }}
-                className="min-h-0 w-full"
+                className="w-full min-h-fit"
             >
-                <CarouselContent className="items-stretch px-4 py-4">
+                <CarouselContent className="items-stretch px-4 py-4 min-h-fit">
                     {projects.map((project) => (
                         <CarouselItem
                             key={project.name}
@@ -39,7 +39,7 @@ const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick, orientat
     }
 
     return (
-        <div className="h-full min-h-0 w-full max-w-[25rem] overflow-y-auto overflow-x-hidden pb-6">
+        <div className="h-full min-h-0 w-full max-w-[25rem] overflow-y-auto overflow-x-hidden">
             <div className="flex min-h-full flex-col gap-4 p-4">
                 {projects.map((project) => (
                     <div key={project.name} className="flex w-full shrink-0">

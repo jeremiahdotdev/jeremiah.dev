@@ -84,10 +84,12 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
   } as CSSProperties;
 
   const cardClassName = twMerge(
-    "relative flex h-full w-full overflow-hidden rounded-2xl border border-border bg-card",
+    "relative flex h-full w-full min-h-fit rounded-2xl border border-border bg-card",
     isSelectable && "hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   );
 
+  const descriptionLineHeightClass = project.description.length > 120 ? "leading-relaxed" : "leading-snug";
+  
   const githubLink = project.private ? (
     <span
       title={$t.projects.github.privateTitle}
@@ -142,7 +144,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       {(themeCss || darkThemeCss) && (
         <style>{`${themeCss}\n${darkThemeCss}`}</style>
       )}
-      <div className="portfolio-card-background absolute inset-0" />
+      <div className="portfolio-card-background rounded-2xl mb-2 absolute inset-0" />
       <div className="relative z-10 flex min-h-full w-full flex-col">
         <div className="flex flex-1 flex-col p-5">
           <header className="mb-4 flex items-start gap-3">
@@ -158,7 +160,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
               </TypographyH3>
             </div>
           </header>
-          <div className="portfolio-surface rounded-md p-4">
+          <div className={twMerge("portfolio-surface rounded-md p-4", descriptionLineHeightClass)}>
             <TypographyP>{project.description}</TypographyP>
           </div>
           {(hasTopics || languageEntries.length > 0) && (
