@@ -6,7 +6,7 @@
 }
 
 .dark .portfolio-card-background {
-  background-image: var(--portfolio-card-dark-image, none);
+  background-image: var(--portfolio-card-dark-image, var(--portfolio-card-image, none));
 }
 
 .portfolio-surface {
@@ -16,10 +16,17 @@
   backdrop-filter: blur(12px);
 }
 
+.portfolio-footer-surface {
+  border: 1px solid hsl(var(--border) / 0.45);
+  background: hsl(var(--card) / 0.72);
+  box-shadow: 0 8px 24px hsl(var(--foreground) / 0.08);
+  backdrop-filter: blur(16px);
+}
+
 .portfolio-surface p {
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 500;
-  line-height: 1.75;
+  line-height: 1.55;
   letter-spacing: 0;
   color: hsl(var(--foreground));
 }

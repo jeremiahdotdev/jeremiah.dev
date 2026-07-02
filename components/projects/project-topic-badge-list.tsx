@@ -1,5 +1,3 @@
-import { Badge } from "@/components/ui/badge";
-import { TypographySmall } from "@/components/ui/typography";
 import { twMerge } from "tailwind-merge";
 
 interface ProjectTopicBadgeListProps {
@@ -14,19 +12,15 @@ export default function ProjectTopicBadgeList({
   return (
     <div className="flex flex-col gap-1.5">
       {topics.map((topic) => (
-        <div
-          key={topic}
-          className="min-w-0"
-        >
-          <Badge
-            variant="outline"
+        <div key={topic} className="min-w-0">
+          <div
             className={twMerge(
-              "flex w-full justify-center rounded-none px-3 py-1.5",
+              "portfolio-topic-badge flex w-full justify-center rounded-md px-3 py-1.5 text-center",
               surfaceClassName
             )}
           >
-            <TypographySmall className="tracking-wide">{topic}</TypographySmall>
-          </Badge>
+            <p>{topic}</p>
+          </div>
         </div>
       ))}
     </div>

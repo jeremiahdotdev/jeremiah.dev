@@ -161,10 +161,10 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
           )}
         </div>
         <footer className="relative overflow-hidden border-t border-border px-5 py-4">
-          <div className="portfolio-surface absolute inset-0 rounded-b-[1rem]" />
+          <div className="portfolio-footer-surface absolute inset-0 rounded-b-[1rem]" />
           <div className="relative z-10 flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="portfolio-surface flex size-10 shrink-0 items-center justify-center rounded-md text-md">
+              <div className="portfolio-footer-surface flex size-10 shrink-0 items-center justify-center rounded-md text-md">
                 {"</>"}
               </div>
               <div className="flex min-w-0 flex-col justify-center gap-1">
