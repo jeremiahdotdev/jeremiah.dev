@@ -5,19 +5,19 @@
   );
 }
 
-.dark [data-portfolio-has-dark-theme="false"] .portfolio-card-title {
+.dark [data-portfolio-has-dark-theme="false"] [data-portfolio-has-theme="true"] .portfolio-card-title {
   color: #111827;
 }
 
 .dark
   [data-portfolio-has-dark-theme="false"]
+  [data-portfolio-has-theme="true"] .portfolio-language-meter-value,
+.dark
+  [data-portfolio-has-dark-theme="false"]
+  [data-portfolio-has-theme="true"] .portfolio-language-meter-row
   .portfolio-language-meter-value,
 .dark
   [data-portfolio-has-dark-theme="false"]
-  .portfolio-language-meter-row
-  .portfolio-language-meter-value,
-.dark
-  [data-portfolio-has-dark-theme="false"]
-  .portfolio-language-meter-row {
+  [data-portfolio-has-theme="true"] .portfolio-language-meter-row {
   color: #111827;
 }
