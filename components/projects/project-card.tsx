@@ -64,7 +64,9 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       : "none",
     "--portfolio-card-dark-image": project.theme?.cardDarkSrc
       ? `url("${project.theme.cardDarkSrc}")`
-      : "none",
+      : project.theme?.cardSrc
+        ? `url("${project.theme.cardSrc}")`
+        : "none",
     "--portfolio-url-color": primaryLanguageColor,
   } as CSSProperties;
 
