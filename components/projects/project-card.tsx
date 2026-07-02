@@ -42,7 +42,11 @@ function ProjectCardLink({
 }
 
 function getTitleSize(name: string) {
-  return name.length > 22 ? "clamp(1rem, 5vw, 1.25rem)" : "clamp(1.25rem, 5vw, 1.5rem)";
+  if (name.length > 22) {
+    return "clamp(0.95rem, 4vw, 1.15rem)";
+  }
+
+  return "clamp(1.1rem, 4.5vw, 1.35rem)";
 }
 
 function getProjectInitials(name: string) {
@@ -131,6 +135,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       }
       style={themeStyle}
       data-portfolio-theme={project.name}
+      data-portfolio-has-theme={hasTheme ? "true" : "false"}
       data-portfolio-has-dark-theme={project.theme?.hasDarkTheme ? "true" : "false"}
       className={cardClassName}
     >
