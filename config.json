@@ -6,9 +6,16 @@
     },
     "captcha": "https://recaptchaenterprise.googleapis.com/v1/projects/jeremiah-dev/assessments",
     "github": {
-        "thumbnailName": "thumbnail.png",
         "org": "jeremiahdotdev",
         "api": "https://api.github.com",
-        "repos": "/orgs/jeremiahdotdev/repos"
+        "repos": "/orgs/jeremiahdotdev/repos",
+        "raw": "https://raw.githubusercontent.com",
+        "portfolio": {
+            "path": "public/portfolio",
+            "thumbnail": "thumbnail.png",
+            "theme": "portfolio.css",
+            "card": "card.webp",
+            "cardDark": "card-dark.webp"
+        }
     }
 }

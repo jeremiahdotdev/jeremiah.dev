@@ -11,10 +11,16 @@ export type GithubRepository = Endpoints["GET /repos/{owner}/{repo}"]["response"
 export type GithubDocument = Endpoints["GET /repos/{owner}/{repo}/contents/{path}"]["response"]["data"];
 
 export type GithubLanguages = Endpoints["GET /repos/{owner}/{repo}/languages"]["response"]["data"];
+export type RawGithubLanguages = Record<string, number>;
 
 export type InternalGithubProject = GithubRepository & { 
     image?: string 
-    languages?: Languages
+    languages?: RawGithubLanguages
+    theme?: {
+        href?: string
+        cardSrc?: string
+        cardDarkSrc?: string
+    }
 };
 
 export interface InternalGithubDocument {

@@ -71,6 +71,14 @@ export const siteSettings = defineType({
             {name: 'link', title: 'Link label', type: 'string'},
             {name: 'public', title: 'Public label', type: 'string'},
             {name: 'private', title: 'Private label', type: 'string'},
+            {name: 'privateTitle', title: 'Private repository title', type: 'string'},
+            {name: 'sourceTitle', title: 'Source link title', type: 'string'},
+            {name: 'projectAria', title: 'Project GitHub aria label', type: 'string'},
+            {name: 'detailsAria', title: 'Project card aria label', type: 'string'},
+          ]},
+          {name: 'demo', title: 'Demo labels', type: 'object', fields: [
+            {name: 'link', title: 'Link label', type: 'string'},
+            {name: 'aria', title: 'Demo aria label', type: 'string'},
           ]},
         ]}),
         defineField({name: 'blog', title: 'Blog', type: 'object', fields: [

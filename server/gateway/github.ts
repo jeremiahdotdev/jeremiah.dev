@@ -92,26 +92,107 @@ async function LoadGitHubRepositories() {
 
 async function LoadGitHubProjects() {
     const repositories = await GetGitHubRepositories();
-
-    const getPublicRepoImage = (repo: InternalGithubProject) => `${repo.html_url}/blob/main/thumbnail.png?raw=true`;
-    const getPrivateRepoImage = async (repo: InternalGithubProject) => {
+    const portfolioConfig = config.github.portfolio;
+    const getPortfolioAssetPath = (filename: string) => `${portfolioConfig.path}/${filename}`;
+    const getPortfolioFiles = async (repo: InternalGithubProject) => {
         const response = await octokit.request(repo.contents_url, {
-            path: config.github.thumbnailName
-        }).catch(console.log);
-        return `data:image/png;base64,${response?.data?.content}`;
+            path: portfolioConfig.path
+        }).catch(() => null);
+        const files = Array.isArray(response?.data) ? response.data : [];
+
+        return {
+            hasFile: (filename: string) =>
+                files.some((file) => file.type === "file" && file.name === filename)
+        };
+    };
+    const getPrivateRepoFileDataUrl = async (
+        repo: InternalGithubProject,
+        filename: string,
+        mimeType: string
+    ) => {
+        const response = await octokit.request(repo.contents_url, {
+            path: getPortfolioAssetPath(filename)
+        }).catch(() => null);
+        const content = "content" in (response?.data ?? {})
+            ? response?.data.content
+            : undefined;
+
+        return content
+            ? `data:${mimeType};base64,${content.replace(/\s/g, "")}`
+            : undefined;
+    };
+
+    const getPublicRepoPortfolio = async (repo: InternalGithubProject) => {
+        const owner = repo.owner?.login;
+        if (!owner) return {};
+
+        const rawPortfolioPath = `${config.github.raw}/${owner}/${repo.name}/main/${portfolioConfig.path}`;
+        const { hasFile } = await getPortfolioFiles(repo);
+        const hasTheme = hasFile(portfolioConfig.theme);
+
+        return {
+            image: `${rawPortfolioPath}/${portfolioConfig.thumbnail}`,
+            theme: hasTheme
+                ? {
+                    href: `${rawPortfolioPath}/${portfolioConfig.theme}`,
+                    cardSrc: `${rawPortfolioPath}/${portfolioConfig.card}`,
+                    cardDarkSrc: `${rawPortfolioPath}/${portfolioConfig.cardDark}`
+                }
+                : undefined
+        };
+    };
+    const getPrivateRepoPortfolio = async (repo: InternalGithubProject) => {
+        const { hasFile } = await getPortfolioFiles(repo);
+        const hasTheme = hasFile(portfolioConfig.theme);
+        const [image, href, cardSrc, cardDarkSrc] = await Promise.all([
+            hasFile(portfolioConfig.thumbnail)
+                ? getPrivateRepoFileDataUrl(repo, portfolioConfig.thumbnail, "image/png")
+                : undefined,
+            hasTheme
+                ? getPrivateRepoFileDataUrl(repo, portfolioConfig.theme, "text/css")
+                : undefined,
+            hasTheme && hasFile(portfolioConfig.card)
+                ? getPrivateRepoFileDataUrl(repo, portfolioConfig.card, "image/webp")
+                : undefined,
+            hasTheme && hasFile(portfolioConfig.cardDark)
+                ? getPrivateRepoFileDataUrl(repo, portfolioConfig.cardDark, "image/webp")
+                : undefined
+        ]);
+
+        return {
+            image,
+            theme: href
+                ? {
+                    href,
+                    cardSrc,
+                    cardDarkSrc
+                }
+                : undefined
+        };
     };
     const getLanguages = async (repo: InternalGithubProject) => {
         const response = await octokit.request(repo.languages_url).catch(console.log);
         return response?.data;
     };
     
-    const projects = await Promise.all(repositories.value.map(async (el: GithubRepository) => ({
-        ...el,
-        image: el.private? await getPrivateRepoImage(el) : getPublicRepoImage(el),
-        languages: await getLanguages(el)
-    })));
+    const projects = await Promise.all(repositories.value.map(async (el: GithubRepository) => {
+        const portfolio = el.private
+            ? await getPrivateRepoPortfolio(el)
+            : await getPublicRepoPortfolio(el);
 
-    GITHUB_PROJECTS.value = projects.sort((a: InternalGithubProject, b: InternalGithubProject) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+        return {
+            ...el,
+            image: portfolio.image,
+            theme: portfolio.theme,
+            languages: await getLanguages(el)
+        };
+    }));
+
+    GITHUB_PROJECTS.value = projects.sort((a: InternalGithubProject, b: InternalGithubProject) => {
+        const lastWorkedOnA = a.pushed_at ?? a.updated_at;
+        const lastWorkedOnB = b.pushed_at ?? b.updated_at;
+        return new Date(lastWorkedOnB).getTime() - new Date(lastWorkedOnA).getTime();
+    });
     GITHUB_PROJECTS.dateUpdated = new Date();
     return true;
 }

@@ -1,38 +1,54 @@
+"use client"
+
 import { Project } from "@/types/project";
-import { memo, useMemo, FC } from "react"
+import { memo, FC } from "react"
+import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/components/ui/carousel";
 import ProjectCard from "./project-card";
 
 interface ProjectCardProps {
     projects: Project[];
-    handleClick: (project: Project) => void;
+    handleClick?: (project: Project) => void;
     orientation?: "vertical" | "horizontal";
 }
   
 const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick, orientation = "horizontal" }: ProjectCardProps) => {
     const isVertical = orientation === "vertical";
-    const cardClassName = isVertical
-        ? "flex w-full flex-shrink-0"
-        : "flex h-[32rem] max-h-[32rem] flex-shrink-0 w-80 sm:w-96 lg:h-auto lg:max-h-none lg:w-80 xl:w-96";
-    const listClassName = isVertical
-        ? "flex min-h-full flex-col gap-4 p-4"
-        : "flex min-h-full flex-row items-center gap-4 px-4 py-4";
-    const scrollClassName = isVertical
-        ? "h-full min-h-0 w-full overflow-y-auto overflow-x-hidden"
-        : "h-full min-h-0 w-full overflow-x-auto overflow-y-hidden";
 
-    // Memoized component
-    const content = useMemo(() => (
-        <div className={scrollClassName}>
-            <div className={listClassName}>
-                {projects.map((project: Project) => (
-                    <div key={project.name} className={cardClassName}>
+    if (!isVertical) {
+        return (
+            <Carousel
+                opts={{
+                    align: "start",
+                    loop: false,
+                }}
+                className="min-h-0 w-full"
+            >
+                <CarouselContent className="items-stretch px-4 py-4">
+                    {projects.map((project) => (
+                        <CarouselItem
+                            key={project.name}
+                            className="flex basis-[calc(100vw-2rem)] sm:basis-[24rem] lg:basis-[20rem] xl:basis-[24rem]"
+                        >
+                            <ProjectCard project={project} />
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselDots label="Show project group" />
+            </Carousel>
+        );
+    }
+
+    return (
+        <div className="h-full min-h-0 w-full max-w-[25rem] overflow-y-auto overflow-x-hidden">
+            <div className="flex min-h-full flex-col gap-4 p-4">
+                {projects.map((project) => (
+                    <div key={project.name} className="flex w-full shrink-0">
                         <ProjectCard handleClick={handleClick} project={project} />
                     </div>
                 ))}
             </div>
         </div>
-    ), [projects, handleClick, cardClassName, listClassName, scrollClassName]);
-    return (content);
+    );
 };
 
 export default memo(ProjectCardList);

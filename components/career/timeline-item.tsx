@@ -1,9 +1,9 @@
 "use client"
 
-import { FC, ReactNode, memo, useEffect, useState } from "react"
+import { FC, ReactNode, memo, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TypographyH2, TypographyMuted, TypographySmall } from "@/components/ui/typography"
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel"
+import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "../ui/carousel"
 import RoleCard from "./role-card"
 import type { ClientCareerEvent, ClientJob } from "./timeline"
 
@@ -42,33 +42,11 @@ const getOrganizationMark = (employer: string) => {
 }
 
 const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
-    const [api, setApi] = useState<CarouselApi>()
-    const [selectedIndex, setSelectedIndex] = useState(0)
-    const [snapCount, setSnapCount] = useState(0)
-
-    useEffect(() => {
-        if (!api) return
-
-        const updateCarouselState = () => {
-            setSelectedIndex(api.selectedScrollSnap())
-            setSnapCount(api.scrollSnapList().length)
-        }
-
-        updateCarouselState()
-        api.on("select", updateCarouselState)
-        api.on("reInit", updateCarouselState)
-
-        return () => {
-            api.off("select", updateCarouselState)
-            api.off("reInit", updateCarouselState)
-        }
-    }, [api])
-
     return (
         <Carousel opts={{
             align: "start",
             loop: false,
-        }} setApi={setApi}>
+        }}>
             <CarouselContent className="items-stretch">
                 {roles.map((role) => {
                     const roleId = getRoleId(role)
@@ -80,29 +58,7 @@ const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
                     )
                 })}
             </CarouselContent>
-            {snapCount > 1 && (
-                <div className="mt-4 flex justify-center gap-2">
-                    {Array.from({ length: snapCount }).map((_, index) => (
-                        <button
-                            key={index}
-                            type="button"
-                            aria-label={`Show position group ${index + 1}`}
-                            aria-current={selectedIndex === index}
-                            onClick={(event) => {
-                                event.stopPropagation()
-                                api?.scrollTo(index)
-                            }}
-                            className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
-                                selectedIndex === index
-                                    ? "text-primary"
-                                    : "text-primary/50 hover:text-primary"
-                            }`}
-                        >
-                            <span className="h-2.5 w-2.5 rounded-full border border-border bg-current" />
-                        </button>
-                    ))}
-                </div>
-            )}
+            <CarouselDots label="Show position group" />
         </Carousel>
     )
 }

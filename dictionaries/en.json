@@ -54,9 +54,17 @@
         "closeDemo": "Close",
         "repository": "repository",
         "github": {
-            "link": "Github",
-            "public": "View source on Github.",
-            "private": "This repository is private."
+            "link": "GitHub",
+            "public": "View source on GitHub.",
+            "private": "This repository is private.",
+            "privateTitle": "Private repository",
+            "sourceTitle": "View source code on GitHub",
+            "projectAria": "View {project} on GitHub",
+            "detailsAria": "View details for {project}"
+        },
+        "demo": {
+            "link": "View Site",
+            "aria": "View live site for {project}"
         }
     },
     "blog": {

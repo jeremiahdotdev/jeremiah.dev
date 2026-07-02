@@ -1,121 +1,182 @@
+"use client";
+
 import { Project } from "@/types/project";
-import { memo, useMemo, FC, useCallback, KeyboardEvent } from "react"
-import {
-    Card,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import ProjectAvatar from "./project-avatar";
-import BadgeList from "../shared/badge-list";
-import { useDictionary } from "@/components/content/content-provider";
-import { GitBranch, Lock } from "lucide-react"
+import { CSSProperties, FC, memo } from "react";
+import { ExternalLink, Lock } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { HoverTooltip } from "../shared/hover-tooltip";
-import { Progress } from "../ui/progress";
-import { TypographySmall } from "../ui/typography";
+
+import { Card } from "@/components/ui/card";
+import { TypographyH3, TypographyP, TypographySmall } from "@/components/ui/typography";
+import { useDictionary } from "@/components/content/content-provider";
+import ProjectAvatar from "./project-avatar";
+import ProjectLanguageMeter from "./project-language-meter";
+import ProjectTopicBadgeList from "./project-topic-badge-list";
 
 interface ProjectCardProps {
-    project: Project;
-    handleClick: (project: Project) => void
+  project: Project;
+  handleClick?: (project: Project) => void;
 }
-  
-const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }: ProjectCardProps) => {
-    const $t = useDictionary();
-    const badges = project.topics?.map(el =>({ subtitle: el}))
-    const linkStyle = "text-sm font-tight font-serif text-blue-800 dark:text-blue-200"
 
-    const onSelect = useCallback(()=>{
-        handleClick(project)
-    }, [handleClick, project])
+const linkClassName =
+  "portfolio-url inline-flex items-center gap-1 transition-opacity hover:opacity-75";
 
-    const onSelectWithKeyboard = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault()
-            handleClick(project)
-        }
-    }, [handleClick, project])
+function ProjectCardLink({
+  href,
+  label,
+  ariaLabel,
+  title,
+  className,
+  iconSize = 13,
+}: {
+  href: string;
+  label: string;
+  ariaLabel: string;
+  title?: string;
+  className?: string;
+  iconSize?: number;
+}) {
+  return <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel} title={title} onClick={(event) => event.stopPropagation()} className={twMerge(linkClassName, className)}>
+    {label}
+    <ExternalLink size={iconSize} />
+  </a>;
+}
 
-    // Memoized GitHub link component
-    const link = useMemo(() => (
-        project?.private 
-            ? (
-                <HoverTooltip tooltip={$t.projects.github.private} className={twMerge(linkStyle, "opacity-40")}>
-                    {$t.projects.github.link}
-                    <Lock size={16} />
-                </HoverTooltip>
-              )
-            : (
-                <HoverTooltip tooltip={$t.projects.github.public} asChild>
-                    <a
-                        href={project?.link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`View ${project.name} on GitHub`}
-                        onClick={(event) => event.stopPropagation()}
-                        className={twMerge(linkStyle, "hover:underline")}
-                    >
-                        {$t.projects.github.link}
-                        <GitBranch size={16} />
-                    </a>
-                </HoverTooltip>
-            )
-    ), [$t, project]);
+function getTitleSize(name: string) {
+  return name.length > 22 ? "clamp(1rem, 5vw, 1.25rem)" : "clamp(1.25rem, 5vw, 1.5rem)";
+}
 
-    // Memoized languages component
-    const languages = useMemo(() => project?.languages 
-        ?  Object.entries(project.languages).map(([key, value]) => (
-            <div key={key} className="w-full space-y-1">
-                <div className="flex justify-between text-xs">
-                    <span className="font-medium">{key}</span>
-                    <span className="text-foreground">{value}%</span>
-                </div>
-                <Progress value={value} aria-label={`${project.name} ${key} usage`} className="h-1" />
+const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
+  const $t = useDictionary();
+
+  const topics = project.topics ?? [];
+  const languageEntries = project.languages ?? [];
+  const primaryLanguageColor = languageEntries[0]?.color;
+
+  const hasTopics = topics.length > 0;
+  const isSelectable = !!handleClick;
+
+  const projectLabel = (template: string) =>
+    template.replace("{project}", project.name);
+
+  const themeStyle = {
+    "--portfolio-card-image": project.theme?.cardSrc
+      ? `url("${project.theme.cardSrc}")`
+      : "none",
+    "--portfolio-card-dark-image": project.theme?.cardDarkSrc
+      ? `url("${project.theme.cardDarkSrc}")`
+      : "none",
+    "--portfolio-url-color": primaryLanguageColor,
+  } as CSSProperties;
+
+  const cardClassName = twMerge(
+    "relative flex h-full w-full overflow-hidden rounded-2xl border border-border bg-card",
+    isSelectable && "hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  );
+
+  const githubLink = project.private ? (
+    <span
+      title={$t.projects.github.privateTitle}
+      className={twMerge(linkClassName, "opacity-50")}
+    >
+      {$t.projects.github.link}
+      <Lock size={13} />
+    </span>
+  ) : (
+    <ProjectCardLink
+      href={project.link.href}
+      label={$t.projects.github.link}
+      ariaLabel={projectLabel($t.projects.github.projectAria)}
+      title={$t.projects.github.sourceTitle}
+    />
+  );
+
+  const demoLink = project.demo ? (
+    <ProjectCardLink
+      href={project.demo.href}
+      label={$t.projects.demo.link}
+      ariaLabel={projectLabel($t.projects.demo.aria)}
+      className="shrink-0"
+      iconSize={14}
+    />
+  ) : null;
+
+  return (
+    <Card
+      role={isSelectable ? "button" : undefined}
+      tabIndex={isSelectable ? 0 : undefined}
+      aria-label={
+        isSelectable ? projectLabel($t.projects.github.detailsAria) : undefined
+      }
+      onClick={handleClick ? () => handleClick(project) : undefined}
+      onKeyDown={
+        handleClick
+          ? (event) => {
+              if (event.key !== "Enter" && event.key !== " ") return;
+
+              event.preventDefault();
+              handleClick(project);
+            }
+          : undefined
+      }
+      style={themeStyle}
+      className={cardClassName}
+    >
+      {project.theme?.href && (
+        <link rel="stylesheet" href={project.theme.href} />
+      )}
+      <div className="portfolio-card-background absolute inset-0" />
+      <div className="relative z-10 flex min-h-full w-full flex-col">
+        <div className="flex flex-1 flex-col p-5">
+          <header className="mb-4 flex items-start gap-3">
+            <span className="shrink-0">
+              <ProjectAvatar icon={project.icon} />
+            </span>
+            <div className="min-w-0">
+              <TypographyH3
+                className="break-words leading-tight"
+                style={{ fontSize: getTitleSize(project.name) }}
+              >
+                {project.name}
+              </TypographyH3>
             </div>
-        )) : null
-    , [$t, project]);
-
-    // Memoized component
-    const content = useMemo(() => (
-        <Card
-            role="button"
-            tabIndex={0}
-            aria-label={`View details for ${project.name}`}
-            onClick={onSelect}
-            onKeyDown={onSelectWithKeyboard}
-            className="rounded-xl hover:cursor-pointer hover:shadow-outer h-full max-h-full w-full flex flex-col overflow-hidden relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-            <CardHeader className="min-h-64 px-5 pb-4 pt-5 lg:min-h-0">
-                <div className="flex min-h-44 w-full flex-col items-start rounded-md text-left">
-                    <CardTitle className="w-full">
-                        <span className="flex min-w-0 max-w-full items-center gap-3 py-1 tracking-tight font-mono">
-                            <span className="shrink-0">
-                                <ProjectAvatar icon={project.icon}/>
-                            </span>
-                            <span className="min-w-0 max-w-full break-words [overflow-wrap:anywhere]">
-                                {project.name}    
-                            </span>
-                        </span>
-                    </CardTitle>
-                    <CardDescription className="mb-2 text-foreground">{project.description}</CardDescription>
-                    <BadgeList badges={badges}/>
+          </header>
+          <div className="portfolio-surface rounded-md p-4">
+            <TypographyP>{project.description}</TypographyP>
+          </div>
+          {(hasTopics || languageEntries.length > 0) && (
+            <section className="mt-auto grid grid-cols-2 items-center gap-5 pt-5">
+              {hasTopics && (
+                <ProjectTopicBadgeList
+                  topics={topics}
+                  surfaceClassName="portfolio-surface"
+                />
+              )}
+              {languageEntries.length > 0 && (
+                <div className={twMerge("flex justify-center", !hasTopics && "col-start-2")}>
+                  <ProjectLanguageMeter languages={languageEntries} />
                 </div>
-            </CardHeader>
-            {languages && (
-                <div className="rounded-b-xl border-t border-border/60 bg-card p-4 0">
-                    <span className="flex items-center gap-2 mb-2 justify-between">
-                        <TypographySmall variant="label">{$t.projects.repository}</TypographySmall>
-                        {link}
-                    </span>
-                    <div className="w-full flex flex-col gap-2">
-                        {languages}
-                    </div>
-                </div>
-            )}
-        </Card>
-    ), [project, onSelect, onSelectWithKeyboard, badges, link, languages, $t]);
-
-    return (content);
+              )}
+            </section>
+          )}
+        </div>
+        <footer className="relative overflow-hidden border-t border-border px-5 py-4">
+          <div className="portfolio-surface absolute inset-0" />
+          <div className="relative z-10 flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="portfolio-surface flex size-10 shrink-0 items-center justify-center rounded-md text-md">
+                {"</>"}
+              </div>
+              <div className="flex min-w-0 flex-col justify-center gap-1">
+                <TypographySmall>{$t.projects.repository}</TypographySmall>
+                {githubLink}
+              </div>
+            </div>
+            <div className="flex shrink-0 items-center">{demoLink}</div>
+          </div>
+        </footer>
+      </div>
+    </Card>
+  );
 };
 
 export default memo(ProjectCard);
