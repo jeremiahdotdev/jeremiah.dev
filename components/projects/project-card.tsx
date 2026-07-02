@@ -162,7 +162,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
             </section>
           )}
         </div>
-        <footer className="relative overflow-hidden border-t border-border px-5 py-4">
+        <footer className="portfolio-footer relative overflow-hidden border-t border-border px-5 py-4">
           <div className="portfolio-footer-surface absolute inset-0 rounded-b-[1rem]" />
           <div className="relative z-10 flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">

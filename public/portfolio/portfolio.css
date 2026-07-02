@@ -16,13 +16,6 @@
   backdrop-filter: blur(12px);
 }
 
-.portfolio-footer-surface {
-  border: 1px solid hsl(var(--border) / 0.45);
-  background: hsl(var(--card) / 0.72);
-  box-shadow: 0 8px 24px hsl(var(--foreground) / 0.08);
-  backdrop-filter: blur(16px);
-}
-
 .portfolio-surface p {
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 500;
@@ -32,13 +25,9 @@
 }
 
 .portfolio-url {
-  color: var(--portfolio-url-color, hsl(var(--primary)));
+  color: #8b5cf6;
 }
 
-.portfolio-footer .portfolio-url {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  letter-spacing: normal;
-  text-transform: none;
+.dark .portfolio-url {
+  color: #a78bfa;
 }
