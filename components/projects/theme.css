@@ -51,3 +51,7 @@
 .dark [data-portfolio-has-dark-image="false"] .portfolio-language-meter-value {
   color: #111827;
 }
+
+.dark [data-portfolio-has-dark-image="false"] .portfolio-language-meter-name {
+  color: #111827 !important;
+}
