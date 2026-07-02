@@ -39,7 +39,7 @@ const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick, orientat
     }
 
     return (
-        <div className="h-full min-h-0 w-full max-w-[25rem] overflow-y-auto overflow-x-hidden">
+        <div className="h-full min-h-0 w-full max-w-[25rem] overflow-y-auto overflow-x-hidden pb-6">
             <div className="flex min-h-full flex-col gap-4 p-4">
                 {projects.map((project) => (
                     <div key={project.name} className="flex w-full shrink-0">
