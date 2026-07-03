@@ -18,7 +18,7 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
 
     return (
         <>
-            <div className="hidden h-page-content max-h-page-content w-full flex-1 flex-col overflow-hidden rounded-md border border-border bg-dashboard shadow-inner lg:flex">
+            <div className="hidden h-dashboard-content max-h-page-content w-full flex-1 flex-col overflow-hidden rounded-md border border-border bg-dashboard shadow-inner lg:flex">
                 <div className="flex min-h-14 items-center justify-end gap-4 border-b border-border bg-dashboard-header p-4 shadow-xl">
                     <ClickTooltip tooltip={$t.projects.info} className="font-serif tracking-tight">
                         <InfoIcon className="cursor-pointer hover:text-muted-foreground"/>
