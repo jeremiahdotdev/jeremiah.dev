@@ -20,7 +20,7 @@ const typographyH2Variants = cva(
   }
 )
 
-const typographyPVariants = cva("leading-7 [&:not(:first-child)]:mt-6", {
+const typographyPVariants = cva("leading-7", {
   variants: {
     variant: {
       default: "",

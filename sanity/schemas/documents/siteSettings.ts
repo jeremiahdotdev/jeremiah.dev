@@ -62,7 +62,6 @@ export const siteSettings = defineType({
           {name: 'heading', title: 'Heading', type: 'string'},
           {name: 'description', title: 'Description', type: 'string'},
           {name: 'info', title: 'Info', type: 'text'},
-          {name: 'instruction', title: 'Instruction', type: 'string'},
           {name: 'placeholder', title: 'Placeholder', type: 'string'},
           {name: 'viewDemo', title: 'View demo label', type: 'string'},
           {name: 'closeDemo', title: 'Close demo label', type: 'string'},

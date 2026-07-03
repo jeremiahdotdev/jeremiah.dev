@@ -1,5 +1,6 @@
 "use client";
 
+import { MouseEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 
 export type LanguageEntry = {
@@ -127,7 +128,8 @@ export default function ProjectLanguageMeter({
         onMouseLeave={resetActiveLanguage}
         onFocus={() => setActiveLanguageName(language.name)}
         onBlur={resetActiveLanguage}
-        onClick={() => {
+        onClick={(event) => {
+          event.stopPropagation();
           if (showLanguageList) return;
           togglePinnedLanguage();
         }}
@@ -150,6 +152,7 @@ export default function ProjectLanguageMeter({
     <div
       className="portfolio-language-meter relative grid place-items-center rounded-full"
       style={{ width: size, height: size }}
+      onClick={(event) => event.stopPropagation()}
       title={languages
         .map((language) => `${language.name}: ${language.value}%`)
         .join("\n")}
@@ -159,8 +162,14 @@ export default function ProjectLanguageMeter({
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         className={`absolute inset-0 -rotate-90 overflow-visible ${
-          showLanguageList ? "opacity-0 pointer-events-none" : "opacity-100"
+          showLanguageList ? "pointer-events-none" : ""
         }`}
+        style={{
+          opacity: showLanguageList ? 0 : 1,
+          transform: `rotate(-90deg) scale(${showLanguageList ? 0.92 : 1})`,
+          transformOrigin: "center",
+          transition: "opacity 260ms ease, transform 260ms ease",
+        }}
         aria-hidden="true"
       >
         <circle
@@ -178,21 +187,49 @@ export default function ProjectLanguageMeter({
 
       <button
         type="button"
-        onClick={() => setShowLanguageList((current) => !current)}
+        onClick={(event: MouseEvent<HTMLButtonElement>) => {
+          event.stopPropagation();
+          setShowLanguageList((current) => !current);
+        }}
         aria-label={
           showLanguageList
             ? "Show language meter"
             : "Show language percentage list"
         }
         aria-pressed={showLanguageList}
-        className={
-          showLanguageList
-            ? "absolute inset-0 z-10 flex flex-col justify-center gap-1 text-left"
-            : "relative z-10 flex min-w-20 min-h-20 flex-col items-center justify-center gap-1 text-center"
-        }
+        className="absolute inset-0 z-10 flex items-center justify-center p-0"
       >
-        {showLanguageList ? (
-          <span className="flex w-full max-h-full flex-col gap-1 overflow-y-auto">
+        <span
+          className={`absolute inset-0 flex flex-col items-center justify-center gap-1 text-center ${
+            showLanguageList ? "pointer-events-none" : ""
+          }`}
+          style={{
+            opacity: showLanguageList ? 0 : 1,
+            transform: `scale(${showLanguageList ? 0.96 : 1}) translateY(${showLanguageList ? -4 : 0}px)`,
+            transition: "opacity 220ms ease, transform 220ms ease",
+          }}
+        >
+          <span
+            className="portfolio-language-meter-name text-md font-bold transition-colors duration-300"
+            style={{ color: activeLanguage.color }}
+          >
+            {activeLanguage.name}
+          </span>
+          <span className="portfolio-language-meter-value text-lg font-bold text-foreground transition-colors duration-300">
+            {activeLanguage.value}%
+          </span>
+        </span>
+        <span
+          className={`absolute inset-0 flex w-full max-h-full flex-col justify-center gap-1 overflow-y-auto text-left ${
+            showLanguageList ? "" : "pointer-events-none"
+          }`}
+          style={{
+            opacity: showLanguageList ? 1 : 0,
+            transform: `scale(${showLanguageList ? 1 : 0.96}) translateY(${showLanguageList ? 0 : 4}px)`,
+            transition: "opacity 220ms ease, transform 220ms ease",
+          }}
+        >
+          <span className="flex w-full flex-col gap-1">
             {languages.map((language) => (
               <span
                 key={language.name}
@@ -207,19 +244,7 @@ export default function ProjectLanguageMeter({
               </span>
             ))}
           </span>
-        ) : (
-          <>
-            <span
-              className="portfolio-language-meter-name transition-colors duration-300 text-md font-bold"
-              style={{ color: activeLanguage.color }}
-            >
-              {activeLanguage.name}
-            </span>
-            <span className="portfolio-language-meter-value transition-colors duration-300 text-lg font-foreground font-bold">
-              {activeLanguage.value}%
-            </span>
-          </>
-        )}
+        </span>
       </button>
     </div>
   );

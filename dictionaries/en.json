@@ -48,7 +48,6 @@
         "heading": "Projects",
         "description": "A showcase of personal, published projects.",
         "info": "This dashboard seamlessly retrieves projects from my GitHub organization by leveraging the capabilities of the GitHub Public API.",
-        "instruction": "Select a project to view",
         "placeholder": "P R O J E C T",
         "viewDemo": "VIEW LIVE DEMO",
         "closeDemo": "Close",

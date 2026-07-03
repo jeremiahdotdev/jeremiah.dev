@@ -88,7 +88,22 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
     isSelectable && "hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   );
 
-  const descriptionLineHeightClass = project.description.length > 120 ? "leading-relaxed" : "leading-snug";
+  const descriptionLineHeightClass = () => {
+    const l = project.description.length;
+    const lClass = l > 290  ? "leading-[1.4]" 
+      : l > 280 ? "leading-[1.5]" 
+      : l > 270 ? "leading-[1.6]" 
+      : l > 260 ? "leading-[1.7]" 
+      : l > 250 ? "leading-[1.8]" 
+      : l > 140 ? "leading-[1.9]" 
+      : l > 170 ? "leading-[2.0]" 
+      : l > 130 ? "leading-[2.1]" 
+      : l > 120 ? "leading-[2.2]" 
+      : l > 110 ? "leading-[2.3]" 
+      : l > 90 ? "leading-[2.4]" : "leading-[2.5]";
+
+    return twMerge(lClass, 'lg:leading-[1.5]');
+  }
   
   const githubLink = project.private ? (
     <span
@@ -160,9 +175,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
               </TypographyH3>
             </div>
           </header>
-          <div className={twMerge("portfolio-surface rounded-md p-4", descriptionLineHeightClass)}>
-            <TypographyP>{project.description}</TypographyP>
-          </div>
+          <p className={twMerge("portfolio-surface rounded-md p-4 pb-6", descriptionLineHeightClass())}>{project.description}</p>
           {(hasTopics || languageEntries.length > 0) && (
             <section className="mt-auto grid grid-cols-2 items-center gap-5 pt-5">
               {hasTopics && (
