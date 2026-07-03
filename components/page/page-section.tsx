@@ -45,8 +45,8 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, showBorder, r
         );
     } else {
         return (
-            <section id={id} className={`relative flex h-screen min-h-fit w-full flex-col ${getCSSForVariant(variant)} ${hasSplashBackdrop ? splashStyles.section : "border-y border-border/60 shadow-lg"}`}>
-                <div className="relative z-0 h-full min-h-fit w-full flex flex-col flex-grow mb-8">
+            <section id={id} className={`relative flex min-h-[100svh] w-full flex-col md:h-screen ${getCSSForVariant(variant)} ${hasSplashBackdrop ? splashStyles.section : "border-y border-border/60 shadow-lg"}`}>
+                <div className="relative z-0 flex h-auto min-h-full w-full flex-1 flex-col mb-8">
                     {children}
                 </div>
             </section>

@@ -13,9 +13,9 @@ export default function Home({ dictionary }: HomeProps) {
   const $t = dictionary;
 
   return (
-    <PageSection id={$t.home.id} variant={PageSectionVariant.Primary} showBorder={true} rotate={true}>
+      <PageSection id={$t.home.id} variant={PageSectionVariant.Primary} showBorder={true} rotate={true}>
       <PageSectionContent className="relative">
-          <TypeHeading end={$t.home.typeHeadingEnd} stack={$t.home.typeHeading} className="w-full h-full flex flex-col justify-center items-center h-screen"/>
+          <TypeHeading end={$t.home.typeHeadingEnd} stack={$t.home.typeHeading} className="flex h-full min-h-[100svh] w-full flex-col items-center justify-center md:min-h-0"/>
       </PageSectionContent>
     </PageSection>
   );

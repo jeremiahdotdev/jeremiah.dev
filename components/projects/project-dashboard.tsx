@@ -33,7 +33,7 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
                     </div>
                 </div>
             </div>
-            <div className="relative flex h-page-content w-full flex-1 flex-col justify-center min-h-fit overflow-x-hidden lg:hidden">
+            <div className="relative flex min-h-page-content w-full flex-1 flex-col justify-center overflow-x-hidden lg:hidden">
                 <ProjectCardList orientation="horizontal" projects={projects} />
             </div>
         </>
