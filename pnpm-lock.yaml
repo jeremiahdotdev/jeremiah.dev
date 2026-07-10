@@ -8,7 +8,7 @@ importers:
 
   .: {}
 
-  apps/web:
+  apps/portfolio:
     dependencies:
       '@aws-sdk/client-ses':
         specifier: ^3.679.0
