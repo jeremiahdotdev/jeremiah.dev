@@ -8,7 +8,9 @@ type RecaptchaProviderProps = {
 };
 
 export default function RecaptchaProvider({ children }: RecaptchaProviderProps) {
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(
+    () => typeof window !== "undefined" && !("IntersectionObserver" in window)
+  );
   const triggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,10 +19,7 @@ export default function RecaptchaProvider({ children }: RecaptchaProviderProps) 
     const trigger = triggerRef.current;
     if (!trigger) return;
 
-    if (!("IntersectionObserver" in window)) {
-      setShouldLoad(true);
-      return;
-    }
+    if (!("IntersectionObserver" in window)) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {

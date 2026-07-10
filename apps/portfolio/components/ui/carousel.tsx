@@ -30,6 +30,20 @@ type CarouselContextProps = {
   canScrollNext: boolean
 }
 
+type CarouselState = {
+  canScrollPrev: boolean
+  canScrollNext: boolean
+  selectedIndex: number
+  snapCount: number
+}
+
+const defaultCarouselState: CarouselState = {
+  canScrollPrev: false,
+  canScrollNext: false,
+  selectedIndex: 0,
+  snapCount: 0,
+}
+
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
 function useCarousel() {
@@ -40,6 +54,54 @@ function useCarousel() {
   }
 
   return context
+}
+
+function useCarouselState(api: CarouselApi): CarouselState {
+  const snapshotRef = React.useRef(defaultCarouselState)
+
+  const subscribe = React.useCallback(
+    (onStoreChange: () => void) => {
+      if (!api) return () => {}
+
+      api.on("select", onStoreChange)
+      api.on("reInit", onStoreChange)
+
+      return () => {
+        api.off("select", onStoreChange)
+        api.off("reInit", onStoreChange)
+      }
+    },
+    [api]
+  )
+
+  const getSnapshot = React.useCallback(() => {
+    if (!api) {
+      snapshotRef.current = defaultCarouselState
+      return snapshotRef.current
+    }
+
+    const nextSnapshot = {
+      canScrollPrev: api.canScrollPrev(),
+      canScrollNext: api.canScrollNext(),
+      selectedIndex: api.selectedScrollSnap(),
+      snapCount: api.scrollSnapList().length,
+    }
+
+    const currentSnapshot = snapshotRef.current
+    if (
+      currentSnapshot.canScrollPrev === nextSnapshot.canScrollPrev &&
+      currentSnapshot.canScrollNext === nextSnapshot.canScrollNext &&
+      currentSnapshot.selectedIndex === nextSnapshot.selectedIndex &&
+      currentSnapshot.snapCount === nextSnapshot.snapCount
+    ) {
+      return currentSnapshot
+    }
+
+    snapshotRef.current = nextSnapshot
+    return nextSnapshot
+  }, [api])
+
+  return React.useSyncExternalStore(subscribe, getSnapshot, () => defaultCarouselState)
 }
 
 const Carousel = React.forwardRef<
@@ -64,17 +126,7 @@ const Carousel = React.forwardRef<
       },
       plugins
     )
-    const [canScrollPrev, setCanScrollPrev] = React.useState(false)
-    const [canScrollNext, setCanScrollNext] = React.useState(false)
-
-    const onSelect = React.useCallback((api: CarouselApi) => {
-      if (!api) {
-        return
-      }
-
-      setCanScrollPrev(api.canScrollPrev())
-      setCanScrollNext(api.canScrollNext())
-    }, [])
+    const carouselState = useCarouselState(api)
 
     const scrollPrev = React.useCallback(() => {
       api?.scrollPrev()
@@ -97,21 +149,6 @@ const Carousel = React.forwardRef<
       [scrollPrev, scrollNext]
     )
 
-    React.useEffect(() => {
-      if (!api) {
-        return
-      }
-
-      onSelect(api)
-      api.on("reInit", onSelect)
-      api.on("select", onSelect)
-
-      return () => {
-        api.off("select", onSelect)
-        api.off("reInit", onSelect)
-      }
-    }, [api, onSelect])
-
     return (
       <CarouselContext.Provider
         value={{
@@ -120,8 +157,8 @@ const Carousel = React.forwardRef<
           orientation,
           scrollPrev,
           scrollNext,
-          canScrollPrev,
-          canScrollNext,
+          canScrollPrev: carouselState.canScrollPrev,
+          canScrollNext: carouselState.canScrollNext,
         }}
       >
         <div
@@ -249,26 +286,7 @@ const CarouselDots = React.forwardRef<
   }
 >(({ className, label = "Show slide group", ...props }, ref) => {
   const { api } = useCarousel()
-  const [selectedIndex, setSelectedIndex] = React.useState(0)
-  const [snapCount, setSnapCount] = React.useState(0)
-
-  React.useEffect(() => {
-    if (!api) return
-
-    const updateCarouselState = () => {
-      setSelectedIndex(api.selectedScrollSnap())
-      setSnapCount(api.scrollSnapList().length)
-    }
-
-    updateCarouselState()
-    api.on("select", updateCarouselState)
-    api.on("reInit", updateCarouselState)
-
-    return () => {
-      api.off("select", updateCarouselState)
-      api.off("reInit", updateCarouselState)
-    }
-  }, [api])
+  const { selectedIndex, snapCount } = useCarouselState(api)
 
   if (snapCount <= 1) return null
 

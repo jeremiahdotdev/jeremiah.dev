@@ -1,6 +1,7 @@
 import { experiences as fallbackExperiences } from '@/data/career'
 import { ImportedCareerEvent } from '@/types/job'
 import { Skill } from '@/types/skill'
+import Image from 'next/image'
 import { client } from '../client'
 import { hasSanityConfig } from '../env'
 import { careerEmployersQuery } from '../queries'
@@ -43,13 +44,14 @@ function toSkill(skill: SanitySkill): Skill {
     subtitle: skill.subtitle || skill.title || '',
     tooltip: skill.tooltip,
     image: iconUrl ? (
-      <img
+      <Image
         src={iconUrl}
         alt={skill.subtitle || skill.title || ''}
         className="h-4 w-4"
+        width={16}
+        height={16}
+        unoptimized
         loading="lazy"
-        decoding="async"
-        fetchPriority="low"
       />
     ) : undefined,
     href: skill.href || '#',

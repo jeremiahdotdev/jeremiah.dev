@@ -205,7 +205,7 @@ export const experiences = [
                 startDate: new Date(2017, 8, 1),
                 endDate: new Date(2020, 5, 1), 
                 description: (<p>
-                    Worked as a lab assistant in the College's mathematics and physics department. Assisted in instructing students in the areas of Calculus, Calculus-based Physics, Abstract Algebra, Statistics, both Numerical and Real analysis, and more.
+                    Worked as a lab assistant in the College&apos;s mathematics and physics department. Assisted in instructing students in the areas of Calculus, Calculus-based Physics, Abstract Algebra, Statistics, both Numerical and Real analysis, and more.
                 </p>),
                 skills: [
                     skills.LaTeX,

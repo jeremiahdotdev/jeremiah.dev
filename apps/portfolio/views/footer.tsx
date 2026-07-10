@@ -3,6 +3,7 @@ import { TypographyMuted } from '@/components/ui/typography';
 import { PageSectionVariant } from '@/types/page';
 import type { Dictionary } from '@/types/dictionary';
 import packageJson from '@/package.json';
+import Link from 'next/link';
 
 interface FooterProps {
   dictionary: Dictionary
@@ -20,7 +21,7 @@ export default function Footer({ dictionary }: FooterProps) {
           &copy; {currentYear} {$t.footer.copyright}
         </TypographyMuted>
           <TypographyMuted variant="footer">
-            {$t.footer.captcha.label} <a href={$t.footer.captcha.url} target="_blank" rel="noopener noreferrer" className='underline'>{$t.footer.captcha.captcha}</a>, <a href="/studio" className="underline">Sanity v{sanityVersion}</a>
+            {$t.footer.captcha.label} <a href={$t.footer.captcha.url} target="_blank" rel="noopener noreferrer" className='underline'>{$t.footer.captcha.captcha}</a>, <Link href="/studio" className="underline">Sanity v{sanityVersion}</Link>
           </TypographyMuted>
       </div>
     </PageSection>

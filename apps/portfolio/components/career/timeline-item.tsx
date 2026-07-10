@@ -96,7 +96,7 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, childre
                         <div className="flex flex-col">
                             <TypographyH2 text={event.employer} className="border-b-0 p-0 text-2xl font-semibold leading-tight tracking-normal" />
                             <TypographyMuted asChild>
-                                {event.location}
+                                <span>{event.location}</span>
                             </TypographyMuted>
                         </div>
                         <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-muted-foreground sm:justify-end">

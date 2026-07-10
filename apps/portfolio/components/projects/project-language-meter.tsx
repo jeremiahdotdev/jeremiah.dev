@@ -1,7 +1,7 @@
 "use client";
 
 import { MouseEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 export type LanguageEntry = {
   name: string;
@@ -17,34 +17,23 @@ export default function ProjectLanguageMeter({
   languages,
 }: ProjectLanguageMeterProps) {
   const defaultLanguageName = languages[0]?.name ?? "";
-  const [activeLanguageName, setActiveLanguageName] = useState(
-    defaultLanguageName
-  );
+  const [hoveredLanguageName, setHoveredLanguageName] = useState("");
   const [pinnedLanguageName, setPinnedLanguageName] = useState("");
   const [showLanguageList, setShowLanguageList] = useState(false);
-
-  useEffect(() => {
-    if (!languages.length) {
-      setPinnedLanguageName("");
-      setActiveLanguageName("");
-      return;
-    }
-
-    if (
-      pinnedLanguageName &&
-      !languages.some((language) => language.name === pinnedLanguageName)
-    ) {
-      setPinnedLanguageName("");
-    }
-
-    if (!languages.some((language) => language.name === activeLanguageName)) {
-      setActiveLanguageName(defaultLanguageName);
-    }
-  }, [languages, activeLanguageName, pinnedLanguageName, defaultLanguageName]);
-
+  const effectivePinnedLanguageName = languages.some(
+    (language) => language.name === pinnedLanguageName
+  )
+    ? pinnedLanguageName
+    : "";
+  const effectiveHoveredLanguageName = languages.some(
+    (language) => language.name === hoveredLanguageName
+  )
+    ? hoveredLanguageName
+    : "";
+  const activeLanguageName =
+    effectiveHoveredLanguageName || effectivePinnedLanguageName || defaultLanguageName;
   const activeLanguage =
-    languages.find((language) => language.name === activeLanguageName) ??
-    languages[0];
+    languages.find((language) => language.name === activeLanguageName) ?? languages[0];
 
   const size = 144;
   const strokeWidth = 11;
@@ -56,13 +45,17 @@ export default function ProjectLanguageMeter({
   const visualMinPercent = 3;
 
   const segments = useMemo(() => {
-    let offset = 0;
     const visualValues = languages.map((language) =>
       Math.max(language.value, visualMinPercent)
     );
     const visualTotal = visualValues.reduce((total, value) => total + value, 0);
 
-    return languages.map((language, index) => {
+    return languages.reduce<(LanguageEntry & { dashLength: number; dashOffset: number })[]>(
+      (allSegments, language, index) => {
+      const offset = allSegments.reduce(
+        (total, segment) => total + segment.dashLength,
+        0
+      );
       const visualValue = visualTotal
         ? (visualValues[index] / visualTotal) * 100
         : language.value;
@@ -70,14 +63,15 @@ export default function ProjectLanguageMeter({
       const gapLength = Math.min(segmentGap, rawLength * 0.5);
       const dashLength = Math.max(rawLength - gapLength, 0);
       const dashOffset = -(offset + gapLength / 2);
-      offset += rawLength;
 
-      return {
+      allSegments.push({
         ...language,
         dashLength,
         dashOffset,
-      };
-    });
+      });
+
+      return allSegments;
+    }, []);
   }, [languages, circumference, segmentGap, visualMinPercent]);
 
   if (!activeLanguage) return null;
@@ -91,18 +85,12 @@ export default function ProjectLanguageMeter({
 
   const renderSegment = (language: (typeof segments)[number]) => {
     const isActive = activeLanguage.name === language.name;
-    const isPinned = pinnedLanguageName === language.name;
-
-    const resetActiveLanguage = () => {
-      setActiveLanguageName(pinnedLanguageName || defaultLanguageName);
-    };
+    const isPinned = effectivePinnedLanguageName === language.name;
 
     const togglePinnedLanguage = () => {
-      setPinnedLanguageName((currentPinned) => {
-        const nextPinned = currentPinned === language.name ? "" : language.name;
-        setActiveLanguageName(nextPinned || defaultLanguageName);
-        return nextPinned;
-      });
+      setPinnedLanguageName((currentPinned) =>
+        currentPinned === language.name ? "" : language.name
+      );
     };
 
     return (
@@ -124,10 +112,10 @@ export default function ProjectLanguageMeter({
           transform: isActive || isPinned ? "scale(1.05)" : "scale(1)",
           transformOrigin: "center",
         }}
-        onMouseEnter={() => setActiveLanguageName(language.name)}
-        onMouseLeave={resetActiveLanguage}
-        onFocus={() => setActiveLanguageName(language.name)}
-        onBlur={resetActiveLanguage}
+        onMouseEnter={() => setHoveredLanguageName(language.name)}
+        onMouseLeave={() => setHoveredLanguageName("")}
+        onFocus={() => setHoveredLanguageName(language.name)}
+        onBlur={() => setHoveredLanguageName("")}
         onClick={(event) => {
           event.stopPropagation();
           if (showLanguageList) return;

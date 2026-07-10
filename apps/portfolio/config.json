@@ -11,7 +11,7 @@
         "repos": "/orgs/jeremiahdotdev/repos",
         "raw": "https://raw.githubusercontent.com",
         "portfolio": {
-            "path": "public/portfolio",
+            "path": ".portfolio",
             "thumbnail": "thumbnail.png",
             "theme": "portfolio.css",
             "themeDark": "portfolio-dark.css",

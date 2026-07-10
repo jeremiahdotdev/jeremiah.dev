@@ -1,5 +1,5 @@
 "use client"
-import { FC, useEffect, useState, memo, useMemo, useRef } from "react";
+import { FC, useEffect, useState, memo, useMemo, useRef, useCallback } from "react";
 
 interface ThemeToggleProps {
     className?: string,
@@ -35,9 +35,9 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
     const timeoutIds = useRef<number[]>([])
     const hasStarted = useRef(false)
     
-    const typeAhead = (index: number, length: number) => ((index % 2 === 0) || (index === length - 1)) ? "" : "|"
+    const typeAhead = useCallback((index: number, length: number) => ((index % 2 === 0) || (index === length - 1)) ? "" : "|", [])
 
-    const typeWord = (word: string, action=setHeading) => {
+    const typeWord = useCallback((word: string, action=setHeading) => {
         const wordArray = word.split("");
         wordArray.forEach((character, index) => {
             const timeoutId = window.setTimeout(() => { 
@@ -48,9 +48,9 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
             // When you reach the end of the stack, cease typing. 
             if (index === wordArray.length - 1) return;
         })    
-    }
+    }, [typeAhead])
 
-    const untypeWord = (word: string) => {
+    const untypeWord = useCallback((word: string) => {
         const wordArray = word.split("");
         wordArray.forEach((character, index) => {
             const timeoutId = window.setTimeout(() => { 
@@ -58,9 +58,9 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
             }, index * 150 + (duration/2))
             timeoutIds.current.push(timeoutId)
         })    
-    }
+    }, [duration, typeAhead])
 
-    const typeEffect = () => {
+    const typeEffect = useCallback(() => {
         if (hasStarted.current) return
         hasStarted.current = true
 
@@ -75,7 +75,7 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
             typeWord(end, setTitle)
         }, newStack.length * duration)
         timeoutIds.current.push(timeoutId)
-    }
+    }, [end, newStack, typeWord, untypeWord])
 
     useEffect(() => {
         typeEffect()
@@ -85,7 +85,7 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
             timeoutIds.current = []
             hasStarted.current = false
         }
-    }, [end, newStack])
+    }, [typeEffect])
 
     const typeHeading = useMemo(() => (
         <span className={`font-serif flex items-center justify-center ${className}`}>

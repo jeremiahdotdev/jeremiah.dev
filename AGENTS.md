@@ -26,7 +26,7 @@ Each project card expects the normal GitHub repository fields:
 Project-specific card assets live in:
 
 ```text
-public/portfolio
+.portfolio
 ```
 
 The configured filenames are in `config.json` under `github.portfolio`.
@@ -35,11 +35,11 @@ The configured filenames are in `config.json` under `github.portfolio`.
 
 Add these files to a project repository when creating a custom portfolio card:
 
-- `public/portfolio/thumbnail.png`: Project avatar/thumbnail shown on the card.
-- `public/portfolio/portfolio.css`: Optional card theme CSS. If this file is missing, the default portfolio theme is used.
-- `public/portfolio/portfolio-dark.css`: Optional dark-mode overrides for card theme CSS.
-- `public/portfolio/card.webp`: Optional light-mode card background image.
-- `public/portfolio/card-dark.webp`: Optional dark-mode card background image.
+- `.portfolio/thumbnail.png`: Project avatar/thumbnail shown on the card.
+- `.portfolio/portfolio.css`: Optional card theme CSS. If this file is missing, the default portfolio theme is used.
+- `.portfolio/portfolio-dark.css`: Optional dark-mode overrides for card theme CSS.
+- `.portfolio/card.webp`: Optional light-mode card background image.
+- `.portfolio/card-dark.webp`: Optional dark-mode card background image.
 
 ### Theme CSS Hooks
 
@@ -59,9 +59,9 @@ The app provides these CSS variables on each card:
 
 ### Private Repositories
 
-Private repositories cannot expose raw GitHub asset URLs to the browser. The API layer reads files from `public/portfolio` and converts them to `data:` URLs when needed.
+Private repositories cannot expose raw GitHub asset URLs to the browser. The API layer reads files from `.portfolio` and converts them to `data:` URLs when needed.
 
-For private repositories, include the same files in `public/portfolio`; do not rely on public raw URLs.
+For private repositories, include the same files in `.portfolio`; do not rely on public raw URLs.
 
 ### Defaults
 

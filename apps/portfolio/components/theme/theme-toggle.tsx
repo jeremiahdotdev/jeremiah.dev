@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, useMemo, useCallback, FC, useState, useEffect } from "react"
+import { memo, useMemo, useCallback, FC } from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes";
 import { useDictionary } from '@/components/content/content-provider';
@@ -12,17 +12,12 @@ interface ThemeToggleProps {
 
 const ThemeToggle: FC<ThemeToggleProps> = ({className}: ThemeToggleProps) => {
   const { setTheme, theme } = useTheme();
-  const [isPressed, setIsPressed] = useState<boolean>(false)
   const $t = useDictionary();
-
-  useEffect(() => {
-    setIsPressed(theme === "light")
-  }, [theme])
+  const isPressed = theme === "light"
 
   const setChangeTheme = useCallback((wasPressed: boolean) => {
-    setIsPressed(wasPressed)
     setTheme(wasPressed ? 'light' : 'dark')
-  }, [setTheme, setIsPressed]);
+  }, [setTheme]);
 
   // Memoized button component
   const toggle = useMemo(() => (

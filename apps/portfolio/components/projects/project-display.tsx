@@ -1,6 +1,6 @@
 import { useDictionary } from "@/components/content/content-provider";
 import { Project } from "@/types/project";
-import { memo, useMemo, FC, useState, useCallback, useEffect } from "react"
+import { memo, useMemo, FC, useState, useCallback } from "react"
 import { Skeleton } from "../ui/skeleton";
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "../ui/drawer";
 import ProjectDrawerButton from "./project-drawer-button";
@@ -11,31 +11,29 @@ interface ProjectDisplayProps {
 }
   
 const ProjectDisplay: FC<ProjectDisplayProps> = ({ project }: ProjectDisplayProps) => {
-    const [frameIsLoading, setIsFrameLoading] = useState<boolean>(true)
+    const [loadedDemoKey, setLoadedDemoKey] = useState<string | null>(null)
     const [isDemoOpen, setIsDemoOpen] = useState<boolean>(false)
     const $t = useDictionary();
+    const demoKey = project?.demo?.href ?? project?.name ?? "project-demo"
+    const frameIsLoading = Boolean(project?.demo?.href) && loadedDemoKey !== demoKey
     
     const handleLoadFrame = useCallback(()=>{ 
-        setIsFrameLoading(false) 
-    }, [setIsFrameLoading])
+        setLoadedDemoKey(demoKey) 
+    }, [demoKey])
 
     const toggleFullScreen = useCallback(()=>{ 
         setIsDemoOpen(val => !val) 
     }, [setIsDemoOpen])
 
-    // Reset loading state when project changes
-    useEffect(() => {
-        setIsFrameLoading(true);
-    }, [project]);
-
     const frame = useMemo(() => (                    
         <iframe
+            key={demoKey}
             title={project ? `${project.name} demo` : $t.projects.placeholder}
             onLoad={handleLoadFrame}
             src={project?.demo?.href}
             className={cn("w-full h-full p-4 rounded-md", frameIsLoading && "hidden")}
         />
-    ), [project, $t, handleLoadFrame, frameIsLoading]);
+    ), [demoKey, project, $t, handleLoadFrame, frameIsLoading]);
 
     const overlay = useMemo(() => isDemoOpen 
     ? ( <ProjectDrawerButton handleClick={toggleFullScreen}>{$t.projects.closeDemo}</ProjectDrawerButton>) 
