@@ -1,8 +1,14 @@
 import {
+  MAX_AUDIO_BYTES,
   MAX_HISTORY_MESSAGES,
   MAX_MESSAGE_LENGTH,
 } from "@/lib/chat/constants";
-import type { ChatMessage, ChatRequest } from "@/lib/chat/contracts";
+import type {
+  ChatAudioInput,
+  ChatInput,
+  ChatMessage,
+  ChatRequest,
+} from "@/lib/chat/contracts";
 
 type ValidationSuccess = {
   data: ChatRequest;
@@ -15,6 +21,18 @@ type ValidationFailure = {
 };
 
 type ValidationResult = ValidationSuccess | ValidationFailure;
+
+const AUDIO_BASE64_PATTERN = /^[A-Za-z0-9+/]+={0,2}$/;
+const SUPPORTED_AUDIO_MIME_TYPES = new Set([
+  "audio/m4a",
+  "audio/mp3",
+  "audio/mp4",
+  "audio/mpeg",
+  "audio/mpga",
+  "audio/ogg",
+  "audio/webm",
+  "audio/wav",
+]);
 
 function normalizeMessage(value: unknown): string | null {
   if (typeof value !== "string") {
@@ -34,6 +52,92 @@ function isExpectedRole(value: unknown): value is ChatMessage["role"] {
   return value === "user" || value === "assistant";
 }
 
+function normalizeAudioInput(value: unknown): ChatAudioInput | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  const { data, filename, mimeType } = value as {
+    data?: unknown;
+    filename?: unknown;
+    mimeType?: unknown;
+  };
+
+  if (
+    typeof data !== "string" ||
+    typeof filename !== "string" ||
+    typeof mimeType !== "string"
+  ) {
+    return null;
+  }
+
+  const normalizedData = data.trim();
+  const normalizedFilename = filename.trim();
+  const normalizedMimeType = mimeType.trim().toLowerCase();
+  const normalizedMimeTypeBase = normalizedMimeType.split(";")[0]?.trim() ?? "";
+
+  if (
+    !normalizedData ||
+    !normalizedFilename ||
+    !SUPPORTED_AUDIO_MIME_TYPES.has(normalizedMimeTypeBase) ||
+    !AUDIO_BASE64_PATTERN.test(normalizedData)
+  ) {
+    return null;
+  }
+
+  const estimatedBytes = Math.floor((normalizedData.length * 3) / 4);
+
+  if (estimatedBytes <= 0 || estimatedBytes > MAX_AUDIO_BYTES) {
+    return null;
+  }
+
+  return {
+    data: normalizedData,
+    filename: normalizedFilename,
+    mimeType: normalizedMimeTypeBase,
+  };
+}
+
+function normalizeInput(value: unknown): ChatInput | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  const { audio, message, mode } = value as {
+    audio?: unknown;
+    message?: unknown;
+    mode?: unknown;
+  };
+
+  if (mode === "text") {
+    const normalizedMessage = normalizeMessage(message);
+
+    if (!normalizedMessage) {
+      return null;
+    }
+
+    return {
+      message: normalizedMessage,
+      mode,
+    };
+  }
+
+  if (mode === "voice") {
+    const normalizedAudio = normalizeAudioInput(audio);
+
+    if (!normalizedAudio) {
+      return null;
+    }
+
+    return {
+      audio: normalizedAudio,
+      mode,
+    };
+  }
+
+  return null;
+}
+
 export function trimHistory(history: ChatMessage[]) {
   return history.slice(-MAX_HISTORY_MESSAGES);
 }
@@ -43,20 +147,12 @@ export function validateChatRequest(body: unknown): ValidationResult {
     return { error: "Request body must be a JSON object.", success: false };
   }
 
-  const { history, message, turnstileToken } = body as {
+  const { history, input, turnstileToken } = body as {
     history?: unknown;
-    message?: unknown;
+    input?: unknown;
     turnstileToken?: unknown;
   };
-
-  const normalizedMessage = normalizeMessage(message);
-
-  if (!normalizedMessage) {
-    return {
-      error: "Message must be non-empty and within the allowed length.",
-      success: false,
-    };
-  }
+  const normalizedInput = normalizeInput(input);
 
   if (typeof turnstileToken !== "string" || !turnstileToken.trim()) {
     return {
@@ -65,10 +161,17 @@ export function validateChatRequest(body: unknown): ValidationResult {
     };
   }
 
+  if (!normalizedInput) {
+    return {
+      error: "Input must include either a text message or a supported audio clip.",
+      success: false,
+    };
+  }
+
   if (history === undefined) {
     return {
       data: {
-        message: normalizedMessage,
+        input: normalizedInput,
         turnstileToken: turnstileToken.trim(),
       },
       success: true,
@@ -108,7 +211,7 @@ export function validateChatRequest(body: unknown): ValidationResult {
   return {
     data: {
       history: validatedHistory,
-      message: normalizedMessage,
+      input: normalizedInput,
       turnstileToken: turnstileToken.trim(),
     },
     success: true,

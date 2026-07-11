@@ -14,6 +14,7 @@ vi.mock("@/lib/turnstile/verify", () => ({
 
 vi.mock("@/lib/openai/service", () => ({
   generateChatResponse: vi.fn(),
+  transcribeAudioMessage: vi.fn(),
 }));
 
 vi.mock("@/lib/assistant/speech-authorization", () => ({
@@ -22,9 +23,11 @@ vi.mock("@/lib/assistant/speech-authorization", () => ({
 
 import { POST } from "@/app/api/chat/route";
 import { generateChatResponse } from "@/lib/openai/service";
+import { transcribeAudioMessage } from "@/lib/openai/service";
 import { verifyTurnstileToken } from "@/lib/turnstile/verify";
 
 const mockedGenerateChatResponse = vi.mocked(generateChatResponse);
+const mockedTranscribeAudioMessage = vi.mocked(transcribeAudioMessage);
 const mockedVerifyTurnstileToken = vi.mocked(verifyTurnstileToken);
 
 describe("POST /api/chat", () => {
@@ -72,7 +75,10 @@ describe("POST /api/chat", () => {
     const response = await POST(
       new Request("http://localhost/api/chat", {
         body: JSON.stringify({
-          message: "Hello",
+          input: {
+            message: "Hello",
+            mode: "text",
+          },
           turnstileToken: "token",
         }),
         method: "POST",
@@ -95,7 +101,10 @@ describe("POST /api/chat", () => {
       new Request("http://localhost/api/chat", {
         body: JSON.stringify({
           history: [{ content: "Earlier", role: "user" }],
-          message: "Tell me about your work",
+          input: {
+            message: "Tell me about your work",
+            mode: "text",
+          },
           turnstileToken: "token",
         }),
         method: "POST",
@@ -111,7 +120,45 @@ describe("POST /api/chat", () => {
         speechToken: "speech-token",
       },
       success: true,
+      userMessage: {
+        content: "Tell me about your work",
+        role: "user",
+      },
     });
+  });
+
+  it("transcribes voice input before generating a response", async () => {
+    mockedVerifyTurnstileToken.mockResolvedValueOnce({
+      success: true,
+    });
+    mockedTranscribeAudioMessage.mockResolvedValueOnce("Voice transcript");
+    mockedGenerateChatResponse.mockResolvedValueOnce("Assistant reply");
+
+    const response = await POST(
+      new Request("http://localhost/api/chat", {
+        body: JSON.stringify({
+          input: {
+            audio: {
+              data: "UklGRiQAAABXQVZFZm10IA==",
+              filename: "voice.webm",
+              mimeType: "audio/webm",
+            },
+            mode: "voice",
+          },
+          turnstileToken: "token",
+        }),
+        method: "POST",
+      }),
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(mockedTranscribeAudioMessage).toHaveBeenCalledOnce();
+    expect(mockedGenerateChatResponse).toHaveBeenCalledWith({
+      history: [],
+      message: "Voice transcript",
+    });
+    expect(payload.userMessage.content).toBe("Voice transcript");
   });
 
   it("returns a safe openai failure", async () => {
@@ -123,7 +170,10 @@ describe("POST /api/chat", () => {
     const response = await POST(
       new Request("http://localhost/api/chat", {
         body: JSON.stringify({
-          message: "Tell me more",
+          input: {
+            message: "Tell me more",
+            mode: "text",
+          },
           turnstileToken: "token",
         }),
         method: "POST",

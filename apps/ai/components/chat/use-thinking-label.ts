@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-const thinkingFrames = ["Thinking.", "Thinking..", "Thinking..."];
+const thinkingFrames = [
+  "Thinking.\u00A0\u00A0",
+  "Thinking..\u00A0",
+  "Thinking...",
+];
 
 export function useThinkingLabel(active: boolean) {
   const [frameIndex, setFrameIndex] = useState(0);

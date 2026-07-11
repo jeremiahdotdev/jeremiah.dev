@@ -5,15 +5,35 @@ export type ChatMessage = {
   content: string;
 };
 
+export type ChatAudioInput = {
+  data: string;
+  filename: string;
+  mimeType: string;
+};
+
+export type ChatInput =
+  | {
+      mode: "text";
+      message: string;
+    }
+  | {
+      audio: ChatAudioInput;
+      mode: "voice";
+    };
+
 export type ChatRequest = {
   history?: ChatMessage[];
-  message: string;
+  input: ChatInput;
   turnstileToken: string;
 };
 
 export type ChatResponse =
   | {
       success: true;
+      userMessage: {
+        role: "user";
+        content: string;
+      };
       message: {
         role: "assistant";
         content: string;

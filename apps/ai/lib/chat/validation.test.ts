@@ -15,7 +15,10 @@ describe("validateChatRequest", () => {
 
   it("rejects missing turnstile tokens", () => {
     const result = validateChatRequest({
-      message: "Hello",
+      input: {
+        message: "Hello",
+        mode: "text",
+      },
     });
 
     expect(result.success).toBe(false);
@@ -28,7 +31,10 @@ describe("validateChatRequest", () => {
   it("rejects unsupported roles", () => {
     const result = validateChatRequest({
       history: [{ content: "hello", role: "system" }],
-      message: "Hi",
+      input: {
+        message: "Hi",
+        mode: "text",
+      },
       turnstileToken: "token",
     });
 
@@ -45,7 +51,10 @@ describe("validateChatRequest", () => {
     })) as Array<{ content: string; role: "user" | "assistant" }>;
     const result = validateChatRequest({
       history,
-      message: "  Hi there  ",
+      input: {
+        message: "  Hi there  ",
+        mode: "text",
+      },
       turnstileToken: " token ",
     });
 
@@ -53,10 +62,29 @@ describe("validateChatRequest", () => {
 
     if (result.success) {
       expect(result.data.history).toHaveLength(MAX_HISTORY_MESSAGES);
-      expect(result.data.message).toBe("Hi there");
+      expect(result.data.input).toEqual({
+        message: "Hi there",
+        mode: "text",
+      });
       expect(result.data.turnstileToken).toBe("token");
     }
 
     expect(trimHistory(history)).toHaveLength(MAX_HISTORY_MESSAGES);
+  });
+
+  it("accepts supported voice input", () => {
+    const result = validateChatRequest({
+      input: {
+        audio: {
+          data: "UklGRiQAAABXQVZFZm10IA==",
+          filename: "message.webm",
+          mimeType: "audio/webm",
+        },
+        mode: "voice",
+      },
+      turnstileToken: "token",
+    });
+
+    expect(result.success).toBe(true);
   });
 });

@@ -5,10 +5,13 @@ import { createSpeechToken } from "@/lib/assistant/speech-authorization";
 import type { ChatResponse } from "@/lib/chat/contracts";
 import { applyRateLimit } from "@/lib/chat/rate-limit";
 import { trimHistory, validateChatRequest } from "@/lib/chat/validation";
-import { generateChatResponse } from "@/lib/openai/service";
+import {
+  generateChatResponse,
+  transcribeAudioMessage,
+} from "@/lib/openai/service";
 import { verifyTurnstileToken } from "@/lib/turnstile/verify";
 
-const OPENAI_TIMEOUT_MS = 25_000;
+const OPENAI_TIMEOUT_MS = 45_000;
 
 function jsonResponse(body: ChatResponse, status: number) {
   return NextResponse.json(body, { status });
@@ -83,10 +86,20 @@ export async function POST(request: Request) {
   }
 
   try {
+    const userMessage = await Promise.race([
+      validation.data.input.mode === "voice"
+        ? transcribeAudioMessage(validation.data.input.audio)
+        : Promise.resolve(validation.data.input.message),
+      new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          reject(new Error("OpenAI request timed out."));
+        }, OPENAI_TIMEOUT_MS);
+      }),
+    ]);
     const content = await Promise.race([
       generateChatResponse({
         history: trimHistory(validation.data.history ?? []),
-        message: validation.data.message,
+        message: userMessage,
       }),
       new Promise<never>((_, reject) => {
         setTimeout(() => {
@@ -103,6 +116,10 @@ export async function POST(request: Request) {
           speechToken: createSpeechToken(content),
         },
         success: true,
+        userMessage: {
+          content: userMessage,
+          role: "user",
+        },
       },
       200,
     );

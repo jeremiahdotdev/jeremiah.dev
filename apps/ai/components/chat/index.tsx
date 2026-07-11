@@ -4,10 +4,18 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Input } from "@/components/input";
 import { ResponseMessage } from "@/components/response-message";
-import type { ChatMessage, ChatResponse } from "@/lib/chat/contracts";
+import type {
+  ChatAudioInput,
+  ChatInput,
+  ChatMessage,
+  ChatResponse,
+} from "@/lib/chat/contracts";
 
 import { useSpeechPlayback } from "./use-speech-playback";
 import { useThinkingLabel } from "./use-thinking-label";
+import { CircleIconButton } from "../circle-icon-button";
+import { SpeakerIcon } from "./icons";
+import { Check, If, Else } from "../shared/if";
 
 const INITIAL_RESPONSE = "Ask anything about me. I am an open book.";
 const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
@@ -27,8 +35,9 @@ declare global {
 }
 
 type PendingRequest = {
+  displayMessage: string;
   history: ChatMessage[];
-  message: string;
+  input: ChatInput;
 };
 
 type TranscriptMessage = ChatMessage & {
@@ -130,7 +139,7 @@ export function Chat() {
       const response = await fetch("/api/chat", {
         body: JSON.stringify({
           history: request.history,
-          message: request.message,
+          input: request.input,
           turnstileToken,
         }),
         headers: {
@@ -145,22 +154,31 @@ export function Chat() {
         setErrorMessage(result.error);
         return;
       }
+      const userMessage = {
+        content: result.userMessage.content,
+        id: createMessageId(),
+        role: "user" as const,
+      };
+      const assistantMessage = {
+        animate: true,
+        content: result.message.content,
+        id: createMessageId(),
+        role: "assistant" as const,
+        speechToken: result.message.speechToken,
+      };
 
       setMessages((current) => [
         ...current,
-        {
-          content: request.message,
-          id: createMessageId(),
-          role: "user",
-        },
-        {
-          animate: true,
-          content: result.message.content,
-          id: createMessageId(),
-          role: "assistant",
-          speechToken: result.message.speechToken,
-        },
+        userMessage,
+        assistantMessage,
       ]);
+
+      if (request.input.mode === "voice" && assistantMessage.speechToken) {
+        await speechPlayback.togglePlayback(assistantMessage, {
+          enableAutoPlayChain: true,
+        });
+      }
+
       setCurrentMessage("");
       setPendingRequest(null);
       pendingRequestRef.current = null;
@@ -187,7 +205,7 @@ export function Chat() {
     }, TURNSTILE_TIMEOUT_MS);
   }
 
-  function queueSubmission(message: string) {
+  function queueTextSubmission(message: string) {
     const trimmedMessage = message.trim();
 
     if (!trimmedMessage || isPending) {
@@ -195,11 +213,54 @@ export function Chat() {
     }
 
     const nextRequest = {
+      displayMessage: trimmedMessage,
       history: messages.map((item) => ({
         content: item.content,
         role: item.role,
       })),
-      message: trimmedMessage,
+      input: {
+        message: trimmedMessage,
+        mode: "text" as const,
+      },
+    };
+
+    pendingRequestRef.current = nextRequest;
+    setPendingRequest(nextRequest);
+    setErrorMessage("");
+    setIsPending(true);
+    setCurrentMessage("");
+
+    if (!turnstileSiteKey) {
+      setErrorMessage("Turnstile is not configured.");
+      setIsPending(false);
+      return;
+    }
+
+    if (!window.turnstile) {
+      setErrorMessage("Verification is still loading. Please try again.");
+      setIsPending(false);
+      return;
+    }
+
+    startTurnstileTimeout();
+    window.turnstile.execute(turnstileRef.current ?? undefined);
+  }
+
+  function queueVoiceSubmission(audio: ChatAudioInput) {
+    if (isPending) {
+      return;
+    }
+
+    const nextRequest = {
+      displayMessage: "Voice message",
+      history: messages.map((item) => ({
+        content: item.content,
+        role: item.role,
+      })),
+      input: {
+        audio,
+        mode: "voice" as const,
+      },
     };
 
     pendingRequestRef.current = nextRequest;
@@ -261,7 +322,11 @@ export function Chat() {
   }, [sendChatRequest]);
 
   function handleSubmit() {
-    queueSubmission(currentMessage);
+    queueTextSubmission(currentMessage);
+  }
+
+  function handleVoiceSubmit(audio: ChatAudioInput) {
+    queueVoiceSubmission(audio);
   }
 
   function handleRetry() {
@@ -301,29 +366,31 @@ export function Chat() {
             : "Play";
 
     return (
-      <button
-        className="response-action"
+      <CircleIconButton
+        aria-label={buttonLabel}
         disabled={playbackState === "loading"}
         onClick={() => {
           void speechPlayback.togglePlayback(message, {
             enableAutoPlayChain: message.id === latestAssistantMessageId,
           });
         }}
-        type="button"
+        size="compact"
       >
-        {buttonLabel}
-      </button>
+        <SpeakerIcon />
+      </CircleIconButton>
     );
   }
 
   return (
     <div className="page-content">
       <div className="chat-transcript" ref={responseRef}>
-        {messages.length === 0 && !pendingRequest ? (
-          <ResponseMessage label="jeremiah.dev">
-            {INITIAL_RESPONSE}
-          </ResponseMessage>
-        ) : null}
+        <Check condition={Boolean(messages.length === 0 && !pendingRequest)}>
+          <If>
+            <ResponseMessage label="jeremiah.dev">
+              {INITIAL_RESPONSE}
+            </ResponseMessage>
+          </If>
+        </Check>
 
         {messages.map((message) => {
           return (
@@ -339,31 +406,30 @@ export function Chat() {
           );
         })}
 
-        {pendingRequest ? (
-          <ResponseMessage kind="user" label="you">
-            {pendingRequest.message}
-          </ResponseMessage>
-        ) : null}
-
-        {pendingRequest ? (
-          <ResponseMessage
-            control={
-              errorMessage ? (
-                <button
-                  className="response-action"
-                  onClick={handleRetry}
-                  type="button"
-                >
-                  Retry
-                </button>
-              ) : null
-            }
-            label="jeremiah.dev"
-            tone={errorMessage ? "error" : "default"}
-          >
-            {errorMessage || thinkingLabel}
-          </ResponseMessage>
-        ) : null}
+        <Check condition={pendingRequest}>
+          <If>
+            <ResponseMessage kind="user" label="you">
+              {pendingRequest?.displayMessage}
+            </ResponseMessage>
+            <ResponseMessage
+              control={
+                errorMessage ? (
+                  <button
+                    className="response-action"
+                    onClick={handleRetry}
+                    type="button"
+                  >
+                    Retry
+                  </button>
+                ) : null
+              }
+              label="jeremiah.dev"
+              tone={errorMessage ? "error" : "default"}
+            >
+              {errorMessage || thinkingLabel}
+            </ResponseMessage>
+          </If>
+        </Check>
       </div>
 
       <Input
@@ -371,7 +437,8 @@ export function Chat() {
         disabled={isPending}
         formRef={formRef}
         onChangeValue={setCurrentMessage}
-        onSubmit={handleSubmit}
+        onSubmitText={handleSubmit}
+        onSubmitVoice={handleVoiceSubmit}
         turnstileRef={turnstileRef}
       />
     </div>
