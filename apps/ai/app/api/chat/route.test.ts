@@ -16,6 +16,10 @@ vi.mock("@/lib/openai/service", () => ({
   generateChatResponse: vi.fn(),
 }));
 
+vi.mock("@/lib/assistant/speech-authorization", () => ({
+  createSpeechToken: vi.fn(() => "speech-token"),
+}));
+
 import { POST } from "@/app/api/chat/route";
 import { generateChatResponse } from "@/lib/openai/service";
 import { verifyTurnstileToken } from "@/lib/turnstile/verify";
@@ -104,6 +108,7 @@ describe("POST /api/chat", () => {
       message: {
         content: "Hello from Jeremiah.",
         role: "assistant",
+        speechToken: "speech-token",
       },
       success: true,
     });

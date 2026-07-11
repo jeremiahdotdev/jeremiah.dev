@@ -17,6 +17,7 @@ export type ChatResponse =
       message: {
         role: "assistant";
         content: string;
+        speechToken: string;
       };
     }
   | {

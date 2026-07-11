@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Input } from "@/components/input";
 import { ResponseMessage } from "@/components/response-message";
 import type { ChatMessage, ChatResponse } from "@/lib/chat/contracts";
-import { trimHistory } from "@/lib/chat/validation";
+
+import { useSpeechPlayback } from "./use-speech-playback";
+import { useThinkingLabel } from "./use-thinking-label";
 
 const INITIAL_RESPONSE = "Ask anything about me. I am an open book.";
 const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
@@ -29,6 +31,16 @@ type PendingRequest = {
   message: string;
 };
 
+type TranscriptMessage = ChatMessage & {
+  animate?: boolean;
+  id: string;
+  speechToken?: string;
+};
+
+function createMessageId() {
+  return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+}
+
 export function Chat() {
   const abortRef = useRef<AbortController | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -37,28 +49,53 @@ export function Chat() {
   const turnstileRef = useRef<HTMLDivElement | null>(null);
   const requestTimeoutRef = useRef<number | null>(null);
   const turnstileTimeoutRef = useRef<number | null>(null);
-  const thinkingDotsIntervalRef = useRef<number | null>(null);
-  const responseTypingIntervalRef = useRef<number | null>(null);
 
   const [currentMessage, setCurrentMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [history, setHistory] = useState<ChatMessage[]>([]);
   const [isPending, setIsPending] = useState(false);
-  const [thinkingDots, setThinkingDots] = useState("...");
-  const [typingMessageIndex, setTypingMessageIndex] = useState<number | null>(
-    null,
-  );
-  const [typingCharacterCount, setTypingCharacterCount] = useState(0);
+  const [messages, setMessages] = useState<TranscriptMessage[]>([]);
   const [pendingRequest, setPendingRequest] = useState<PendingRequest | null>(
     null,
   );
+
+  const thinkingLabel = useThinkingLabel(Boolean(pendingRequest && !errorMessage));
+  const speechPlayback = useSpeechPlayback();
+  const latestAssistantMessageId = useMemo(() => {
+    for (let index = messages.length - 1; index >= 0; index -= 1) {
+      if (messages[index]?.role === "assistant") {
+        return messages[index].id;
+      }
+    }
+
+    return null;
+  }, [messages]);
 
   useEffect(() => {
     responseRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
-  }, [errorMessage, history, isPending, pendingRequest]);
+  }, [errorMessage, messages, pendingRequest, thinkingLabel]);
+
+  useEffect(() => {
+    if (!latestAssistantMessageId) {
+      return;
+    }
+
+    const latestAssistantMessage = messages.find(
+      (message) => message.id === latestAssistantMessageId,
+    );
+
+    if (
+      !latestAssistantMessage ||
+      latestAssistantMessage.role !== "assistant" ||
+      !latestAssistantMessage.speechToken
+    ) {
+      return;
+    }
+
+    void speechPlayback.autoPlayMessageIfNeeded(latestAssistantMessage);
+  }, [latestAssistantMessageId, messages, speechPlayback]);
 
   function clearRequestTimeout() {
     if (requestTimeoutRef.current !== null) {
@@ -74,85 +111,10 @@ export function Chat() {
     }
   }
 
-  function clearThinkingDotsInterval() {
-    if (thinkingDotsIntervalRef.current !== null) {
-      window.clearInterval(thinkingDotsIntervalRef.current);
-      thinkingDotsIntervalRef.current = null;
-    }
-  }
-
-  function clearResponseTypingInterval() {
-    if (responseTypingIntervalRef.current !== null) {
-      window.clearInterval(responseTypingIntervalRef.current);
-      responseTypingIntervalRef.current = null;
-    }
-  }
-
-  useEffect(() => {
-    clearThinkingDotsInterval();
-
-    if (!pendingRequest || Boolean(errorMessage)) {
-      setThinkingDots("...");
-      return;
-    }
-
-    setThinkingDots(".");
-    thinkingDotsIntervalRef.current = window.setInterval(() => {
-      setThinkingDots((previous) => {
-        if (previous.length >= 3) {
-          return ".";
-        }
-
-        return `${previous}.`;
-      });
-    }, 340);
-
-    return () => {
-      clearThinkingDotsInterval();
-    };
-  }, [errorMessage, pendingRequest]);
-
-  useEffect(() => {
-    clearResponseTypingInterval();
-
-    const latestIndex = history.length - 1;
-    const latestMessage = history[latestIndex];
-
-    if (!latestMessage || latestMessage.role !== "assistant") {
-      setTypingMessageIndex(null);
-      setTypingCharacterCount(0);
-      return;
-    }
-
-    if (!latestMessage.content.length) {
-      setTypingMessageIndex(null);
-      setTypingCharacterCount(0);
-      return;
-    }
-
-    setTypingMessageIndex(latestIndex);
-    setTypingCharacterCount(0);
-
-    responseTypingIntervalRef.current = window.setInterval(() => {
-      setTypingCharacterCount((currentCount) => {
-        const nextCount = currentCount + 1;
-
-        if (nextCount >= latestMessage.content.length) {
-          clearResponseTypingInterval();
-          setTypingMessageIndex(null);
-          return latestMessage.content.length;
-        }
-
-        return nextCount;
-      });
-    }, 14);
-
-    return () => {
-      clearResponseTypingInterval();
-    };
-  }, [history]);
-
-  async function sendChatRequest(request: PendingRequest, turnstileToken: string) {
+  const sendChatRequest = useCallback(async function sendChatRequest(
+    request: PendingRequest,
+    turnstileToken: string,
+  ) {
     abortRef.current?.abort();
     clearTurnstileTimeout();
 
@@ -184,24 +146,21 @@ export function Chat() {
         return;
       }
 
-      const nextHistory = trimHistory([
-        ...request.history,
+      setMessages((current) => [
+        ...current,
         {
           content: request.message,
+          id: createMessageId(),
           role: "user",
         },
-        result.message,
+        {
+          animate: true,
+          content: result.message.content,
+          id: createMessageId(),
+          role: "assistant",
+          speechToken: result.message.speechToken,
+        },
       ]);
-
-      if (result.message.role === "assistant" && result.message.content.length > 0) {
-        setTypingMessageIndex(nextHistory.length - 1);
-        setTypingCharacterCount(0);
-      } else {
-        setTypingMessageIndex(null);
-        setTypingCharacterCount(0);
-      }
-
-      setHistory(nextHistory);
       setCurrentMessage("");
       setPendingRequest(null);
       pendingRequestRef.current = null;
@@ -217,7 +176,7 @@ export function Chat() {
       setIsPending(false);
       window.turnstile?.reset(turnstileRef.current ?? undefined);
     }
-  }
+  }, []);
 
   function startTurnstileTimeout() {
     clearTurnstileTimeout();
@@ -236,7 +195,10 @@ export function Chat() {
     }
 
     const nextRequest = {
-      history,
+      history: messages.map((item) => ({
+        content: item.content,
+        role: item.role,
+      })),
       message: trimmedMessage,
     };
 
@@ -292,13 +254,11 @@ export function Chat() {
       abortRef.current?.abort();
       clearRequestTimeout();
       clearTurnstileTimeout();
-      clearThinkingDotsInterval();
-      clearResponseTypingInterval();
       delete window.__onTurnstileSuccess;
       delete window.__onTurnstileExpire;
       delete window.__onTurnstileError;
     };
-  }, []);
+  }, [sendChatRequest]);
 
   function handleSubmit() {
     queueSubmission(currentMessage);
@@ -322,33 +282,72 @@ export function Chat() {
     window.turnstile.execute(turnstileRef.current ?? undefined);
   }
 
+  function renderAssistantVoiceControl(message: TranscriptMessage) {
+    if (message.role !== "assistant" || !message.speechToken) {
+      return null;
+    }
+
+    const playbackState = speechPlayback.states[message.id] ?? "idle";
+    const hasCachedAudio = speechPlayback.cached[message.id];
+    const buttonLabel =
+      playbackState === "loading"
+        ? "Loading"
+        : playbackState === "speaking"
+          ? "Pause"
+        : playbackState === "paused"
+          ? "Resume"
+          : hasCachedAudio
+            ? "Replay"
+            : "Play";
+
+    return (
+      <button
+        className="response-action"
+        disabled={playbackState === "loading"}
+        onClick={() => {
+          void speechPlayback.togglePlayback(message, {
+            enableAutoPlayChain: message.id === latestAssistantMessageId,
+          });
+        }}
+        type="button"
+      >
+        {buttonLabel}
+      </button>
+    );
+  }
+
   return (
     <div className="page-content">
       <div className="chat-transcript" ref={responseRef}>
-        {history.length === 0 && !pendingRequest ? (
+        {messages.length === 0 && !pendingRequest ? (
           <ResponseMessage label="jeremiah.dev">
             {INITIAL_RESPONSE}
           </ResponseMessage>
         ) : null}
-        {history.map((message, index) => (
-          <ResponseMessage
-            key={`${message.role}-${index}-${message.content.slice(0, 24)}`}
-            kind={message.role}
-            label={message.role === "assistant" ? "jeremiah.dev" : "you"}
-          >
-            {message.role === "assistant" && index === typingMessageIndex
-              ? message.content.slice(0, typingCharacterCount)
-              : message.content}
-          </ResponseMessage>
-        ))}
+
+        {messages.map((message) => {
+          return (
+            <ResponseMessage
+              animate={message.animate}
+              control={renderAssistantVoiceControl(message)}
+              key={message.id}
+              kind={message.role}
+              label={message.role === "assistant" ? "jeremiah.dev" : "you"}
+            >
+              {message.content}
+            </ResponseMessage>
+          );
+        })}
+
         {pendingRequest ? (
           <ResponseMessage kind="user" label="you">
             {pendingRequest.message}
           </ResponseMessage>
         ) : null}
+
         {pendingRequest ? (
           <ResponseMessage
-            actions={
+            control={
               errorMessage ? (
                 <button
                   className="response-action"
@@ -362,10 +361,11 @@ export function Chat() {
             label="jeremiah.dev"
             tone={errorMessage ? "error" : "default"}
           >
-            {errorMessage || `Thinking${thinkingDots}`}
+            {errorMessage || thinkingLabel}
           </ResponseMessage>
         ) : null}
       </div>
+
       <Input
         currentValue={currentMessage}
         disabled={isPending}

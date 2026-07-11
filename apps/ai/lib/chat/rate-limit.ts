@@ -10,29 +10,35 @@ type RateLimitEntry = {
 
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
-function getEntry(key: string, now: number) {
-  const entry = rateLimitStore.get(key);
-
-  if (!entry || entry.resetAt <= now) {
-    const freshEntry = {
-      count: 0,
-      resetAt: now + CHAT_RATE_LIMIT_WINDOW_MS,
-    };
-
-    rateLimitStore.set(key, freshEntry);
-    return freshEntry;
-  }
-
-  return entry;
-}
-
-export function applyRateLimit(key: string) {
+export function applyRateLimit(
+  key: string,
+  options: {
+    maxRequests?: number;
+    windowMs?: number;
+  } = {},
+) {
   const now = Date.now();
-  const entry = getEntry(key, now);
+  const windowMs = options.windowMs ?? CHAT_RATE_LIMIT_WINDOW_MS;
+  const maxRequests = options.maxRequests ?? CHAT_RATE_LIMIT_MAX_REQUESTS;
+  const entry = (() => {
+    const existing = rateLimitStore.get(key);
+
+    if (!existing || existing.resetAt <= now) {
+      const freshEntry = {
+        count: 0,
+        resetAt: now + windowMs,
+      };
+
+      rateLimitStore.set(key, freshEntry);
+      return freshEntry;
+    }
+
+    return existing;
+  })();
   entry.count += 1;
 
   return {
-    limited: entry.count > CHAT_RATE_LIMIT_MAX_REQUESTS,
+    limited: entry.count > maxRequests,
     retryAfterMs: Math.max(entry.resetAt - now, 0),
   };
 }

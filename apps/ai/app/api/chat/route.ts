@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { createSpeechToken } from "@/lib/assistant/speech-authorization";
 import type { ChatResponse } from "@/lib/chat/contracts";
 import { applyRateLimit } from "@/lib/chat/rate-limit";
 import { trimHistory, validateChatRequest } from "@/lib/chat/validation";
@@ -99,6 +100,7 @@ export async function POST(request: Request) {
         message: {
           content,
           role: "assistant",
+          speechToken: createSpeechToken(content),
         },
         success: true,
       },

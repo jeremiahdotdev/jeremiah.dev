@@ -29,6 +29,11 @@
   letter-spacing: 0.14em;
 }
 
+.control {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .bubble {
   position: relative;
   overflow: hidden;
@@ -70,13 +75,6 @@
   position: relative;
   margin: 0;
   white-space: pre-wrap;
-}
-
-.actions {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
 }
 
 @keyframes bubble-rise {
