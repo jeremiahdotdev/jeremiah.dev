@@ -1,0 +1,103 @@
+.shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.7rem;
+  justify-self: start;
+  width: fit-content;
+  max-width: min(92vw, 42rem);
+  animation: bubble-rise 220ms ease-out;
+}
+
+.userShell {
+  justify-self: end;
+  justify-items: end;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-left: 0.2rem;
+}
+
+.label {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+
+.bubble {
+  position: relative;
+  overflow: hidden;
+  padding: 1.1rem 1.2rem 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.4rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(6, 7, 10, 0.74);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 60px rgba(0, 0, 0, 0.28);
+  color: var(--foreground);
+  line-height: 1.55;
+  backdrop-filter: blur(16px);
+}
+
+.userBubble {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+    rgba(12, 13, 18, 0.86);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.error {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.bubble::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.09), transparent 34%);
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+@keyframes bubble-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    max-width: min(92vw, 32rem);
+  }
+
+  .bubble {
+    padding: 1rem 1rem 1.05rem;
+    border-radius: 1.2rem;
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "description": "Use this file to answer general questions about Jeremiah's personal background, lifestyle, interests, and life outside of work. Keep responses appropriate for a professional portfolio audience. Do not infer private details, relationship status, family information, health information, political views, or other sensitive personal information when the answer is not explicitly provided.",
+  "keywords": [
+    "life",
+    "personal",
+    "grow up",
+    "childhood",
+    "family",
+    "hometown",
+    "home",
+    "hobbies",
+    "interests",
+    "lifestyle",
+    "personal life",
+    "about Jeremiah",
+    "outside of work",
+    "regex:/\\boutside(?:\\s+of)?\\s+work\\b/i",
+    "Missouri",
+    "Ozarks",
+    "homestead",
+    "family",
+    "free time",
+    "weekends",
+    "regex:/\\bwhat\\s+do(?:es)?\\s+(?:you|he)\\s+do\\s+outside\\s+of\\s+work\\b/i",
+    "regex:/\\b(?:what|how)\\s+do(?:es)?\\s+(?:you|he)\\s+spend\\s+(?:your|his)\\s+(?:free\\s+time|weekends)\\b/i",
+    "regex:/\\bwhere\\s+do(?:es)?\\s+(?:you|he)\\s+live\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Background and Home",
+      "points": [
+        "Jeremiah lives in Missouri and has strong ties to the Ozarks.",
+        "He lives on a hobby farm that he co-owns with siblings.",
+        "He built his own house and enjoys practical, hands-on projects."
+      ]
+    },
+    {
+      "heading": "Lifestyle",
+      "points": [
+        "Jeremiah values a slower and more intentional way of life.",
+        "He enjoys being able to work remotely from the family property and spend time outdoors during the day.",
+        "He often spends weekends working on projects around the property."
+      ]
+    },
+    {
+      "heading": "Hobbies and Interests",
+      "points": [
+        "Jeremiah enjoys carpentry, hiking, archery, beekeeping, and playing guitar.",
+        "He enjoys building practical outdoor projects and improving the family property.",
+        "He has interests in mathematics, Christian apologetics, Koine Greek, poetry, and literature.",
+        "He enjoys boxing and other forms of physical training."
+      ]
+    },
+    {
+      "heading": "Faith and Church",
+      "points": [
+        "Jeremiah is Catholic and is actively involved in his local parish.",
+        "His faith is an important part of how he approaches his work, relationships, and responsibilities.",
+        "He enjoys studying Scripture, theology, Christian apologetics, and the historical context of Christianity."
+      ]
+    },
+    {
+      "heading": "Family and Community",
+      "points": [
+        "Jeremiah places a high value on family, community, and long-term relationships.",
+        "He appreciates being part of a small church community where members help with practical responsibilities.",
+        "He is interested in using his technical skills to support churches, ministries, and community-focused organizations."
+      ]
+    },
+    {
+      "heading": "Reading and Media",
+      "points": [
+        "Jeremiah enjoys the work of C. S. Lewis, George MacDonald, Alexandre Dumas, and N. T. Wright.",
+        "His favorite C. S. Lewis nonfiction works include The Four Loves, Mere Christianity, and The Screwtape Letters.",
+        "He enjoys thoughtful stories, historical settings, and character-driven television."
+      ]
+    },
+    {
+      "heading": "Personal Projects",
+      "points": [
+        "Jeremiah regularly works on personal software, design, homestead, and woodworking projects.",
+        "He maintains projects related to his professional portfolio, church technology, online communities, and German Shepherds.",
+        "He enjoys combining software development with practical problems from his own life and community."
+      ]
+    }
+  ]
+}

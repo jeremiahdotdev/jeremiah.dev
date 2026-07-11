@@ -1,0 +1,153 @@
+:global(:root) {
+  --search-shimmer-angle: 210deg;
+}
+
+@property --search-shimmer-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 210deg;
+}
+
+.panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  width: min(92vw, 42rem);
+  margin-bottom: 30vh;
+  padding: 0.25rem 0.38rem 0.25rem 0.25rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
+    conic-gradient(
+      from var(--search-shimmer-angle),
+      rgba(255, 255, 255, 0.12) 0deg,
+      rgba(255, 255, 255, 0.52) 55deg,
+      rgba(120, 132, 160, 0.2) 110deg,
+      rgba(12, 14, 20, 0.92) 190deg,
+      rgba(255, 255, 255, 0.08) 255deg,
+      rgba(255, 255, 255, 0.38) 320deg,
+      rgba(255, 255, 255, 0.12) 360deg
+    ) border-box;
+  animation: search-shimmer 7s linear infinite;
+}
+
+.turnstile {
+  grid-column: 1 / -1;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.panel:focus-within {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.input {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  padding: 1rem 1.25rem 1rem 1.5rem;
+  border: 0;
+  outline: 0;
+  color: var(--foreground);
+  background: transparent;
+  font-size: clamp(1rem, 2vw, 1.08rem);
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 2.85rem;
+  min-width: 2.85rem;
+  height: 2.85rem;
+  padding: 0;
+  border: 1.6px solid rgba(255, 255, 255, 0.36);
+  border-radius: 999px;
+  color: var(--foreground);
+  background: rgba(255, 255, 255, 0.02);
+  font-family: var(--font-mono), monospace;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.button:hover {
+  border-color: rgba(255, 255, 255, 0.56);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.button:focus-visible,
+.input:focus-visible {
+  outline: none;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes search-shimmer {
+  to {
+    --search-shimmer-angle: 570deg;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel {
+    width: min(92vw, 32rem);
+    margin-bottom: 22vh;
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    padding: 0.35rem 0.45rem 0.35rem 0.35rem;
+    border-radius: 1.5rem;
+  }
+
+  .input {
+    padding-right: 1.25rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .button {
+    justify-self: end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .button {
+    transition: none;
+  }
+
+  .panel {
+    animation: none;
+  }
+}

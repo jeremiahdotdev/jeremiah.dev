@@ -1,0 +1,28 @@
+{
+  "keywords": [
+    "theology",
+    "theological",
+    "christian",
+    "apologetics",
+    "faith",
+    "church",
+    "scripture",
+    "bible",
+    "doctrine",
+    "gospel",
+    "ministry",
+    "worldview",
+    "belief",
+    "beliefs",
+    "religious",
+    "religion",
+    "regex:/\\b(?:what|how)\\s+(?:are|is)\\s+(?:your|his)\\s+(?:faith|beliefs?)\\b/i",
+    "regex:/\\b(?:what|how)\\s+do(?:es)?\\s+(?:you|he)\\s+(?:view|approach|think\\s+about)\\s+(?:theology|christianity|religion)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Theology",
+      "points": []
+    }
+  ]
+}

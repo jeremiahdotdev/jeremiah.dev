@@ -1,0 +1,41 @@
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  pointer-events: none;
+}
+
+.copy,
+.link {
+  color: rgba(255, 255, 255, 0.38);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.copy {
+  margin: 0;
+}
+
+.link {
+  pointer-events: auto;
+  text-decoration: none;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.link:hover {
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.link:focus-visible {
+  outline: none;
+  color: rgba(255, 255, 255, 0.68);
+}
+

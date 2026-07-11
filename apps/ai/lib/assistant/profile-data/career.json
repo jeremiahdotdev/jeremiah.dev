@@ -1,0 +1,107 @@
+{
+  "keywords": [
+    "career",
+    "professional",
+    "experience",
+    "employment",
+    "employer",
+    "job",
+    "jobs",
+    "work",
+    "work history",
+    "career path",
+    "role",
+    "roles",
+    "position",
+    "title",
+    "resume",
+    "cv",
+    "project",
+    "projects",
+    "portfolio",
+    "github",
+    "repository",
+    "repositories",
+    "stack",
+    "skills",
+    "technology",
+    "technologies",
+    "framework",
+    "frameworks",
+    "frontend",
+    "front-end",
+    "ui/ux",
+    "software engineer",
+    "software engineering",
+    "technical lead",
+    "scrum",
+    "agile",
+    "mentor",
+    "mentorship",
+    "leadership",
+    "delivery",
+    "architecture",
+    "deployment",
+    "testing",
+    "cloud",
+    "react",
+    "vue",
+    "typescript",
+    "node",
+    "docker",
+    "google cloud",
+    "gcp",
+    "thymeleaf",
+    "jquery",
+    "html",
+    "dynamodb",
+    "telerik",
+    "kendo",
+    ".net",
+    "golang",
+    "go",
+    "google tag manager",
+    "gtm",
+    "o'reilly",
+    "netsmart",
+    "regex:/\\bhow\\s+(?:is|was)\\s+(?:it|this|that)\\s+(?:made|built|developed|implemented|designed|architected)\\b/i",
+    "regex:/\\b(?:what|which)\\s+(?:tech|technology|stack|tools?)\\s+(?:did|do|does)\\s+(?:you|he)\\s+use\\b/i",
+    "regex:/\\b(?:what|which)\\s+(?:languages?|frameworks?)\\s+(?:were|was|are|is)\\s+used\\b/i",
+    "regex:/\\b(?:how|what)\\s+(?:was|is)\\s+(?:the|your|his)\\s+(?:architecture|system\\s+design)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Professional summary",
+      "points": [
+        "Jeremiah Gage is a software engineer and front-end technical lead based in Missouri.",
+        "His public portfolio in this repository emphasizes professional software delivery, leadership, and clear communication.",
+        "He has professional experience across e-commerce, healthcare software, and higher-education support roles."
+      ]
+    },
+    {
+      "heading": "Professional experience",
+      "points": [
+        "At O'Reilly Auto Parts in Springfield, Missouri and remote, Jeremiah has held multiple roles including UI/UX Developer II beginning in February 2022, Technical Lead beginning in March 2024, Scrum Master in a part-time capacity beginning in June 2025, Software Engineer I from June 2025 through September 2025, and Software Engineer II beginning in September 2025.",
+        "The O'Reilly portfolio content describes work across the full software development life cycle, front-end technical leadership, cloud-based solutions, code reviews, process improvement, team collaboration, mentoring, and Scrum facilitation.",
+        "Before O'Reilly, Jeremiah worked at Netsmart in Springfield, Missouri as a Software Engineer from July 2020 through February 2022.",
+        "The approved portfolio data describes Netsmart work across software design, development, review, unit and integration testing, deployment, and technical solutions for business requirements.",
+        "Earlier, Jeremiah worked at College of the Ozarks as a part-time Lab Assistant from September 2017 through June 2020 in the mathematics and physics department, supporting students in subjects such as calculus, calculus-based physics, abstract algebra, statistics, numerical analysis, and real analysis."
+      ]
+    },
+    {
+      "heading": "Technical skills",
+      "points": [
+        "Technologies associated with O'Reilly roles in the approved portfolio data include Vue, React, TypeScript, Node.js, Thymeleaf, Docker, Google Cloud Platform, jQuery, Google Tag Manager, and semantic HTML/CSS.",
+        "Technologies associated with the Netsmart role include DynamoDB, React, TypeScript, Telerik/Kendo UI, .NET Core, Node.js, Go, HTML, and jQuery."
+      ]
+    },
+    {
+      "heading": "Communication and work style signals",
+      "points": [
+        "The public portfolio content consistently frames Jeremiah as someone who values mentorship, collaboration, documentation, testing, and delivery discipline.",
+        "The approved data shows repeated involvement in leadership, teaching, tutoring, and Scrum facilitation, which suggests a communication-oriented engineering style.",
+        "If asked about information not covered here, direct the visitor to contact Jeremiah rather than guessing."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "keywords": [
+    "academics",
+    "academic",
+    "education",
+    "educational",
+    "school",
+    "schooling",
+    "homeschool",
+    "homeschooled",
+    "college",
+    "university",
+    "degree",
+    "degrees",
+    "major",
+    "majors",
+    "minor",
+    "gpa",
+    "course",
+    "courses",
+    "coursework",
+    "curriculum",
+    "study",
+    "studies",
+    "studied",
+    "undergraduate",
+    "graduate",
+    "grad school",
+    "diploma",
+    "transcript",
+    "computer science",
+    "mathematics",
+    "math",
+    "college of the ozarks",
+    "point lookout",
+    "lab assistant",
+    "tutor",
+    "tutoring",
+    "teacher's aide",
+    "teacher’s aide",
+    "major field exam",
+    "sigma zeta",
+    "acm",
+    "math and physics club",
+    "math & physics club",
+    "president",
+    "vice-president",
+    "honor society",
+    "commendation",
+    "award",
+    "honor",
+    "calculus",
+    "physics",
+    "algebra",
+    "statistics",
+    "numerical analysis",
+    "real analysis",
+    "apologetics",
+    "regex:/\\b(?:what|which)\\s+(?:did|do|does)\\s+(?:you|he)\\s+study\\b/i",
+    "regex:/\\b(?:what|which)\\s+(?:degree|degrees|major|majors|minor)\\s+(?:did|do|does)\\s+(?:you|he)\\s+have\\b/i",
+    "regex:/\\bwhere\\s+(?:did|do|does)\\s+(?:you|he)\\s+(?:go|attend)\\s+(?:to\\s+)?(?:college|university|school)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Academic summary",
+      "points": [
+        "Jeremiah attended College of the Ozarks in Point Lookout, Missouri from September 2015 through June 2020.",
+        "The approved academic data lists a bachelor's degree with majors in Computer Science and Mathematics, plus a minor in Christian Apologetics."
+      ]
+    },
+    {
+      "heading": "College studies",
+      "points": [
+        "The Computer Science major description emphasizes algorithms, data structures, system design, software and hardware interactions, and adapting to new technologies.",
+        "The Mathematics major description emphasizes theoretical and applied mathematics, tutoring, problem solving, and communicating complex ideas."
+      ]
+    },
+    {
+      "heading": "Leadership and commendations",
+      "points": [
+        "The approved academic data lists Jeremiah as President of the Math and Physics Club from 2019 to 2020.",
+        "It also lists him as President of the Sigma Zeta honor society chapter in 2020 and Vice-President of the ACM club from 2018 to 2019.",
+        "The academic data includes a 189/200 Major Field Exam result for mathematics in 2020."
+      ]
+    },
+    {
+      "heading": "Homeschool background",
+      "points": []
+    },
+    {
+      "heading": "Graduate studies",
+      "points": []
+    }
+  ]
+}
