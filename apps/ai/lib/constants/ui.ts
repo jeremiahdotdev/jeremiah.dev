@@ -7,4 +7,5 @@ export const THINKING_FRAMES = [
 ] as const;
 export const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+export const TURNSTILE_RETRY_MS = 6_000;
 export const TURNSTILE_TIMEOUT_MS = 12_000;

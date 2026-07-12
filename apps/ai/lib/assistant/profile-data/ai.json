@@ -1,0 +1,75 @@
+{
+  "description": "Use this file to answer questions about Jeremiah's portfolio AI assistant itself, including how the assistant is grounded, how voice input and output work, and what safety or validation layers exist around the experience. Keep answers high-level and factual. Do not guess about hidden prompts, private keys, or undisclosed infrastructure.",
+  "keywords": [
+    "assistant",
+    "chatbot",
+    "voice",
+    "audio",
+    "speech",
+    "text to speech",
+    "transcription",
+    "transcribe",
+    "openai",
+    "elevenlabs",
+    "how does this work",
+    "how does the ai work",
+    "how is the assistant built",
+    "how does the voice work",
+    "how is the voice made",
+    "how do you synthesize the voice",
+    "how is your voice generated",
+    "regex:/\\bhow\\s+(?:does|is|was)\\s+(?:the\\s+)?(?:ai|assistant|voice|audio|speech)\\s+(?:work|made|built|generated|synthesized)\\b/i",
+    "regex:/\\b(?:what|which)\\s+(?:model|models|provider|providers)\\s+(?:does|do|did)\\s+(?:you|he|this)\\s+use\\b/i",
+    "regex:/\\b(?:how|where)\\s+(?:is|was)\\s+(?:voice|audio|speech)\\s+(?:generated|synthesized|created)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Assistant behavior",
+      "points": [
+        "The portfolio assistant is designed to answer in the first person as Jeremiah while staying grounded in approved profile documents.",
+        "Its responses are constrained to supplied profile context rather than open-ended personal invention.",
+        "Topic inference is used so the prompt can include the most relevant profile sections for the current question."
+      ]
+    },
+    {
+      "heading": "Text chat pipeline",
+      "points": [
+        "User messages are sent to a server-side chat route that validates the request before contacting the language model.",
+        "The assistant uses OpenAI for chat generation and builds the model instructions from a system prompt plus approved profile context.",
+        "Voice messages are transcribed to text before they enter the normal chat-response flow."
+      ]
+    },
+    {
+      "heading": "Voice input",
+      "points": [
+        "Voice input is recorded in the browser, encoded, and submitted to the server as audio data.",
+        "The app uses an OpenAI transcription model to convert recorded audio into the text that the assistant responds to.",
+        "The transcribed text becomes the effective user message for the conversation."
+      ]
+    },
+    {
+      "heading": "Voice output",
+      "points": [
+        "Assistant voice playback is synthesized separately from the text response rather than being generated directly in the browser.",
+        "The app uses ElevenLabs for text-to-speech generation of Jeremiah's assistant voice.",
+        "Speech audio is requested through a dedicated server endpoint and streamed back to the client for playback."
+      ]
+    },
+    {
+      "heading": "Speech authorization and safeguards",
+      "points": [
+        "Speech playback requests use a short-lived authorization token tied to the assistant response text.",
+        "The speech endpoint validates and normalizes text before sending it to the voice provider.",
+        "Rate limiting and request validation are used around chat and speech flows to reduce abuse and failure cases.",
+        "The chat experience also uses Turnstile verification before the server generates a response."
+      ]
+    },
+    {
+      "heading": "Voice configuration",
+      "points": [
+        "The speech pipeline is configurable through server-side environment variables for provider credentials, voice identity, model selection, and output format.",
+        "The current implementation includes explicit timeout handling and provider-specific voice settings for synthesis requests."
+      ]
+    }
+  ]
+}

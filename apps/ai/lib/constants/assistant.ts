@@ -11,4 +11,5 @@ export const defaultVoiceSettings = {
   stability: 0.55,
   style: 0.1,
   use_speaker_boost: true,
+  speed: 1.2,
 };

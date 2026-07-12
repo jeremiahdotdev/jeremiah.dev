@@ -95,7 +95,10 @@ describe("POST /api/chat", () => {
     mockedVerifyTurnstileToken.mockResolvedValueOnce({
       success: true,
     });
-    mockedGenerateChatResponse.mockResolvedValueOnce("Hello from Jeremiah.");
+    mockedGenerateChatResponse.mockResolvedValueOnce({
+      displayText: "Hello from Jeremiah.",
+      speechText: "Hello from Jeremiah.",
+    });
 
     const response = await POST(
       new Request("http://localhost/api/chat", {
@@ -117,6 +120,7 @@ describe("POST /api/chat", () => {
       message: {
         content: "Hello from Jeremiah.",
         role: "assistant",
+        speechText: "Hello from Jeremiah.",
         speechToken: "speech-token",
       },
       success: true,
@@ -132,7 +136,10 @@ describe("POST /api/chat", () => {
       success: true,
     });
     mockedTranscribeAudioMessage.mockResolvedValueOnce("Voice transcript");
-    mockedGenerateChatResponse.mockResolvedValueOnce("Assistant reply");
+    mockedGenerateChatResponse.mockResolvedValueOnce({
+      displayText: "Assistant reply",
+      speechText: "Assistant reply",
+    });
 
     const response = await POST(
       new Request("http://localhost/api/chat", {

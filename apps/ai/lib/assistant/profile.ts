@@ -1,4 +1,5 @@
 import academicsProfile from "./profile-data/academics.json";
+import aiProfile from "./profile-data/ai.json";
 import careerProfile from "./profile-data/career.json";
 import personalProfile from "./profile-data/personal.json";
 import projectsProfile from "./profile-data/projects.json";
@@ -10,11 +11,13 @@ type ApprovedProfileSection = {
 };
 
 type ApprovedProfileDocument = {
+  description?: string;
   keywords: string[];
   sections: ApprovedProfileSection[];
 };
 
 const approvedProfileDocuments = {
+  ai: aiProfile as ApprovedProfileDocument,
   career: careerProfile as ApprovedProfileDocument,
   academics: academicsProfile as ApprovedProfileDocument,
   theology: theologyProfile as ApprovedProfileDocument,

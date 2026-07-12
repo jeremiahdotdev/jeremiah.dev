@@ -37,6 +37,7 @@ export type ChatResponse =
       message: {
         role: "assistant";
         content: string;
+        speechText: string;
         speechToken: string;
       };
     }
@@ -49,3 +50,8 @@ export type ChatResponse =
         | "RATE_LIMITED"
         | "OPENAI_FAILED";
     };
+
+export type AssistantResponseContent = {
+  displayText: string;
+  speechText: string;
+};

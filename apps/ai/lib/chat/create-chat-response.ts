@@ -88,7 +88,7 @@ export async function createChatResponse({
         : Promise.resolve(validation.data.input.message),
       "OpenAI request timed out.",
     );
-    const content = await withTimeout(
+    const assistantContent = await withTimeout(
       generateChatResponse({
         history: trimHistory(validation.data.history ?? []),
         message: userMessage,
@@ -99,9 +99,10 @@ export async function createChatResponse({
     return jsonResponse(
       {
         message: {
-          content,
+          content: assistantContent.displayText,
           role: "assistant",
-          speechToken: createSpeechToken(content),
+          speechText: assistantContent.speechText,
+          speechToken: createSpeechToken(assistantContent.speechText),
         },
         success: true,
         userMessage: {

@@ -8,10 +8,10 @@ import {
 describe("speech normalization", () => {
   it("removes markdown and urls", () => {
     const normalized = normalizeSpeechText(
-      "## Heading\nHere is [a link](https://example.com) and https://openai.com",
+      "## Heading\nHere is **bold** and _italic_ and [a link](https://example.com) and https://openai.com\n> quoted line",
     );
 
-    expect(normalized).toBe("Heading Here is a link and");
+    expect(normalized).toBe("Heading Here is bold and italic and a link and quoted line");
   });
 
   it("replaces code fences", () => {

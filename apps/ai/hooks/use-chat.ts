@@ -14,6 +14,7 @@ import {
   INITIAL_RESPONSE,
   REQUEST_TIMEOUT_MS,
   THINKING_FRAMES,
+  TURNSTILE_RETRY_MS,
   TURNSTILE_SITE_KEY,
   TURNSTILE_TIMEOUT_MS,
 } from "@/lib/constants/ui";
@@ -36,6 +37,7 @@ export type TranscriptMessage = ChatMessage & {
   animate?: boolean;
   id: string;
   speechToken?: string;
+  speechText?: string;
 };
 
 type SpeechErrorResponse = {
@@ -53,6 +55,8 @@ export function useChat() {
   const pendingRequestRef = useRef<PendingRequest | null>(null);
   const requestTimeoutRef = useRef<number | null>(null);
   const responseRef = useRef<HTMLDivElement | null>(null);
+  const turnstileRetryAttemptedRef = useRef(false);
+  const turnstileRetryTimeoutRef = useRef<number | null>(null);
   const turnstileTimeoutRef = useRef<number | null>(null);
   const turnstileRef = useRef<HTMLDivElement | null>(null);
 
@@ -122,6 +126,13 @@ export function useChat() {
   }
 
   function clearTurnstileTimeout() {
+    turnstileRetryAttemptedRef.current = false;
+
+    if (turnstileRetryTimeoutRef.current !== null) {
+      window.clearTimeout(turnstileRetryTimeoutRef.current);
+      turnstileRetryTimeoutRef.current = null;
+    }
+
     if (turnstileTimeoutRef.current !== null) {
       window.clearTimeout(turnstileTimeoutRef.current);
       turnstileTimeoutRef.current = null;
@@ -212,7 +223,7 @@ export function useChat() {
       const response = await fetch("/api/assistant/speech", {
         body: JSON.stringify({
           speechToken: message.speechToken,
-          text: message.content,
+          text: message.speechText ?? message.content,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -375,6 +386,7 @@ export function useChat() {
         content: result.message.content,
         id: createMessageId(),
         role: "assistant" as const,
+        speechText: result.message.speechText,
         speechToken: result.message.speechToken,
       };
 
@@ -402,6 +414,22 @@ export function useChat() {
 
   function startTurnstileTimeout() {
     clearTurnstileTimeout();
+
+    if (TURNSTILE_RETRY_MS > 0 && TURNSTILE_RETRY_MS < TURNSTILE_TIMEOUT_MS) {
+      turnstileRetryTimeoutRef.current = window.setTimeout(() => {
+        if (turnstileRetryAttemptedRef.current || !pendingRequestRef.current) {
+          return;
+        }
+
+        if (!window.turnstile) {
+          return;
+        }
+
+        turnstileRetryAttemptedRef.current = true;
+        window.turnstile.execute(turnstileRef.current ?? undefined);
+      }, TURNSTILE_RETRY_MS);
+    }
+
     turnstileTimeoutRef.current = window.setTimeout(() => {
       setErrorMessage("Verification took too long. Please try again.");
       setIsPending(false);

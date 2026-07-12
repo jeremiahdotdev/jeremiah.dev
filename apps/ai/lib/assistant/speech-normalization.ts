@@ -23,8 +23,17 @@ export function normalizeSpeechText(text: string) {
   normalized = normalized.replace(/\[\d+\]/g, "");
   normalized = normalized.replace(/\(\s*Source:[^)]+\)/gi, "");
   normalized = normalized.replace(/^#{1,6}\s*/gm, "");
+  normalized = normalized.replace(/^>\s?/gm, "");
   normalized = normalized.replace(/^\s*[-*]\s+/gm, "");
   normalized = normalized.replace(/^\s*\d+\.\s+/gm, "");
+  normalized = normalized.replace(/^\s*\|\s*/gm, "");
+  normalized = normalized.replace(/\s*\|\s*/g, " ");
+  normalized = normalized.replace(/^\s*[-*_]{3,}\s*$/gm, "");
+  normalized = normalized.replace(/\*\*(.*?)\*\*/g, "$1");
+  normalized = normalized.replace(/__(.*?)__/g, "$1");
+  normalized = normalized.replace(/\*(.*?)\*/g, "$1");
+  normalized = normalized.replace(/_(.*?)_/g, "$1");
+  normalized = normalized.replace(/~~(.*?)~~/g, "$1");
 
   for (const [pattern, replacement] of abbreviationReplacements) {
     normalized = normalized.replace(pattern, replacement);
