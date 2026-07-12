@@ -2,13 +2,13 @@ import {
   MAX_AUDIO_BYTES,
   MAX_HISTORY_MESSAGES,
   MAX_MESSAGE_LENGTH,
-} from "@/lib/chat/constants";
+} from "@/lib/constants/chat";
 import type {
   ChatAudioInput,
   ChatInput,
   ChatMessage,
   ChatRequest,
-} from "@/lib/chat/contracts";
+} from "@/lib/types/chat";
 
 type ValidationSuccess = {
   data: ChatRequest;

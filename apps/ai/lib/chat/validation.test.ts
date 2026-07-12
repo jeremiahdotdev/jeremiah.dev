@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { MAX_HISTORY_MESSAGES } from "@/lib/chat/constants";
+import { MAX_HISTORY_MESSAGES } from "@/lib/constants/chat";
 import { trimHistory, validateChatRequest } from "@/lib/chat/validation";
 
 describe("validateChatRequest", () => {

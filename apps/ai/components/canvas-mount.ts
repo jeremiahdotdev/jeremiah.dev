@@ -1,6 +1,9 @@
 import * as THREE from "three";
 
 const SMOKE_TEXTURE_URL = "/textures/smoke-element.png";
+const MOBILE_BREAKPOINT_PX = 640;
+const MOBILE_SMOKE_PARTICLE_COUNT = 70;
+const DESKTOP_SMOKE_PARTICLE_COUNT = 150;
 
 type SmokeScene = {
   camera: THREE.PerspectiveCamera;
@@ -9,7 +12,6 @@ type SmokeScene = {
   delta: number;
   frameId: number | null;
   geometry: THREE.BoxGeometry;
-  host: HTMLDivElement;
   light: THREE.DirectionalLight;
   material: THREE.MeshLambertMaterial;
   mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshLambertMaterial>;
@@ -104,7 +106,14 @@ function initScene(
     transparent: true,
   });
   const smokeGeo = new THREE.PlaneGeometry(300, 300);
-  const smokeParticles = createSmokeParticles(scene, smokeGeo, smokeMaterial);
+  const smokeParticles = createSmokeParticles(
+    scene,
+    smokeGeo,
+    smokeMaterial,
+    width <= MOBILE_BREAKPOINT_PX
+      ? MOBILE_SMOKE_PARTICLE_COUNT
+      : DESKTOP_SMOKE_PARTICLE_COUNT,
+  );
 
   host.appendChild(renderer.domElement);
 
@@ -115,7 +124,6 @@ function initScene(
     delta: 0,
     frameId: null,
     geometry,
-    host,
     light,
     material,
     mesh,
@@ -132,12 +140,13 @@ function createSmokeParticles(
   scene: THREE.Scene,
   smokeGeo: THREE.PlaneGeometry,
   smokeMaterial: THREE.MeshLambertMaterial,
+  particleCount: number,
 ) {
   const smokeParticles: Array<
     THREE.Mesh<THREE.PlaneGeometry, THREE.MeshLambertMaterial>
   > = [];
 
-  for (let index = 0; index < 150; index += 1) {
+  for (let index = 0; index < particleCount; index += 1) {
     const particle = new THREE.Mesh(smokeGeo, smokeMaterial);
     particle.position.set(
       Math.random() * 500 - 250,

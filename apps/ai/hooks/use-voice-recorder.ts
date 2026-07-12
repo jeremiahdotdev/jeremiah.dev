@@ -42,6 +42,7 @@ function createFileName(mimeType: string) {
 
 export function useVoiceRecorder(disabled: boolean) {
   const chunksRef = useRef<Blob[]>([]);
+  const discardOnStopRef = useRef(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const startedAtRef = useRef<number | null>(null);
@@ -131,6 +132,7 @@ export function useVoiceRecorder(disabled: boolean) {
 
       recorder.onerror = () => {
         setError("Recording failed. Please try again.");
+        discardOnStopRef.current = false;
         setStatus("idle");
       };
 
@@ -149,7 +151,9 @@ export function useVoiceRecorder(disabled: boolean) {
         startedAtRef.current = null;
         setRecordingDurationMs(0);
 
-        if (chunksRef.current.length === 0) {
+        if (discardOnStopRef.current || chunksRef.current.length === 0) {
+          discardOnStopRef.current = false;
+          chunksRef.current = [];
           setStatus("idle");
           return;
         }
@@ -180,6 +184,17 @@ export function useVoiceRecorder(disabled: boolean) {
       return;
     }
 
+    discardOnStopRef.current = false;
+    mediaRecorderRef.current?.stop();
+  }
+
+  function cancelRecording() {
+    if (status !== "recording") {
+      clearRecording();
+      return;
+    }
+
+    discardOnStopRef.current = true;
     mediaRecorderRef.current?.stop();
   }
 
@@ -187,10 +202,12 @@ export function useVoiceRecorder(disabled: boolean) {
     setError("");
     setRecordingDurationMs(0);
     setRecordedMessage(null);
+    discardOnStopRef.current = false;
     setStatus(isSupported ? "idle" : "unsupported");
   }
 
   return {
+    cancelRecording,
     clearRecording,
     durationMs,
     error,

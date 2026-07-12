@@ -8,11 +8,11 @@ vi.mock("next/headers", () => ({
   })),
 }));
 
-vi.mock("@/lib/turnstile/verify", () => ({
+vi.mock("@/lib/gateways/turnstile", () => ({
   verifyTurnstileToken: vi.fn(),
 }));
 
-vi.mock("@/lib/openai/service", () => ({
+vi.mock("@/lib/gateways/openai", () => ({
   generateChatResponse: vi.fn(),
   transcribeAudioMessage: vi.fn(),
 }));
@@ -22,9 +22,9 @@ vi.mock("@/lib/assistant/speech-authorization", () => ({
 }));
 
 import { POST } from "@/app/api/chat/route";
-import { generateChatResponse } from "@/lib/openai/service";
-import { transcribeAudioMessage } from "@/lib/openai/service";
-import { verifyTurnstileToken } from "@/lib/turnstile/verify";
+import { generateChatResponse } from "@/lib/gateways/openai";
+import { transcribeAudioMessage } from "@/lib/gateways/openai";
+import { verifyTurnstileToken } from "@/lib/gateways/turnstile";
 
 const mockedGenerateChatResponse = vi.mocked(generateChatResponse);
 const mockedTranscribeAudioMessage = vi.mocked(transcribeAudioMessage);

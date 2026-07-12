@@ -1,4 +1,4 @@
-import type { ChatMessage } from "@/lib/chat/contracts";
+import type { ChatMessage } from "@/lib/types/chat";
 
 import {
   getApprovedProfileDocuments,

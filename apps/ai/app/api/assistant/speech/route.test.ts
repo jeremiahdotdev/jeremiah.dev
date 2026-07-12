@@ -12,13 +12,13 @@ vi.mock("@/lib/assistant/speech-authorization", () => ({
   verifySpeechToken: vi.fn(),
 }));
 
-vi.mock("@/lib/assistant/text-to-speech", () => ({
+vi.mock("@/lib/gateways/elevenlabs", () => ({
   synthesizeSpeech: vi.fn(),
 }));
 
 import { POST } from "@/app/api/assistant/speech/route";
 import { verifySpeechToken } from "@/lib/assistant/speech-authorization";
-import { synthesizeSpeech } from "@/lib/assistant/text-to-speech";
+import { synthesizeSpeech } from "@/lib/gateways/elevenlabs";
 
 const mockedVerifySpeechToken = vi.mocked(verifySpeechToken);
 const mockedSynthesizeSpeech = vi.mocked(synthesizeSpeech);

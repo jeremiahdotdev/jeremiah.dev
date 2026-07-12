@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { mountCanvas } from "./mount";
+import { mountCanvas } from "./canvas-mount";
 
 export function Canvas() {
   const hostRef = useRef<HTMLDivElement | null>(null);

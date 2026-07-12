@@ -4,10 +4,8 @@ import type { EasyInputMessage } from "openai/resources/responses/responses";
 import { getApprovedProfileContext } from "@/lib/assistant/profile";
 import { assistantSystemPrompt } from "@/lib/assistant/system-prompt";
 import { inferProfileTopics } from "@/lib/assistant/topic-router";
-import { MAX_AUDIO_BYTES } from "@/lib/chat/constants";
-import type { ChatAudioInput } from "@/lib/chat/contracts";
-import { MAX_OPENAI_OUTPUT_TOKENS } from "@/lib/chat/constants";
-import type { ChatMessage } from "@/lib/chat/contracts";
+import { MAX_AUDIO_BYTES, MAX_OPENAI_OUTPUT_TOKENS } from "@/lib/constants/chat";
+import type { ChatAudioInput, ChatMessage } from "@/lib/types/chat";
 
 const DEFAULT_MODEL = "gpt-5.6-luna";
 const DEFAULT_TRANSCRIPTION_MODEL = "gpt-4o-mini-transcribe";

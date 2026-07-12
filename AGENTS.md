@@ -1,5 +1,10 @@
 # Project Notes
 
+## General
+
+- Prefer `condition && <Element />` over `condition ? <Element /> : null` for straightforward conditional rendering.
+- Prefer `useEffectEvent` over `useCallback` for stable event-style handlers in React code when that pattern fits the code. If the callback is not an effect/event-style handler, prefer a plain function before reaching for `useCallback`.
+
 ## Code Style
 
 - Prefer `condition && "class-name"` over `condition ? "class-name" : ""` when passing optional classes into `twMerge` or similar class helpers.

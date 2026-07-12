@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { verifyTurnstileToken } from "@/lib/turnstile/verify";
+import { verifyTurnstileToken } from "@/lib/gateways/turnstile";
 
 export async function POST(request: Request) {
   const body = (await request.json()) as {

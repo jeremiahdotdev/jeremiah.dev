@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 import { forwardRef, useEffect, useState } from "react";
 
-import styles from "./style.module.css";
-
 type ResponseMessageProps = {
   animate?: boolean;
   children: ReactNode;
@@ -46,7 +44,11 @@ function AnimatedContent({
     };
   }, [animate, text]);
 
-  return <p className={styles.content}>{animate ? visibleText : text}</p>;
+  return (
+    <p className="relative m-0 whitespace-pre-wrap">
+      {animate ? visibleText : text}
+    </p>
+  );
 }
 
 export const ResponseMessage = forwardRef<HTMLElement, ResponseMessageProps>(
@@ -64,17 +66,27 @@ export const ResponseMessage = forwardRef<HTMLElement, ResponseMessageProps>(
     return (
       <section
         aria-label={label}
-        className={`${styles.shell} ${kind === "user" ? styles.userShell : ""}`}
+        className={`app-rise-in relative z-1 inline-grid max-w-2xl gap-3 ${
+          kind === "user" ? "ml-auto justify-items-end" : "justify-items-start"
+        }`}
         ref={ref}
       >
-        <div className={styles.labelRow}>
-          <div className={styles.label}>{label}</div>
-          {control ? <div className={styles.control}>{control}</div> : null}
+        <div
+          className={`flex w-full items-center gap-4 pl-1 ${
+            kind === "user" ? "justify-end" : "justify-between"
+          }`}
+        >
+          <div className="font-mono text-xs tracking-widest text-white/50">
+            {label}
+          </div>
+          {control && <div className="flex justify-end">{control}</div>}
         </div>
         <div
-          className={`${styles.bubble} ${
-            kind === "user" ? styles.userBubble : ""
-          } ${tone === "error" ? styles.error : ""}`}
+          className={`app-bubble app-bubble-glow relative overflow-hidden rounded-2xl border px-5 py-4 leading-7 text-app-foreground backdrop-blur ${
+            kind === "user"
+              ? "app-bubble-user border-white/20"
+              : "border-white/10"
+          } ${tone === "error" && "border-white/20"}`}
         >
           <AnimatedContent animate={animate} text={String(children)} />
         </div>

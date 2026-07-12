@@ -1,7 +1,7 @@
 import {
   CHAT_RATE_LIMIT_MAX_REQUESTS,
   CHAT_RATE_LIMIT_WINDOW_MS,
-} from "@/lib/chat/constants";
+} from "@/lib/constants/chat";
 
 type RateLimitEntry = {
   count: number;
