@@ -88,16 +88,16 @@ export function IconButton({
   return (
     <button
       {...props}
-      className={`app-shimmer-surface relative z-1 grid place-items-center self-center rounded-full border border-transparent font-mono text-lg font-medium leading-none text-app-foreground focus-visible:outline-none disabled:cursor-wait disabled:opacity-70 active:translate-y-px ${
+      className={`app-shimmer-surface relative z-1 grid cursor-pointer place-items-center self-center rounded-full border border-transparent font-mono text-lg font-medium leading-none text-app-foreground focus-visible:outline-none disabled:cursor-wait disabled:opacity-70 active:translate-y-px ${
         size === "compact"
           ? "h-8 w-8 min-w-8"
           : "h-12 w-12 min-w-12"
-      } ${active && "text-white"} ${className ?? ""}`}
+      } ${active && "app-foreground-strong"} ${className ?? ""}`}
       style={
         active
           ? {
-              backgroundColor: "rgb(255 255 255 / 0.14)",
-              borderColor: "rgb(255 255 255 / 0.18)",
+              backgroundColor: "var(--button-active-background)",
+              borderColor: "var(--button-active-border)",
               ...style,
             }
           : style

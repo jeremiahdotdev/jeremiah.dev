@@ -4,6 +4,56 @@
   color-scheme: dark;
   --background: #020202;
   --foreground: rgb(255 255 255 / 90%);
+  --foreground-strong: rgb(255 255 255 / 96%);
+  --muted-foreground: rgb(255 255 255 / 50%);
+  --subtle-foreground: rgb(255 255 255 / 40%);
+  --line: rgb(255 255 255 / 10%);
+  --line-strong: rgb(255 255 255 / 20%);
+  --overlay-radial: radial-gradient(circle at center, transparent 0%, rgb(0 0 0 / 25%) 60%, rgb(0 0 0 / 75%) 100%);
+  --overlay-linear: linear-gradient(180deg, rgb(0 0 0 / 25%), rgb(0 0 0 / 10%) 35%, rgb(0 0 0 / 30%));
+  --page-shell-glow: radial-gradient(circle at center, rgb(255 255 255 / 5%), transparent 40%);
+  --bubble-background: rgb(10 10 12 / 75%);
+  --bubble-user-background: rgb(16 16 20 / 85%);
+  --bubble-glow: radial-gradient(circle at top left, rgb(255 255 255 / 10%), transparent 35%);
+  --button-active-background: rgb(255 255 255 / 0.14);
+  --button-active-border: rgb(255 255 255 / 0.18);
+  --surface-fill: rgb(2 2 2 / 0.9);
+  --surface-fill-hover: rgb(10 10 12 / 0.96);
+  --shimmer-0: rgb(255 255 255 / 10%);
+  --shimmer-1: rgb(255 255 255 / 50%);
+  --shimmer-2: rgb(100 110 140 / 20%);
+  --shimmer-3: rgb(10 12 20 / 90%);
+  --shimmer-4: rgb(255 255 255 / 10%);
+  --shimmer-5: rgb(255 255 255 / 40%);
+  --shimmer-6: rgb(255 255 255 / 10%);
+}
+
+.light {
+  color-scheme: light;
+  --background: #f6f7fb;
+  --foreground: rgb(14 18 27 / 92%);
+  --foreground-strong: rgb(10 14 22 / 98%);
+  --muted-foreground: rgb(14 18 27 / 58%);
+  --subtle-foreground: rgb(14 18 27 / 46%);
+  --line: rgb(14 18 27 / 10%);
+  --line-strong: rgb(14 18 27 / 16%);
+  --overlay-radial: radial-gradient(circle at center, transparent 0%, rgb(255 255 255 / 5%) 55%, rgb(234 238 248 / 66%) 100%);
+  --overlay-linear: linear-gradient(180deg, rgb(255 255 255 / 18%), rgb(255 255 255 / 10%) 35%, rgb(208 216 232 / 18%));
+  --page-shell-glow: radial-gradient(circle at center, rgb(255 255 255 / 75%), transparent 38%);
+  --bubble-background: rgb(255 255 255 / 70%);
+  --bubble-user-background: rgb(246 248 252 / 88%);
+  --bubble-glow: radial-gradient(circle at top left, rgb(255 255 255 / 55%), transparent 38%);
+  --button-active-background: rgb(14 18 27 / 0.08);
+  --button-active-border: rgb(14 18 27 / 0.14);
+  --surface-fill: rgb(255 255 255 / 0.92);
+  --surface-fill-hover: rgb(255 255 255 / 0.98);
+  --shimmer-0: rgb(14 18 27 / 8%);
+  --shimmer-1: rgb(14 18 27 / 28%);
+  --shimmer-2: rgb(255 255 255 / 82%);
+  --shimmer-3: rgb(14 18 27 / 16%);
+  --shimmer-4: rgb(14 18 27 / 8%);
+  --shimmer-5: rgb(14 18 27 / 22%);
+  --shimmer-6: rgb(14 18 27 / 8%);
 }
 
 @theme inline {
@@ -50,7 +100,7 @@ input {
   min-height: 100vh;
   overflow: clip;
   background:
-    radial-gradient(circle at center, rgb(255 255 255 / 5%), transparent 40%),
+    var(--page-shell-glow),
     var(--background);
 }
 
@@ -59,8 +109,8 @@ input {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at center, transparent 0%, rgb(0 0 0 / 25%) 60%, rgb(0 0 0 / 75%) 100%),
-    linear-gradient(180deg, rgb(0 0 0 / 25%), rgb(0 0 0 / 10%) 35%, rgb(0 0 0 / 30%));
+    var(--overlay-radial),
+    var(--overlay-linear);
 }
 
 .page-content {
@@ -94,7 +144,7 @@ input {
 
 .response-action {
   cursor: pointer;
-  border: 1px solid rgb(255 255 255 / 10%);
+  border: 1px solid var(--line);
   border-radius: 9999px;
   background: transparent;
   color: var(--foreground);
@@ -112,7 +162,7 @@ input {
 
 .response-action:focus-visible {
   outline: none;
-  border-color: rgb(255 255 255 / 30%);
+  border-color: var(--line-strong);
 }
 
 .canvas {
@@ -125,34 +175,75 @@ input {
 .app-shimmer-surface {
   --search-shimmer-angle: 210deg;
   background:
-    linear-gradient(var(--background), var(--background)) padding-box,
+    linear-gradient(var(--surface-fill), var(--surface-fill)) padding-box,
     conic-gradient(
       from var(--search-shimmer-angle),
-      rgb(255 255 255 / 10%) 0deg,
-      rgb(255 255 255 / 50%) 60deg,
-      rgb(100 110 140 / 20%) 120deg,
-      rgb(10 12 20 / 90%) 180deg,
-      rgb(255 255 255 / 10%) 240deg,
-      rgb(255 255 255 / 40%) 300deg,
-      rgb(255 255 255 / 10%) 360deg
+      var(--shimmer-0) 0deg,
+      var(--shimmer-1) 60deg,
+      var(--shimmer-2) 120deg,
+      var(--shimmer-3) 180deg,
+      var(--shimmer-4) 240deg,
+      var(--shimmer-5) 300deg,
+      var(--shimmer-6) 360deg
     ) border-box;
   animation: search-shimmer 7s linear infinite;
 }
 
+.app-shimmer-surface:hover,
+.app-shimmer-surface:focus-visible {
+  background:
+    linear-gradient(var(--surface-fill-hover), var(--surface-fill-hover)) padding-box,
+    conic-gradient(
+      from var(--search-shimmer-angle),
+      var(--shimmer-0) 0deg,
+      var(--shimmer-1) 60deg,
+      var(--shimmer-2) 120deg,
+      var(--shimmer-3) 180deg,
+      var(--shimmer-4) 240deg,
+      var(--shimmer-5) 300deg,
+      var(--shimmer-6) 360deg
+    ) border-box;
+}
+
 .app-bubble {
-  background: rgb(10 10 12 / 75%);
+  background: var(--bubble-background);
 }
 
 .app-bubble-user {
-  background: rgb(16 16 20 / 85%);
+  background: var(--bubble-user-background);
 }
 
 .app-bubble-glow::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgb(255 255 255 / 10%), transparent 35%);
+  background: var(--bubble-glow);
   pointer-events: none;
+}
+
+.app-bubble-border {
+  border-color: var(--line);
+}
+
+.app-bubble-user-border,
+.app-bubble-error-border {
+  border-color: var(--line-strong);
+}
+
+.app-muted-copy {
+  color: var(--muted-foreground);
+}
+
+.app-subtle-copy {
+  color: var(--subtle-foreground);
+}
+
+.app-foreground-strong {
+  color: var(--foreground-strong);
+}
+
+.app-input::placeholder {
+  color: var(--muted-foreground);
 }
 
 .app-rise-in {

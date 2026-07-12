@@ -76,17 +76,15 @@ export const ResponseMessage = forwardRef<HTMLElement, ResponseMessageProps>(
             kind === "user" ? "justify-end" : "justify-between"
           }`}
         >
-          <div className="font-mono text-xs tracking-widest text-white/50">
+          <div className="app-muted-copy font-mono text-xs tracking-widest">
             {label}
           </div>
           {control && <div className="flex justify-end">{control}</div>}
         </div>
         <div
           className={`app-bubble app-bubble-glow relative overflow-hidden rounded-2xl border px-5 py-4 leading-7 text-app-foreground backdrop-blur ${
-            kind === "user"
-              ? "app-bubble-user border-white/20"
-              : "border-white/10"
-          } ${tone === "error" && "border-white/20"}`}
+            kind === "user" ? "app-bubble-user app-bubble-user-border" : "app-bubble-border"
+          } ${tone === "error" && "app-bubble-error-border"}`}
         >
           <AnimatedContent animate={animate} text={String(children)} />
         </div>

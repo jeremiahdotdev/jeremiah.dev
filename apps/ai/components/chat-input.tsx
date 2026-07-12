@@ -36,7 +36,7 @@ function TextField({
     <div className="flex min-w-0 flex-1 items-center">
       <input
         autoComplete="off"
-        className="relative z-1 h-10 w-full min-w-0 appearance-none border-0 bg-transparent px-4 text-base leading-10 text-app-foreground outline-0 placeholder:text-white/50 focus-visible:outline-none"
+        className="app-input relative z-1 h-10 w-full min-w-0 appearance-none border-0 bg-transparent px-4 text-base leading-10 text-app-foreground outline-0 focus-visible:outline-none"
         id="main-input"
         name="q"
         onChange={onChange}
@@ -52,7 +52,7 @@ function TextField({
 function VoicePanel({ voiceStatus }: { voiceStatus: string }) {
   return (
     <div className="flex min-h-10 min-w-0 flex-1 items-center">
-      <div className="min-w-0 flex-1 truncate px-4 text-base leading-10 text-white/50">
+      <div className="app-muted-copy min-w-0 flex-1 truncate px-4 text-base leading-10">
         {voiceStatus}
       </div>
     </div>

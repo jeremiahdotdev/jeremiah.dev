@@ -23,11 +23,11 @@ type SmokeScene = {
   smokeTexture: THREE.Texture;
 };
 
-export function mountCanvas(host: HTMLDivElement) {
+export function mountCanvas(host: HTMLDivElement, theme: "light" | "dark") {
   const textureLoader = new THREE.TextureLoader();
   textureLoader.setCrossOrigin("");
 
-  const sceneState = initScene(host, textureLoader.load(SMOKE_TEXTURE_URL));
+  const sceneState = initScene(host, textureLoader.load(SMOKE_TEXTURE_URL), theme);
 
   const animate = () => {
     sceneState.delta = sceneState.clock.getDelta();
@@ -68,6 +68,7 @@ export function mountCanvas(host: HTMLDivElement) {
 function initScene(
   host: HTMLDivElement,
   smokeTexture: THREE.Texture,
+  theme: "light" | "dark",
 ): SmokeScene {
   const width = host.clientWidth || window.innerWidth;
   const height = host.clientHeight || window.innerHeight;
@@ -91,17 +92,16 @@ function initScene(
 
   const geometry = new THREE.BoxGeometry(200, 200, 200);
   const material = new THREE.MeshLambertMaterial({
-    color: 0xaa6666,
+    color: theme === "light" ? 0xd6dde8 : 0xaa6666,
     wireframe: false,
   });
   const mesh = new THREE.Mesh(geometry, material);
-
   const light = new THREE.DirectionalLight(0xffffff, 0.5);
   light.position.set(-1, 0, 1);
   scene.add(light);
 
   const smokeMaterial = new THREE.MeshLambertMaterial({
-    color: 0x706065,
+    color: theme === "light" ? 0xfafafa : 0x706065,
     map: smokeTexture,
     transparent: true,
   });
