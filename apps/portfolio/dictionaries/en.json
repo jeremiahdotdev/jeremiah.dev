@@ -12,6 +12,8 @@
         "description":"Links to all sections of the site."
     },
     "controls": {
+        "askAi": "Ask My AI",
+        "askAiPrompt": "Have a question? Ask my AI...",
         "linkedIn": "View LinkedIn Profile",
         "resume": "View Resume"
     },
@@ -110,6 +112,7 @@
         }
     },
     "links": {
+        "ai" : "https://ai.jeremiah.dev",
         "linkedIn" : "https://www.linkedin.com/in/jeremiah-gage/",
         "resume" : "https://drive.google.com/file/d/1fUuynnjJ7wLUtSFklQY8U1bBFOAJJnoC/view?usp=sharing"
     },

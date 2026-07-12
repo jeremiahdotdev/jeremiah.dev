@@ -101,7 +101,7 @@ function initScene(
   scene.add(light);
 
   const smokeMaterial = new THREE.MeshLambertMaterial({
-    color: 0x887788,
+    color: 0x706065,
     map: smokeTexture,
     transparent: true,
   });

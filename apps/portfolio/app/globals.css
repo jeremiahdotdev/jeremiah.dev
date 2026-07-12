@@ -105,6 +105,7 @@
   visibility: hidden;
 }
 
+@layer components {
 .home-transition-scope,
 .home-transition-scope *,
 .home-transition-scope *::before,
@@ -112,4 +113,5 @@
   transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, box-shadow;
   transition-duration: 600ms;
   transition-timing-function: ease-out;
+}
 }

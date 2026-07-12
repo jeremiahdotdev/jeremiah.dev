@@ -3,8 +3,14 @@ import { Octokit } from "octokit";
 import { GithubDocument, GithubRepository, InternalGithubDocument, InternalGithubLanguages, InternalGithubProject, SimpleCache } from "@/types/github";
 import { scopePortfolioTheme } from "../service/scopePortfolioTheme";
 
+const githubAuthToken = [
+    process.env.GITHUB_TOKEN,
+    process.env.GITHUB_API_TOKEN,
+    process.env.GITHUB_API_URL,
+].find((value) => value && !value.startsWith("http"));
+
 const octokit = new Octokit({
-    auth: process.env.GITHUB_API_URL ?? ""
+    auth: githubAuthToken
 });
 
 const basePath = config.github.api + config.github.repos
@@ -14,6 +20,17 @@ const GITHUB_REPOSITORIES: SimpleCache<GithubRepository> = { value: [], dateUpda
 const GITHUB_PROJECTS: SimpleCache<InternalGithubProject> = { value: [], dateUpdated: null }
 const GITHUB_LANGUAGES: SimpleCache<InternalGithubLanguages> = { value: [], dateUpdated: null }
 const GITHUB_DOCUMENTS: SimpleCache<InternalGithubDocument> = { value: [], dateUpdated: null }
+
+type GitHubResourceKey = "repositories" | "projects" | "languages" | "documents";
+
+const GITHUB_RETRY_AFTER: Record<GitHubResourceKey, Date | null> = {
+    repositories: null,
+    projects: null,
+    languages: null,
+    documents: null
+};
+
+const RATE_LIMIT_FALLBACK_MS = 5 * 60 * 1000;
 
 function isDifferenceLessThanThreshold(date: Date | null, thresholdInHours: number): boolean {
     if (!date) return false;
@@ -37,31 +54,129 @@ function stateContainsValue(state: SimpleCache<InternalGithubLanguages | Interna
     return null
 }
 
+function hasStateValue(state: SimpleCache<unknown>) {
+    return state.value.length > 0
+}
+
+function retryWindowIsActive(resource: GitHubResourceKey) {
+    const retryAfter = GITHUB_RETRY_AFTER[resource];
+    return Boolean(retryAfter && retryAfter.getTime() > Date.now())
+}
+
+function clearRetryWindow(resource: GitHubResourceKey) {
+    GITHUB_RETRY_AFTER[resource] = null
+}
+
+function getGitHubRetryDate(error: unknown) {
+    const headers = typeof error === "object" && error !== null && "response" in error
+        ? (error.response as { headers?: Record<string, string | number | undefined> })?.headers
+        : undefined;
+    const retryAfterHeader = headers?.["retry-after"];
+    const rateLimitResetHeader = headers?.["x-ratelimit-reset"];
+
+    if (typeof retryAfterHeader === "string" || typeof retryAfterHeader === "number") {
+        const retryAfterSeconds = Number(retryAfterHeader);
+        if (!Number.isNaN(retryAfterSeconds) && retryAfterSeconds > 0) {
+            return new Date(Date.now() + retryAfterSeconds * 1000);
+        }
+    }
+
+    if (typeof rateLimitResetHeader === "string" || typeof rateLimitResetHeader === "number") {
+        const resetUnixSeconds = Number(rateLimitResetHeader);
+        if (!Number.isNaN(resetUnixSeconds) && resetUnixSeconds > 0) {
+            return new Date(resetUnixSeconds * 1000);
+        }
+    }
+
+    return new Date(Date.now() + RATE_LIMIT_FALLBACK_MS);
+}
+
+function isGitHubRateLimitError(error: unknown) {
+    if (typeof error !== "object" || error === null) {
+        return false;
+    }
+
+    const status = "status" in error ? error.status : undefined;
+    const message = "message" in error && typeof error.message === "string"
+        ? error.message.toLowerCase()
+        : "";
+
+    return status === 403
+        || status === 429
+        || message.includes("rate limit")
+        || message.includes("quota exhausted");
+}
+
+async function loadWithRetryWindow<T>(
+    resource: GitHubResourceKey,
+    state: SimpleCache<T>,
+    loader: () => Promise<unknown>
+) {
+    if (retryWindowIsActive(resource)) {
+        return state;
+    }
+
+    try {
+        await loader();
+        clearRetryWindow(resource);
+    } catch (error) {
+        if (isGitHubRateLimitError(error)) {
+            GITHUB_RETRY_AFTER[resource] = getGitHubRetryDate(error);
+        }
+
+        throw error;
+    }
+
+    return state;
+}
+
 export async function GetGitHubRepositories() {
-    if (!stateIsValid(GITHUB_REPOSITORIES)) {
-        await LoadGitHubRepositories() 
-    }    
+    if (!stateIsValid(GITHUB_REPOSITORIES) && !retryWindowIsActive("repositories")) {
+        try {
+            await loadWithRetryWindow("repositories", GITHUB_REPOSITORIES, LoadGitHubRepositories)
+        } catch (error) {
+            console.error("Failed to load GitHub repositories.", error)
+        }
+    }
     return GITHUB_REPOSITORIES
 }
 
 export async function GetGitHubProjects() {
-    if (!stateIsValid(GITHUB_PROJECTS)) {
-        await LoadGitHubProjects() 
-    }    
+    if (!stateIsValid(GITHUB_PROJECTS) && !retryWindowIsActive("projects")) {
+        try {
+            await loadWithRetryWindow("projects", GITHUB_PROJECTS, LoadGitHubProjects)
+        } catch (error) {
+            console.error("Failed to load GitHub projects.", error)
+        }
+    }
     return GITHUB_PROJECTS
 }
 
 export async function GetGitHubLanguages() {
-    if (!stateIsValid(GITHUB_LANGUAGES)) {
-        await LoadGitHubLanguages() 
-    }    
+    if (!stateIsValid(GITHUB_LANGUAGES) && !retryWindowIsActive("languages")) {
+        try {
+            await loadWithRetryWindow("languages", GITHUB_LANGUAGES, LoadGitHubLanguages)
+        } catch (error) {
+            console.error("Failed to load GitHub languages.", error)
+        }
+    }
     return GITHUB_LANGUAGES
 }
 
 export async function GetGitHubDocumentsByDocument(documentPath: string) {
-    if (!stateIsValid(GITHUB_DOCUMENTS) || !stateContainsValue(GITHUB_DOCUMENTS, documentPath)) {
-        await LoadGitHubDocumentsByDocument(documentPath) 
-    }    
+    const documentIsMissing = !stateContainsValue(GITHUB_DOCUMENTS, documentPath);
+
+    if ((!stateIsValid(GITHUB_DOCUMENTS) || documentIsMissing) && !retryWindowIsActive("documents")) {
+        try {
+            await loadWithRetryWindow(
+                "documents",
+                GITHUB_DOCUMENTS,
+                () => LoadGitHubDocumentsByDocument(documentPath)
+            )
+        } catch (error) {
+            console.error(`Failed to load GitHub documents for '${documentPath}'.`, error)
+        }
+    }
 
     return stateContainsValue(GITHUB_DOCUMENTS, documentPath)
 }
@@ -93,6 +208,12 @@ async function LoadGitHubRepositories() {
 
 async function LoadGitHubProjects() {
     const repositories = await GetGitHubRepositories();
+    if (!hasStateValue(repositories)) {
+        GITHUB_PROJECTS.value = [];
+        GITHUB_PROJECTS.dateUpdated = new Date();
+        return true;
+    }
+
     const portfolioConfig = config.github.portfolio;
     const getPortfolioAssetPath = (filename: string) => `${portfolioConfig.path}/${filename}`;
     const getPortfolioFiles = async (repo: InternalGithubProject) => {
@@ -242,6 +363,11 @@ async function LoadGitHubProjects() {
 
 async function LoadGitHubLanguages() {
     const repositories = await GetGitHubRepositories()
+    if (!hasStateValue(repositories)) {
+        GITHUB_LANGUAGES.value = []
+        GITHUB_LANGUAGES.dateUpdated = new Date()
+        return [];
+    }
 
     const languageURLs = []
     for (let repo of repositories.value) {
@@ -257,6 +383,10 @@ async function LoadGitHubLanguages() {
     const languages: any = []
     languageResponses.forEach((languageResponse) => {
         const data = languageResponse?.data
+        if (!data) {
+            return
+        }
+
         for (var prop in data) {
             if (
                 !languages.some((item: any) => {
