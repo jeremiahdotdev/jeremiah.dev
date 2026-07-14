@@ -12,7 +12,9 @@ const ThemeToggle: FC<ThemeToggleProps> = ({ className }) => {
   const { resolvedTheme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
   const isLight = resolvedTheme === "light";
-  const iconClassName = isLight ? "h-[1.4rem] w-[1.4rem] text-black" : "h-[1.4rem] w-[1.4rem] text-white/70";
+  const iconClassName = isLight
+    ? "h-[1.4rem] w-[1.4rem] text-black"
+    : "h-[1.4rem] w-[1.4rem] text-white/70";
 
   useEffect(() => {
     const id = window.requestAnimationFrame(() => {

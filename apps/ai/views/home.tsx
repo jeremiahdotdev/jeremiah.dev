@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/theme-toggle";
 
 export function Home() {
   return (
-    <main className="page-shell">
+    <main className="relative grid min-h-screen grid-cols-[minmax(0,1fr)] items-stretch justify-items-stretch overflow-clip bg-[var(--page-shell-glow),var(--background)]">
       <Canvas />
       <div className="pointer-events-none absolute top-0 right-0 z-2 p-4">
         <ThemeToggle

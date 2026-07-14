@@ -92,7 +92,7 @@ export function IconButton({
         size === "compact"
           ? "h-8 w-8 min-w-8"
           : "h-12 w-12 min-w-12"
-      } ${active && "app-foreground-strong"} ${className ?? ""}`}
+      } ${active && "text-app-foreground-strong"} ${className ?? ""}`}
       style={
         active
           ? {

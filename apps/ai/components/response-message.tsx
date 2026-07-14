@@ -66,7 +66,7 @@ export const ResponseMessage = forwardRef<HTMLElement, ResponseMessageProps>(
     return (
       <section
         aria-label={label}
-        className={`app-rise-in relative z-1 inline-grid max-w-2xl gap-3 ${
+        className={`relative z-1 inline-grid max-w-2xl gap-3 motion-safe:animate-[bubble-rise_220ms_ease-out] ${
           kind === "user" ? "ml-auto justify-items-end" : "justify-items-start"
         }`}
         ref={ref}
@@ -76,15 +76,17 @@ export const ResponseMessage = forwardRef<HTMLElement, ResponseMessageProps>(
             kind === "user" ? "justify-end" : "justify-between"
           }`}
         >
-          <div className="app-muted-copy font-mono text-xs tracking-widest">
+          <div className="font-mono text-xs tracking-widest font-bold text-app-label [text-shadow:var(--label-text-shadow)]">
             {label}
           </div>
           {control && <div className="flex justify-end">{control}</div>}
         </div>
         <div
-          className={`app-bubble app-bubble-glow relative overflow-hidden rounded-2xl border px-5 py-4 leading-7 text-app-foreground backdrop-blur ${
-            kind === "user" ? "app-bubble-user app-bubble-user-border" : "app-bubble-border"
-          } ${tone === "error" && "app-bubble-error-border"}`}
+          className={`relative overflow-hidden rounded-2xl border px-5 py-4 leading-7 text-app-foreground backdrop-blur before:pointer-events-none before:absolute before:inset-0 before:[background:var(--bubble-glow)] ${
+            kind === "user"
+              ? "border-app-line-strong bg-app-bubble-user"
+              : "border-app-line bg-app-bubble"
+          } ${tone === "error" && "border-app-line-strong"}`}
         >
           <AnimatedContent animate={animate} text={String(children)} />
         </div>

@@ -26,9 +26,12 @@ export function Chat() {
   } = useChat();
 
   return (
-    <div className="page-content">
+    <div className="relative z-1 grid h-dvh w-full grid-cols-[minmax(0,1fr)] grid-rows-[minmax(0,1fr)_auto] gap-4 px-0 py-4">
       <div className="mx-auto flex h-full w-full min-w-0 max-w-2xl flex-col justify-end gap-4 self-stretch px-4">
-        <div className="chat-transcript" ref={responseRef}>
+        <div
+          className="grid min-h-0 w-full max-w-[42rem] content-end gap-4 overflow-y-auto px-0 pb-[4px] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden max-sm:max-w-[32rem]"
+          ref={responseRef}
+        >
           {messages.length === 0 && !pendingRequest && (
             <ResponseMessage label="jeremiah.dev">
               {initialResponse}
@@ -72,7 +75,7 @@ export function Chat() {
                 control={
                   errorMessage && (
                     <button
-                      className="response-action"
+                      className="cursor-pointer rounded-full border border-app-line bg-transparent px-3 py-2 font-mono text-[12px] uppercase tracking-[2px] text-app-foreground focus-visible:border-app-line-strong focus-visible:outline-none disabled:cursor-wait disabled:opacity-70"
                       onClick={retryPendingRequest}
                       type="button"
                     >

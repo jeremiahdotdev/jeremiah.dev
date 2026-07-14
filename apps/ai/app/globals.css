@@ -7,6 +7,9 @@
   --foreground-strong: rgb(255 255 255 / 96%);
   --muted-foreground: rgb(255 255 255 / 50%);
   --subtle-foreground: rgb(255 255 255 / 40%);
+  --footer-foreground: rgb(255 255 255 / 72%);
+  --label-foreground: rgb(255 255 255 / 72%);
+  --placeholder-foreground: rgb(255 255 255 / 40%);
   --line: rgb(255 255 255 / 10%);
   --line-strong: rgb(255 255 255 / 20%);
   --overlay-radial: radial-gradient(circle at center, transparent 0%, rgb(0 0 0 / 25%) 60%, rgb(0 0 0 / 75%) 100%);
@@ -15,6 +18,7 @@
   --bubble-background: rgb(10 10 12 / 75%);
   --bubble-user-background: rgb(16 16 20 / 85%);
   --bubble-glow: radial-gradient(circle at top left, rgb(255 255 255 / 10%), transparent 35%);
+  --label-text-shadow: 0 0 10px rgb(255 255 255 / 0.28);
   --button-active-background: rgb(255 255 255 / 0.14);
   --button-active-border: rgb(255 255 255 / 0.18);
   --surface-fill: rgb(2 2 2 / 0.9);
@@ -35,6 +39,9 @@
   --foreground-strong: rgb(10 14 22 / 98%);
   --muted-foreground: rgb(14 18 27 / 58%);
   --subtle-foreground: rgb(14 18 27 / 46%);
+  --footer-foreground: rgb(255 255 255 / 78%);
+  --label-foreground: rgb(255 255 255 / 78%);
+  --placeholder-foreground: rgb(14 18 27 / 46%);
   --line: rgb(14 18 27 / 10%);
   --line-strong: rgb(14 18 27 / 16%);
   --overlay-radial: radial-gradient(circle at center, transparent 0%, rgb(255 255 255 / 5%) 55%, rgb(234 238 248 / 66%) 100%);
@@ -43,6 +50,7 @@
   --bubble-background: rgb(255 255 255 / 70%);
   --bubble-user-background: rgb(246 248 252 / 88%);
   --bubble-glow: radial-gradient(circle at top left, rgb(255 255 255 / 55%), transparent 38%);
+  --label-text-shadow: 0 1px 2px rgb(0 0 0 / 0.55);
   --button-active-background: rgb(14 18 27 / 0.08);
   --button-active-border: rgb(14 18 27 / 0.14);
   --surface-fill: rgb(255 255 255 / 0.92);
@@ -58,7 +66,17 @@
 
 @theme inline {
   --color-app-background: var(--background);
+  --color-app-bubble: var(--bubble-background);
+  --color-app-bubble-user: var(--bubble-user-background);
+  --color-app-footer: var(--footer-foreground);
   --color-app-foreground: var(--foreground);
+  --color-app-foreground-strong: var(--foreground-strong);
+  --color-app-label: var(--label-foreground);
+  --color-app-line: var(--line);
+  --color-app-line-strong: var(--line-strong);
+  --color-app-muted: var(--muted-foreground);
+  --color-app-placeholder: var(--placeholder-foreground);
+  --color-app-subtle: var(--subtle-foreground);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
 }
@@ -89,87 +107,6 @@ body {
 button,
 input {
   font: inherit;
-}
-
-.page-shell {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: stretch;
-  justify-items: stretch;
-  min-height: 100vh;
-  overflow: clip;
-  background:
-    var(--page-shell-glow),
-    var(--background);
-}
-
-.page-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    var(--overlay-radial),
-    var(--overlay-linear);
-}
-
-.page-content {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 1rem;
-  width: 100%;
-  height: 100dvh;
-  padding: 1rem 0;
-}
-
-.chat-transcript {
-  display: grid;
-  align-content: end;
-  gap: 1rem;
-  width: 100%;
-  max-width: 42rem;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 0 0 4px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.chat-transcript::-webkit-scrollbar {
-  display: none;
-}
-
-.response-action {
-  cursor: pointer;
-  border: 1px solid var(--line);
-  border-radius: 9999px;
-  background: transparent;
-  color: var(--foreground);
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 8px 12px;
-}
-
-.response-action:disabled {
-  cursor: wait;
-  opacity: 70%;
-}
-
-.response-action:focus-visible {
-  outline: none;
-  border-color: var(--line-strong);
-}
-
-.canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .app-shimmer-surface {
@@ -205,65 +142,8 @@ input {
     ) border-box;
 }
 
-.app-bubble {
-  background: var(--bubble-background);
-}
-
-.app-bubble-user {
-  background: var(--bubble-user-background);
-}
-
-.app-bubble-glow::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--bubble-glow);
-  pointer-events: none;
-}
-
-.app-bubble-border {
-  border-color: var(--line);
-}
-
-.app-bubble-user-border,
-.app-bubble-error-border {
-  border-color: var(--line-strong);
-}
-
-.app-muted-copy {
-  color: var(--muted-foreground);
-}
-
-.app-subtle-copy {
-  color: var(--subtle-foreground);
-}
-
-.app-foreground-strong {
-  color: var(--foreground-strong);
-}
-
-.app-input::placeholder {
-  color: var(--muted-foreground);
-}
-
-.app-rise-in {
-  animation: bubble-rise 220ms ease-out;
-}
-
-@media (max-width: 640px) {
-  .page-content {
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-
-  .chat-transcript {
-    max-width: 32rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .app-shimmer-surface,
-  .app-rise-in {
+  .app-shimmer-surface {
     animation: none;
   }
 }

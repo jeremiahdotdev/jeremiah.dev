@@ -23,5 +23,5 @@ export function Canvas() {
     };
   }, [resolvedTheme]);
 
-  return <div aria-hidden="true" className="canvas" ref={hostRef} />;
+  return <div aria-hidden="true" className="absolute inset-0 h-full w-full" ref={hostRef} />;
 }
