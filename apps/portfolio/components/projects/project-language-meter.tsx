@@ -35,12 +35,12 @@ const ProjectLanguageMeter: FC<ProjectLanguageMeterProps> = ({ languages }) => {
         </span>
         <span className="shrink-0">{primaryLanguage.value}%</span>
       </div>
-      <div className="flex h-1.5 overflow-hidden rounded-full bg-muted transition-all duration-200 hover:h-2">
+      <div className="flex h-2 items-center overflow-hidden rounded-full bg-muted">
         {visibleLanguages.map((language) => (
           <button
             type="button"
             key={language.name}
-            className="h-full transition-all duration-200 focus-visible:outline-none"
+            className="transition-all duration-200 focus-visible:outline-none"
             onMouseEnter={() => setActiveLanguageName(language.name)}
             onMouseLeave={() => setActiveLanguageName("")}
             onFocus={() => setActiveLanguageName(language.name)}
@@ -50,6 +50,8 @@ const ProjectLanguageMeter: FC<ProjectLanguageMeterProps> = ({ languages }) => {
             style={{
               width: `${language.value}%`,
               backgroundColor: language.color,
+              height:
+                primaryLanguage.name === language.name ? "0.5rem" : "0.375rem",
               opacity: primaryLanguage.name === language.name ? 1 : 0.8,
             }}
           />

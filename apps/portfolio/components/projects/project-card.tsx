@@ -112,6 +112,13 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
 
   const previewPanel = (
     <div className="relative flex aspect-video flex-col overflow-hidden rounded-3xl border border-border/60 bg-card shadow-xl shadow-foreground/10">
+      {isSelectable && (
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-background/0 opacity-0 transition-all duration-300 group-hover:bg-background/80 group-hover:opacity-100 group-focus-visible:bg-background/80 group-focus-visible:opacity-100">
+          <span className="rounded-full border border-border/60 bg-card px-5 py-2 text-sm font-semibold uppercase tracking-widest text-card-foreground shadow-sm shadow-foreground/10 backdrop-blur-sm">
+            View Site
+          </span>
+        </div>
+      )}
       <div className="relative flex h-11 items-center border-b border-border/60 bg-muted px-4 text-xs uppercase tracking-widest text-muted-foreground">
         <div className="flex items-center gap-2">
           <span className="size-2.5 rounded-full bg-foreground/25" />
@@ -168,20 +175,13 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
             </div>
           )}
         </div>
-        {isSelectable && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition-all duration-300 group-hover:bg-background/80 group-hover:opacity-100 group-focus-visible:bg-background/80 group-focus-visible:opacity-100">
-            <span className="rounded-full border border-border/60 bg-card px-5 py-2 text-sm font-semibold uppercase tracking-widest text-card-foreground shadow-sm shadow-foreground/10 backdrop-blur-sm">
-              View Site
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );
 
   const cardContent = (
-    <>
-      <div className="space-y-3 px-2 sm:px-1">
+    <div className="flex flex-1 flex-col px-2 sm:px-1">
+      <div className="space-y-3">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <h3 className="truncate text-2xl font-semibold tracking-tight text-foreground">
@@ -192,6 +192,8 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
         <p className="text-lg leading-relaxed text-muted-foreground">
           {project.description}
         </p>
+      </div>
+      <div className="mt-auto space-y-3 pt-4">
         {project.languages?.length ? (
           <ProjectLanguageMeter languages={project.languages} />
         ) : null}
@@ -220,7 +222,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 
   if (!isSelectable) {
