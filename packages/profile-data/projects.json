@@ -1,0 +1,80 @@
+{
+  "description": "This file is an approved high-level context pack for selected larger projects Jeremiah has worked on. It is intended for AI prompt grounding when users ask about project architecture, responsibilities, and implementation approach. Treat it as summary context, avoid guessing beyond these points, and acknowledge when requested details are not explicitly documented here.",
+  "keywords": [
+    "projects",
+    "portfolio",
+    "work examples",
+    "apps",
+    "software",
+    "architecture",
+    "responsibilities",
+    "what did he build",
+    "what has he worked on",
+    "sitation",
+    "vestry",
+    "circledating",
+    "oreilly",
+    "o'reilly",
+    "german shepherds",
+    "regex:/\\b(?:what|which)\\s+projects\\b/i",
+    "regex:/\\b(?:what|which)\\s+(?:apps|products|software)\\s+(?:did|has)\\s+(?:you|he)\\s+(?:build|work\\s+on)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Jeremiah.dev project",
+      "points": [
+        "Jeremiah.dev is Jeremiah's personal portfolio site and serves as a place to present his work, writing, and background.",
+        "The project reflects Jeremiah's interest in craftsmanship, visual presentation, and combining technical work with personal narrative.",
+        "It includes both a traditional portfolio experience and an AI assistant experience focused on approved profile context."
+      ]
+    },
+    {
+      "heading": "Sitation project",
+      "points": [
+        "Sitation is a project Jeremiah has worked on that involves structured information, presentation, and user-facing product design.",
+        "It is one of the larger named projects included in his approved project context.",
+        "When specific implementation details are not available, answers should stay high-level rather than inventing architecture."
+      ]
+    },
+    {
+      "heading": "Vestry project",
+      "points": [
+        "Vestry is one of Jeremiah's projects and is part of the approved context for discussing his work.",
+        "Its inclusion reflects Jeremiah's interest in building software that can support organized communities and practical workflows.",
+        "Responses should avoid guessing about hidden technical details if they are not explicitly documented."
+      ]
+    },
+    {
+      "heading": "Circledating project",
+      "points": [
+        "Circledating is one of the named projects in Jeremiah's approved profile context.",
+        "It should be described factually and at a high level unless more specific approved details are provided elsewhere.",
+        "Its inclusion helps represent the range of product work Jeremiah has contributed to."
+      ]
+    },
+    {
+      "heading": "Ozark Highlands Shepherds project",
+      "points": [
+        "Ozark Highlands Shepherds is a project connected to Jeremiah's broader personal and practical interests.",
+        "It reflects overlap between his software work, property life, and interest in German Shepherds.",
+        "Answers should remain grounded in approved facts rather than filling in missing specifics."
+      ]
+    },
+    {
+      "heading": "Oreillyauto.com project",
+      "points": [
+        "Jeremiah has worked on oreillyauto.com as part of his professional experience.",
+        "This work reflects experience with large production web applications and customer-facing digital products.",
+        "It is appropriate to describe this project in terms of front-end engineering, scale, and product quality when specifics are not otherwise documented."
+      ]
+    },
+    {
+      "heading": "O'Reilly Component Library project",
+      "points": [
+        "Jeremiah has worked on a component library for O'Reilly, which reflects design system and reusable UI experience.",
+        "This project is relevant when discussing his strengths in component architecture, consistency, and front-end systems.",
+        "Responses should keep details high-level unless more explicit approved implementation facts are available."
+      ]
+    }
+  ]
+}

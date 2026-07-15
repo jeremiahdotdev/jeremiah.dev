@@ -1,9 +1,9 @@
-import academicsProfile from "./profile-data/academics.json";
-import aiProfile from "./profile-data/ai.json";
-import careerProfile from "./profile-data/career.json";
-import personalProfile from "./profile-data/personal.json";
-import projectsProfile from "./profile-data/projects.json";
-import theologyProfile from "./profile-data/theology.json";
+import academicsProfile from "../../../../packages/profile-data/academics.json";
+import aiProfile from "../../../../packages/profile-data/ai.json";
+import careerProfile from "../../../../packages/profile-data/career.json";
+import faithProfile from "../../../../packages/profile-data/faith.json";
+import personalProfile from "../../../../packages/profile-data/personal.json";
+import projectsProfile from "../../../../packages/profile-data/projects.json";
 
 type ApprovedProfileSection = {
   heading: string;
@@ -20,7 +20,7 @@ const approvedProfileDocuments = {
   ai: aiProfile as ApprovedProfileDocument,
   career: careerProfile as ApprovedProfileDocument,
   academics: academicsProfile as ApprovedProfileDocument,
-  theology: theologyProfile as ApprovedProfileDocument,
+  faith: faithProfile as ApprovedProfileDocument,
   personal: personalProfile as ApprovedProfileDocument,
   projects: projectsProfile as ApprovedProfileDocument,
 };

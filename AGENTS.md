@@ -81,7 +81,7 @@ The default theme:
 
 ## Assistant Profile JSON Files
 
-Use this section when creating a new profile context file under `apps/ai/lib/assistant/profile-data` (for example `projects.json`).
+Use this section when creating a new profile context file under `packages/profile-data` (for example `projects.json`).
 
 ### Required Shape
 

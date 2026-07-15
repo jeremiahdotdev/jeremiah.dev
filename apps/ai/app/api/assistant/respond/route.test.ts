@@ -17,11 +17,11 @@ vi.mock("@/lib/gateways/openai", () => ({
   transcribeAudioMessage: vi.fn(),
 }));
 
-vi.mock("@/lib/assistant/speech-authorization", () => ({
+vi.mock("@/lib/speech/authorization", () => ({
   createSpeechToken: vi.fn(() => "speech-token"),
 }));
 
-import { POST } from "@/app/api/chat/route";
+import { POST } from "@/app/api/assistant/respond/route";
 import { generateChatResponse } from "@/lib/gateways/openai";
 import { transcribeAudioMessage } from "@/lib/gateways/openai";
 import { verifyTurnstileToken } from "@/lib/gateways/turnstile";
@@ -30,14 +30,14 @@ const mockedGenerateChatResponse = vi.mocked(generateChatResponse);
 const mockedTranscribeAudioMessage = vi.mocked(transcribeAudioMessage);
 const mockedVerifyTurnstileToken = vi.mocked(verifyTurnstileToken);
 
-describe("POST /api/chat", () => {
+describe("POST /api/assistant/respond", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("rejects invalid request bodies", async () => {
     const response = await POST(
-      new Request("http://localhost/api/chat", {
+      new Request("http://localhost/api/assistant/respond", {
         body: JSON.stringify({ turnstileToken: "token" }),
         method: "POST",
       }),
@@ -51,7 +51,7 @@ describe("POST /api/chat", () => {
 
   it("rejects malformed json", async () => {
     const response = await POST(
-      new Request("http://localhost/api/chat", {
+      new Request("http://localhost/api/assistant/respond", {
         body: "{bad json",
         headers: {
           "Content-Type": "application/json",
@@ -73,7 +73,7 @@ describe("POST /api/chat", () => {
     });
 
     const response = await POST(
-      new Request("http://localhost/api/chat", {
+      new Request("http://localhost/api/assistant/respond", {
         body: JSON.stringify({
           input: {
             message: "Hello",
@@ -101,7 +101,7 @@ describe("POST /api/chat", () => {
     });
 
     const response = await POST(
-      new Request("http://localhost/api/chat", {
+      new Request("http://localhost/api/assistant/respond", {
         body: JSON.stringify({
           history: [{ content: "Earlier", role: "user" }],
           input: {
@@ -142,7 +142,7 @@ describe("POST /api/chat", () => {
     });
 
     const response = await POST(
-      new Request("http://localhost/api/chat", {
+      new Request("http://localhost/api/assistant/respond", {
         body: JSON.stringify({
           input: {
             audio: {
@@ -175,7 +175,7 @@ describe("POST /api/chat", () => {
     mockedGenerateChatResponse.mockRejectedValueOnce(new Error("boom"));
 
     const response = await POST(
-      new Request("http://localhost/api/chat", {
+      new Request("http://localhost/api/assistant/respond", {
         body: JSON.stringify({
           input: {
             message: "Tell me more",

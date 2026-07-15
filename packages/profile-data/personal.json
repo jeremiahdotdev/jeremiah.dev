@@ -1,0 +1,102 @@
+{
+  "description": "Use this file to answer casual questions about Jeremiah's personal background, interests, hobbies, accomplishments, and preferences outside of work. Keep responses factual, concise, and appropriate for a professional portfolio audience. Do not infer sensitive personal details when they are not explicitly stated here.",
+  "keywords": [
+    "personal",
+    "personal life",
+    "about Jeremiah",
+    "background",
+    "childhood",
+    "upbringing",
+    "hobbies",
+    "interests",
+    "free time",
+    "favorite movie",
+    "favorite book",
+    "audiobooks",
+    "fitness",
+    "chess",
+    "gaming",
+    "homesteading",
+    "craftsmanship",
+    "outdoors",
+    "regex:/\\bwhat\\s+do(?:es)?\\s+(?:you|he)\\s+do\\s+outside\\s+of\\s+work\\b/i",
+    "regex:/\\b(?:what|how)\\s+do(?:es)?\\s+(?:you|he)\\s+spend\\s+(?:your|his)\\s+(?:free\\s+time|weekends)\\b/i",
+    "regex:/\\bwhat\\s+(?:are|is)\\s+(?:your|his)\\s+(?:hobbies|interests|favorite\\s+movie|favorite\\s+book)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Upbringing and Rural Background",
+      "points": [
+        "Jeremiah grew up homeschooled on a goat farm.",
+        "His upbringing gave him a strong connection to rural life, self-reliance, practical skills, and working with his hands.",
+        "He considers himself an amateur homesteader."
+      ]
+    },
+    {
+      "heading": "Hunting, Archery, and Outdoor Interests",
+      "points": [
+        "Jeremiah enjoys hunting and trapping.",
+        "He made his own coonskin hat.",
+        "He shoots firearms and traditional English longbows.",
+        "He enjoys outdoor activities that involve craftsmanship, tradition, patience, and practical skill."
+      ]
+    },
+    {
+      "heading": "Music",
+      "points": [
+        "Jeremiah is learning to play the bagpipes."
+      ]
+    },
+    {
+      "heading": "Movies and Entertainment",
+      "points": [
+        "Jeremiah's favorite movie is Christopher Nolan's The Dark Knight.",
+        "He loves Christopher Nolan's films and is interested in nearly everything Nolan makes.",
+        "Although The Dark Knight is his favorite movie, he is not generally a major Marvel or superhero fan.",
+        "His interest in The Dark Knight is tied more to Christopher Nolan's filmmaking, themes, characters, and storytelling than to superhero media as a whole."
+      ]
+    },
+    {
+      "heading": "Books and Audiobooks",
+      "points": [
+        "Jeremiah loves audiobooks.",
+        "He especially enjoys listening to books about the Catholic faith.",
+        "C. S. Lewis is his favorite author.",
+        "His favorite book is Phantastes by George MacDonald.",
+        "The Count of Monte Cristo by Alexandre Dumas is a close second among his favorite books."
+      ]
+    },
+    {
+      "heading": "Fitness",
+      "points": [
+        "Jeremiah enjoys working out.",
+        "He constructed his own outdoor gym."
+      ]
+    },
+    {
+      "heading": "Construction, Homesteading, and Craftsmanship",
+      "points": [
+        "Jeremiah built his own house.",
+        "He has practical construction knowledge and is comfortable designing, building, repairing, and creating things himself.",
+        "He can make just about anything when he has the necessary tools and materials.",
+        "He has built items ranging from clocks and tables to full houses.",
+        "Making things is an important part of how he sees himself, and he values independence, craftsmanship, creativity, and practical competence."
+      ]
+    },
+    {
+      "heading": "Chess",
+      "points": [
+        "Jeremiah used to play chess seriously.",
+        "His chess rating was over 1700 Elo."
+      ]
+    },
+    {
+      "heading": "Competitive Gaming",
+      "points": [
+        "Jeremiah used to be a competitive Halo player.",
+        "During Halo 5, he ranked among the top 50 players.",
+        "His competitive gaming background reflects that he can be highly focused, strategic, and driven when he becomes invested in something."
+      ]
+    }
+  ]
+}

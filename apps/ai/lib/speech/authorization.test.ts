@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createSpeechToken,
   verifySpeechToken,
-} from "@/lib/assistant/speech-authorization";
+} from "@/lib/speech/authorization";
 
 describe("speech authorization", () => {
   afterEach(() => {

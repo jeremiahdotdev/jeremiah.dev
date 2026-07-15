@@ -8,7 +8,7 @@ vi.mock("next/headers", () => ({
   })),
 }));
 
-vi.mock("@/lib/assistant/speech-authorization", () => ({
+vi.mock("@/lib/speech/authorization", () => ({
   verifySpeechToken: vi.fn(),
 }));
 
@@ -17,7 +17,7 @@ vi.mock("@/lib/gateways/elevenlabs", () => ({
 }));
 
 import { POST } from "@/app/api/assistant/speech/route";
-import { verifySpeechToken } from "@/lib/assistant/speech-authorization";
+import { verifySpeechToken } from "@/lib/speech/authorization";
 import { synthesizeSpeech } from "@/lib/gateways/elevenlabs";
 
 const mockedVerifySpeechToken = vi.mocked(verifySpeechToken);

@@ -1,7 +1,10 @@
-import { createSpeechToken } from "@/lib/assistant/speech-authorization";
-import type { ChatResponse } from "@/lib/types/chat";
-import { applyRateLimit } from "@/lib/chat/rate-limit";
-import { trimHistory, validateChatRequest } from "@/lib/chat/validation";
+import { createSpeechToken } from "@/lib/speech/authorization";
+import type { ConversationResponse } from "@/lib/types/conversation";
+import { applyConversationRateLimit } from "@/lib/conversation/rate-limit";
+import {
+  trimConversationHistory,
+  validateConversationRequest,
+} from "@/lib/conversation/validation";
 import { verifyTurnstileToken } from "@/lib/gateways/turnstile";
 import {
   generateChatResponse,
@@ -10,7 +13,7 @@ import {
 
 const OPENAI_TIMEOUT_MS = 45_000;
 
-function jsonResponse(body: ChatResponse, status: number) {
+function jsonResponse(body: ConversationResponse, status: number) {
   return Response.json(body, { status });
 }
 
@@ -25,14 +28,14 @@ function withTimeout<T>(promise: Promise<T>, message: string) {
   ]);
 }
 
-export async function createChatResponse({
+export async function createConversationResponse({
   rawBody,
   remoteIp,
 }: {
   rawBody: unknown;
   remoteIp: string;
 }) {
-  const validation = validateChatRequest(rawBody);
+  const validation = validateConversationRequest(rawBody);
 
   if (!validation.success) {
     return jsonResponse(
@@ -45,7 +48,7 @@ export async function createChatResponse({
     );
   }
 
-  const rateLimit = applyRateLimit(remoteIp);
+  const rateLimit = applyConversationRateLimit(remoteIp);
 
   if (rateLimit.limited) {
     return jsonResponse(
@@ -90,7 +93,7 @@ export async function createChatResponse({
     );
     const assistantContent = await withTimeout(
       generateChatResponse({
-        history: trimHistory(validation.data.history ?? []),
+        history: trimConversationHistory(validation.data.history ?? []),
         message: userMessage,
       }),
       "OpenAI request timed out.",
@@ -113,7 +116,7 @@ export async function createChatResponse({
       200,
     );
   } catch (error) {
-    console.error("Chat route failed", {
+    console.error("Conversation response route failed", {
       error: error instanceof Error ? error.message : "Unknown error",
       ip: remoteIp,
     });

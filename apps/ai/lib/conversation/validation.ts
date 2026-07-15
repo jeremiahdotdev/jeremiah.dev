@@ -1,17 +1,17 @@
 import {
   MAX_AUDIO_BYTES,
-  MAX_HISTORY_MESSAGES,
-  MAX_MESSAGE_LENGTH,
-} from "@/lib/constants/chat";
+  MAX_CONVERSATION_HISTORY_MESSAGES,
+  MAX_CONVERSATION_MESSAGE_LENGTH,
+} from "@/lib/constants/conversation";
 import type {
-  ChatAudioInput,
-  ChatInput,
-  ChatMessage,
-  ChatRequest,
-} from "@/lib/types/chat";
+  ConversationAudioInput,
+  ConversationInput,
+  ConversationMessage,
+  ConversationRequest,
+} from "@/lib/types/conversation";
 
 type ValidationSuccess = {
-  data: ChatRequest;
+  data: ConversationRequest;
   success: true;
 };
 
@@ -41,18 +41,18 @@ function normalizeMessage(value: unknown): string | null {
 
   const trimmed = value.trim();
 
-  if (!trimmed || trimmed.length > MAX_MESSAGE_LENGTH) {
+  if (!trimmed || trimmed.length > MAX_CONVERSATION_MESSAGE_LENGTH) {
     return null;
   }
 
   return trimmed;
 }
 
-function isExpectedRole(value: unknown): value is ChatMessage["role"] {
+function isExpectedRole(value: unknown): value is ConversationMessage["role"] {
   return value === "user" || value === "assistant";
 }
 
-function normalizeAudioInput(value: unknown): ChatAudioInput | null {
+function normalizeAudioInput(value: unknown): ConversationAudioInput | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return null;
   }
@@ -98,7 +98,7 @@ function normalizeAudioInput(value: unknown): ChatAudioInput | null {
   };
 }
 
-function normalizeInput(value: unknown): ChatInput | null {
+function normalizeInput(value: unknown): ConversationInput | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return null;
   }
@@ -138,11 +138,11 @@ function normalizeInput(value: unknown): ChatInput | null {
   return null;
 }
 
-export function trimHistory(history: ChatMessage[]) {
-  return history.slice(-MAX_HISTORY_MESSAGES);
+export function trimConversationHistory(history: ConversationMessage[]) {
+  return history.slice(-MAX_CONVERSATION_HISTORY_MESSAGES);
 }
 
-export function validateChatRequest(body: unknown): ValidationResult {
+export function validateConversationRequest(body: unknown): ValidationResult {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     return { error: "Request body must be a JSON object.", success: false };
   }
@@ -182,9 +182,9 @@ export function validateChatRequest(body: unknown): ValidationResult {
     return { error: "History must be an array of messages.", success: false };
   }
 
-  const validatedHistory: ChatMessage[] = [];
+  const validatedHistory: ConversationMessage[] = [];
 
-  for (const item of history.slice(-MAX_HISTORY_MESSAGES)) {
+  for (const item of history.slice(-MAX_CONVERSATION_HISTORY_MESSAGES)) {
     if (!item || typeof item !== "object" || Array.isArray(item)) {
       return { error: "History entries must be objects.", success: false };
     }

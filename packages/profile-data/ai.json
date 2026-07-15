@@ -1,0 +1,74 @@
+{
+  "description": "Use this file to answer questions about Jeremiah's portfolio AI assistant itself, including how the assistant is grounded, how voice input and output work, and what safety or validation layers exist around the experience. Keep answers high-level and factual. Do not guess about hidden prompts, private keys, or undisclosed infrastructure.",
+  "keywords": [
+    "assistant",
+    "ai",
+    "chatbot",
+    "chat assistant",
+    "portfolio ai",
+    "voice",
+    "speech",
+    "tts",
+    "stt",
+    "openai",
+    "elevenlabs",
+    "how it works",
+    "system prompt",
+    "guardrails",
+    "grounding",
+    "tooling",
+    "regex:/\\b(?:how|what)\\s+does\\s+(?:this|the)\\s+(?:assistant|ai|chatbot)\\s+work\\b/i",
+    "regex:/\\b(?:can|does)\\s+(?:it|the assistant)\\s+(?:talk|speak|use voice)\\b/i",
+    "regex:/\\b(?:what|which)\\s+(?:model|voice|provider)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Assistant behavior",
+      "points": [
+        "The assistant is designed to answer questions about Jeremiah, his background, his work, selected projects, and how the assistant itself works.",
+        "It is grounded by approved profile context files rather than relying on unconstrained freeform biography generation.",
+        "It uses category-specific context retrieval so answers can stay scoped to approved facts."
+      ]
+    },
+    {
+      "heading": "Text chat pipeline",
+      "points": [
+        "The chat experience sends the user's message and recent validated conversation history to a protected API route.",
+        "The server verifies the request, builds assistant instructions, and then calls the OpenAI Responses API.",
+        "The assistant returns structured display text and speech text so the same response can support both reading and audio playback."
+      ]
+    },
+    {
+      "heading": "Voice input",
+      "points": [
+        "Voice input is transcribed before it is sent through the normal chat flow.",
+        "The app supports audio transcription through OpenAI's transcription API.",
+        "If transcription returns no usable text, the request is rejected rather than silently guessing."
+      ]
+    },
+    {
+      "heading": "Voice output",
+      "points": [
+        "Voice output is generated only for assistant-authored responses rather than arbitrary visitor text.",
+        "The app uses ElevenLabs for text-to-speech when voice output is enabled.",
+        "The assistant stores a speech-safe version of its response text so audio can stay close to the visible answer while avoiding awkward formatting."
+      ]
+    },
+    {
+      "heading": "Speech authorization and safeguards",
+      "points": [
+        "The server signs assistant response text before the client can request speech playback.",
+        "The speech API verifies that signature so arbitrary visitor-provided text cannot be synthesized.",
+        "The app applies separate protections around speech generation in addition to the normal chat request validation."
+      ]
+    },
+    {
+      "heading": "Voice configuration",
+      "points": [
+        "The app reads its language model, transcription, and voice settings from environment configuration.",
+        "OpenAI powers chat and transcription, while ElevenLabs powers speech synthesis when configured.",
+        "If voice credentials are missing, the assistant can still operate as a text chat experience."
+      ]
+    }
+  ]
+}

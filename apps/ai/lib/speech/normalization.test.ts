@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   normalizeSpeechText,
   validateNormalizedSpeechText,
-} from "@/lib/assistant/speech-normalization";
+} from "@/lib/speech/normalization";
 
 describe("speech normalization", () => {
   it("removes markdown and urls", () => {

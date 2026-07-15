@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 
-import { createChatResponse } from "@/lib/chat/create-chat-response";
+import { createConversationResponse } from "@/lib/conversation/create-conversation-response";
 
 export async function POST(request: Request) {
   let rawBody: unknown;
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   const headerStore = await headers();
   const remoteIp =
     headerStore.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  return createChatResponse({
+  return createConversationResponse({
     rawBody,
     remoteIp,
   });

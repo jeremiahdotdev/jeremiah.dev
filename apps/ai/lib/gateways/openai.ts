@@ -9,15 +9,18 @@ import {
   approvedProfileContextTool,
   executeApprovedProfileContextSelection,
   parseApprovedProfileContextSelection,
-} from "@/lib/assistant/context-tools";
-import { getApprovedProfileTopics } from "@/lib/assistant/profile";
-import { assistantSystemPrompt } from "@/lib/assistant/system-prompt";
-import { MAX_AUDIO_BYTES, MAX_OPENAI_OUTPUT_TOKENS } from "@/lib/constants/chat";
+} from "@/lib/context/context-tools";
+import { getApprovedProfileTopics } from "@/lib/context/profile";
+import { assistantSystemPrompt } from "@/lib/prompt/system-prompt";
+import {
+  MAX_AUDIO_BYTES,
+  MAX_OPENAI_OUTPUT_TOKENS,
+} from "@/lib/constants/conversation";
 import type {
   AssistantResponseContent,
-  ChatAudioInput,
-  ChatMessage,
-} from "@/lib/types/chat";
+  ConversationAudioInput,
+  ConversationMessage,
+} from "@/lib/types/conversation";
 
 const DEFAULT_MODEL = "gpt-5.6-luna";
 const DEFAULT_TRANSCRIPTION_MODEL = "gpt-4o-mini-transcribe";
@@ -41,7 +44,7 @@ function getOpenAIClient() {
   return openAIClient;
 }
 
-export async function transcribeAudioMessage(audio: ChatAudioInput) {
+export async function transcribeAudioMessage(audio: ConversationAudioInput) {
   const client = getOpenAIClient();
   const model =
     process.env.OPENAI_TRANSCRIPTION_MODEL ?? DEFAULT_TRANSCRIPTION_MODEL;
@@ -66,7 +69,10 @@ export async function transcribeAudioMessage(audio: ChatAudioInput) {
   return text;
 }
 
-function toInputMessages(history: ChatMessage[], message: string): EasyInputMessage[] {
+function toInputMessages(
+  history: ConversationMessage[],
+  message: string,
+): EasyInputMessage[] {
   return [
     ...history.map((item) => ({
       content: item.content,
@@ -86,7 +92,7 @@ function buildToolDrivenInstructions() {
     buildResponseFormatInstructions(),
     assistantSystemPrompt,
     "Approved profile categories are available through the get_approved_profile_context tool.",
-    "For questions about Jeremiah's background, work, education, projects, theology, personal life, or how this assistant works, call the tool for the single most relevant category before answering.",
+    "For questions about Jeremiah's background, work, education, projects, faith, personal life, or how this assistant works, call the tool for the single most relevant category before answering.",
     "If more than one category is needed, call the tool once per category.",
     "Only use information returned by that tool for factual profile claims.",
     "If the user is only greeting you or making small talk that does not need profile facts, you may answer without calling the tool.",
@@ -167,7 +173,7 @@ async function generateToolSelectedChatResponse({
   model,
 }: {
   client: OpenAI;
-  history: ChatMessage[];
+  history: ConversationMessage[];
   message: string;
   model: string;
 }) {
@@ -203,7 +209,7 @@ async function generateDirectChatResponse({
   model,
 }: {
   client: OpenAI;
-  history: ChatMessage[];
+  history: ConversationMessage[];
   message: string;
   model: string;
 }) {
@@ -221,7 +227,7 @@ export async function generateChatResponse({
   history,
   message,
 }: {
-  history: ChatMessage[];
+  history: ConversationMessage[];
   message: string;
 }) {
   const client = getOpenAIClient();

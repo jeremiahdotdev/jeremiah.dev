@@ -1,11 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { MAX_HISTORY_MESSAGES } from "@/lib/constants/chat";
-import { trimHistory, validateChatRequest } from "@/lib/chat/validation";
+import { MAX_CONVERSATION_HISTORY_MESSAGES } from "@/lib/constants/conversation";
+import {
+  trimConversationHistory,
+  validateConversationRequest,
+} from "@/lib/conversation/validation";
 
-describe("validateChatRequest", () => {
+describe("validateConversationRequest", () => {
   it("rejects malformed bodies", () => {
-    const result = validateChatRequest(null);
+    const result = validateConversationRequest(null);
 
     expect(result).toEqual({
       error: "Request body must be a JSON object.",
@@ -14,7 +17,7 @@ describe("validateChatRequest", () => {
   });
 
   it("rejects missing turnstile tokens", () => {
-    const result = validateChatRequest({
+    const result = validateConversationRequest({
       input: {
         message: "Hello",
         mode: "text",
@@ -29,7 +32,7 @@ describe("validateChatRequest", () => {
   });
 
   it("rejects unsupported roles", () => {
-    const result = validateChatRequest({
+    const result = validateConversationRequest({
       history: [{ content: "hello", role: "system" }],
       input: {
         message: "Hi",
@@ -45,11 +48,14 @@ describe("validateChatRequest", () => {
   });
 
   it("trims and truncates history", () => {
-    const history = Array.from({ length: MAX_HISTORY_MESSAGES + 5 }, (_, index) => ({
-      content: `message ${index}`,
-      role: index % 2 === 0 ? "user" : "assistant",
-    })) as Array<{ content: string; role: "user" | "assistant" }>;
-    const result = validateChatRequest({
+    const history = Array.from(
+      { length: MAX_CONVERSATION_HISTORY_MESSAGES + 5 },
+      (_, index) => ({
+        content: `message ${index}`,
+        role: index % 2 === 0 ? "user" : "assistant",
+      }),
+    ) as Array<{ content: string; role: "user" | "assistant" }>;
+    const result = validateConversationRequest({
       history,
       input: {
         message: "  Hi there  ",
@@ -61,7 +67,7 @@ describe("validateChatRequest", () => {
     expect(result.success).toBe(true);
 
     if (result.success) {
-      expect(result.data.history).toHaveLength(MAX_HISTORY_MESSAGES);
+      expect(result.data.history).toHaveLength(MAX_CONVERSATION_HISTORY_MESSAGES);
       expect(result.data.input).toEqual({
         message: "Hi there",
         mode: "text",
@@ -69,11 +75,11 @@ describe("validateChatRequest", () => {
       expect(result.data.turnstileToken).toBe("token");
     }
 
-    expect(trimHistory(history)).toHaveLength(MAX_HISTORY_MESSAGES);
+    expect(trimConversationHistory(history)).toHaveLength(MAX_CONVERSATION_HISTORY_MESSAGES);
   });
 
   it("accepts supported voice input", () => {
-    const result = validateChatRequest({
+    const result = validateConversationRequest({
       input: {
         audio: {
           data: "UklGRiQAAABXQVZFZm10IA==",

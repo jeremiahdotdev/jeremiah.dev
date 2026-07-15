@@ -2,7 +2,7 @@ import {
   defaultVoiceSettings,
   ELEVENLABS_TIMEOUT_MS,
   getElevenLabsConfig,
-} from "@/lib/assistant/speech-config";
+} from "@/lib/speech/config";
 
 type SpeechOptions = {
   nextText?: string;

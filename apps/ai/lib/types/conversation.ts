@@ -1,33 +1,33 @@
-export type ChatRole = "user" | "assistant";
+export type ConversationRole = "user" | "assistant";
 
-export type ChatMessage = {
-  role: ChatRole;
+export type ConversationMessage = {
+  role: ConversationRole;
   content: string;
 };
 
-export type ChatAudioInput = {
+export type ConversationAudioInput = {
   data: string;
   filename: string;
   mimeType: string;
 };
 
-export type ChatInput =
+export type ConversationInput =
   | {
       mode: "text";
       message: string;
     }
   | {
-      audio: ChatAudioInput;
+      audio: ConversationAudioInput;
       mode: "voice";
     };
 
-export type ChatRequest = {
-  history?: ChatMessage[];
-  input: ChatInput;
+export type ConversationRequest = {
+  history?: ConversationMessage[];
+  input: ConversationInput;
   turnstileToken: string;
 };
 
-export type ChatResponse =
+export type ConversationResponse =
   | {
       success: true;
       userMessage: {

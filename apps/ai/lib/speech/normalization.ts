@@ -1,4 +1,4 @@
-import { MAX_SPEECH_TEXT_LENGTH } from "@/lib/assistant/speech-config";
+import { MAX_SPEECH_TEXT_LENGTH } from "@/lib/speech/config";
 
 const abbreviationReplacements = [
   [/\bUI\/UX\b/g, "UI and UX"],

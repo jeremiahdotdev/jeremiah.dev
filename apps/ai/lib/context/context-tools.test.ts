@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   executeApprovedProfileContextSelection,
   parseApprovedProfileContextSelection,
-} from "@/lib/assistant/context-tools";
+} from "@/lib/context/context-tools";
 
 describe("context tools", () => {
   it("parses a valid category selection", () => {

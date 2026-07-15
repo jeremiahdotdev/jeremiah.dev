@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 
-import type { ChatInput } from "@/lib/types/chat";
+import type { ConversationInput } from "@/lib/types/conversation";
 import { TURNSTILE_SITE_KEY } from "@/lib/constants/ui";
 import { IconButton } from "@/components/icon-button";
 import { useVoiceRecorder } from "@/hooks/use-voice-recorder";
@@ -21,7 +21,7 @@ type InputProps = {
   disabled: boolean;
   formRef: RefObject<HTMLFormElement | null>;
   onChangeValue: (value: string) => void;
-  onSubmitInput: (input: ChatInput) => void;
+  onSubmitInput: (input: ConversationInput) => void;
   turnstileRef: RefObject<HTMLDivElement | null>;
 };
 

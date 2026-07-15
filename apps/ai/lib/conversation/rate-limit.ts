@@ -1,7 +1,7 @@
 import {
-  CHAT_RATE_LIMIT_MAX_REQUESTS,
-  CHAT_RATE_LIMIT_WINDOW_MS,
-} from "@/lib/constants/chat";
+  CONVERSATION_RATE_LIMIT_MAX_REQUESTS,
+  CONVERSATION_RATE_LIMIT_WINDOW_MS,
+} from "@/lib/constants/conversation";
 
 type RateLimitEntry = {
   count: number;
@@ -10,7 +10,7 @@ type RateLimitEntry = {
 
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
-export function applyRateLimit(
+export function applyConversationRateLimit(
   key: string,
   options: {
     maxRequests?: number;
@@ -18,8 +18,8 @@ export function applyRateLimit(
   } = {},
 ) {
   const now = Date.now();
-  const windowMs = options.windowMs ?? CHAT_RATE_LIMIT_WINDOW_MS;
-  const maxRequests = options.maxRequests ?? CHAT_RATE_LIMIT_MAX_REQUESTS;
+  const windowMs = options.windowMs ?? CONVERSATION_RATE_LIMIT_WINDOW_MS;
+  const maxRequests = options.maxRequests ?? CONVERSATION_RATE_LIMIT_MAX_REQUESTS;
   const entry = (() => {
     const existing = rateLimitStore.get(key);
 

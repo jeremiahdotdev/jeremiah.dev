@@ -1,0 +1,60 @@
+{
+  "description": "Use this file to answer high-level questions about Jeremiah's professional background, work history, technical strengths, and style as a software engineer. Keep answers factual and concise, and avoid inventing employers, dates, responsibilities, or technologies that are not included here.",
+  "keywords": [
+    "career",
+    "work",
+    "job",
+    "jobs",
+    "employment",
+    "experience",
+    "professional",
+    "developer",
+    "software engineer",
+    "front-end",
+    "frontend",
+    "react",
+    "typescript",
+    "resume",
+    "cv",
+    "bio",
+    "background",
+    "role",
+    "title",
+    "regex:/\\b(?:where|what)\\s+do(?:es)?\\s+(?:you|he)\\s+work\\b/i",
+    "regex:/\\b(?:what|how)\\s+(?:is|was)\\s+(?:your|his)\\s+(?:experience|background|career)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Professional summary",
+      "points": [
+        "Jeremiah is a senior software engineer with professional experience building modern web applications.",
+        "His work has focused heavily on front-end engineering, design systems, and product-quality user interfaces.",
+        "He is especially strong in React, TypeScript, CSS, and component architecture."
+      ]
+    },
+    {
+      "heading": "Professional experience",
+      "points": [
+        "Jeremiah has worked on customer-facing applications, reusable component systems, and tools that support large product ecosystems.",
+        "He has experience contributing to both product development and the systems that help teams ship consistent UI at scale.",
+        "His professional work includes building interfaces, shaping front-end architecture, and improving developer experience."
+      ]
+    },
+    {
+      "heading": "Technical skills",
+      "points": [
+        "Jeremiah works primarily with JavaScript, TypeScript, React, CSS, HTML, and related web platform technologies.",
+        "He is comfortable designing component APIs, building maintainable front-end systems, and translating design intent into production code.",
+        "He also has experience with backend-adjacent integration work needed to support full product features."
+      ]
+    },
+    {
+      "heading": "Communication and work style signals",
+      "points": [
+        "Jeremiah values craftsmanship, clarity, and thoughtful implementation.",
+        "He cares about making systems understandable and maintainable for other developers.",
+        "His work style reflects both technical depth and a strong eye for polish and usability."
+      ]
+    }
+  ]
+}

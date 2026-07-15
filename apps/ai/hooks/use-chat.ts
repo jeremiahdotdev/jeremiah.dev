@@ -19,21 +19,20 @@ import {
   TURNSTILE_TIMEOUT_MS,
 } from "@/lib/constants/ui";
 import type {
-  ChatAudioInput,
-  ChatInput,
-  ChatMessage,
-  ChatResponse,
-} from "@/lib/types/chat";
+  ConversationInput,
+  ConversationMessage,
+  ConversationResponse,
+} from "@/lib/types/conversation";
 
 type PendingRequest = {
   displayMessage: string;
-  history: ChatMessage[];
-  input: ChatInput;
+  history: ConversationMessage[];
+  input: ConversationInput;
 };
 
 type PlaybackState = "error" | "idle" | "loading" | "paused" | "speaking";
 
-export type TranscriptMessage = ChatMessage & {
+export type TranscriptMessage = ConversationMessage & {
   animate?: boolean;
   id: string;
   speechToken?: string;
@@ -357,7 +356,7 @@ export function useChat() {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch("/api/assistant/respond", {
         body: JSON.stringify({
           history: request.history,
           input: request.input,
@@ -369,7 +368,7 @@ export function useChat() {
         method: "POST",
         signal: controller.signal,
       });
-      const result = (await response.json()) as ChatResponse;
+      const result = (await response.json()) as ConversationResponse;
 
       if (!result.success) {
         setErrorMessage(result.error);
@@ -460,7 +459,7 @@ export function useChat() {
     window.turnstile.execute(turnstileRef.current ?? undefined);
   }
 
-  function submitInput(input: ChatInput) {
+  function submitInput(input: ConversationInput) {
     if (isPending) {
       return;
     }

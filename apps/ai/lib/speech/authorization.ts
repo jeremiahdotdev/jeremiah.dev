@@ -3,7 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import {
   getSpeechSigningSecret,
   SPEECH_TOKEN_TTL_MS,
-} from "@/lib/assistant/speech-config";
+} from "@/lib/speech/config";
 
 type SpeechTokenPayload = {
   exp: number;

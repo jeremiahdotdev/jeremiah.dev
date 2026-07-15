@@ -1,6 +1,0 @@
-export const CHAT_RATE_LIMIT_MAX_REQUESTS = 10;
-export const CHAT_RATE_LIMIT_WINDOW_MS = 60_000;
-export const MAX_HISTORY_MESSAGES = 12;
-export const MAX_AUDIO_BYTES = 8 * 1024 * 1024;
-export const MAX_MESSAGE_LENGTH = 2_000;
-export const MAX_OPENAI_OUTPUT_TOKENS = 500;

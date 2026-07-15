@@ -1,0 +1,57 @@
+{
+  "keywords": [
+    "education",
+    "school",
+    "college",
+    "study",
+    "studies",
+    "academics",
+    "degree",
+    "minor",
+    "university",
+    "seminary",
+    "training",
+    "learning",
+    "scholarship",
+    "honors",
+    "academic",
+    "graduated",
+    "schooling",
+    "regex:/\\b(?:what|where|how)\\s+(?:did|do(?:es)?)\\s+(?:you|he)\\s+(?:study|go\\s+to\\s+school)\\b/i",
+    "regex:/\\b(?:what|which)\\s+(?:college|university|school|degree|minor)\\b/i"
+  ],
+  "sections": [
+    {
+      "heading": "Academic summary",
+      "points": [
+        "Jeremiah studied at Baptist Bible College in Springfield, Missouri.",
+        "He completed a Bachelor of Arts in Interdisciplinary Studies with concentrations in mathematics and computer science.",
+        "He also completed a minor in Christian apologetics."
+      ]
+    },
+    {
+      "heading": "College studies",
+      "points": [
+        "His interdisciplinary studies program combined mathematics, computer science, and humanities coursework.",
+        "His academic background supports both technical problem-solving and clear written communication.",
+        "His studies included formal work in mathematics, programming, philosophy, and Christian thought."
+      ]
+    },
+    {
+      "heading": "Leadership and commendations",
+      "points": [
+        "Jeremiah received the Professor's Choice award in the honors program.",
+        "He served as student body president while in college.",
+        "His academic experience included both leadership responsibilities and strong faculty recognition."
+      ]
+    },
+    {
+      "heading": "Homeschool background",
+      "points": []
+    },
+    {
+      "heading": "Graduate studies",
+      "points": []
+    }
+  ]
+}

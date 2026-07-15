@@ -5,11 +5,14 @@ import type {
 import {
   SPEECH_RATE_LIMIT_MAX_REQUESTS,
   SPEECH_RATE_LIMIT_WINDOW_MS,
-} from "@/lib/assistant/speech-config";
-import { normalizeSpeechText, validateNormalizedSpeechText } from "@/lib/assistant/speech-normalization";
-import { verifySpeechToken } from "@/lib/assistant/speech-authorization";
+} from "@/lib/speech/config";
+import {
+  normalizeSpeechText,
+  validateNormalizedSpeechText,
+} from "@/lib/speech/normalization";
+import { verifySpeechToken } from "@/lib/speech/authorization";
 import { synthesizeSpeech } from "@/lib/gateways/elevenlabs";
-import { applyRateLimit } from "@/lib/chat/rate-limit";
+import { applyConversationRateLimit } from "@/lib/conversation/rate-limit";
 
 function jsonError(body: SpeechResponseError, status: number) {
   return Response.json(body, { status });
@@ -69,7 +72,7 @@ export async function createSpeechResponse({
     );
   }
 
-  const rateLimit = applyRateLimit(`speech:${remoteIp}`, {
+  const rateLimit = applyConversationRateLimit(`speech:${remoteIp}`, {
     maxRequests: SPEECH_RATE_LIMIT_MAX_REQUESTS,
     windowMs: SPEECH_RATE_LIMIT_WINDOW_MS,
   });

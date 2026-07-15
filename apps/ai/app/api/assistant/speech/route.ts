@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import type { SpeechRequest } from "@/lib/types/speech";
-import { createSpeechResponse } from "@/lib/assistant/create-speech-response";
+import { createSpeechResponse } from "@/lib/speech/create-speech-response";
 
 export async function POST(request: Request) {
   let body: SpeechRequest;
