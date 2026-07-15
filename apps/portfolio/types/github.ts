@@ -16,13 +16,6 @@ export type RawGithubLanguages = Record<string, number>;
 export type InternalGithubProject = GithubRepository & { 
     image?: string 
     languages?: RawGithubLanguages
-    theme?: {
-        css?: string
-        darkCss?: string
-        hasDarkTheme?: boolean
-        cardSrc?: string
-        cardDarkSrc?: string
-    }
 };
 
 export interface InternalGithubDocument {

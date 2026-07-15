@@ -1,214 +1,249 @@
 "use client";
 
-import { Project } from "@/types/project";
-import { CSSProperties, FC, memo } from "react";
+import { useLayoutEffect, useRef, useState, type FC, memo } from "react";
 import { ExternalLink, Lock } from "lucide-react";
-import { twMerge } from "tailwind-merge";
+import Image from "next/image";
 
-import { Card } from "@/components/ui/card";
-import { TypographyH3, TypographyP, TypographySmall } from "@/components/ui/typography";
 import { useDictionary } from "@/components/content/content-provider";
 import ProjectAvatar from "./project-avatar";
-import ProjectLanguageMeter from "./project-language-meter";
-import ProjectTopicBadgeList from "./project-topic-badge-list";
+import { cn } from "@/lib/utils";
+import { Project } from "@/types/project";
 
 interface ProjectCardProps {
   project: Project;
-  handleClick?: (project: Project) => void;
-}
-
-const linkClassName =
-  "portfolio-url inline-flex items-center gap-1 transition-opacity hover:opacity-75";
-
-function ProjectCardLink({
-  href,
-  label,
-  ariaLabel,
-  title,
-  className,
-  iconSize = 13,
-}: {
-  href: string;
-  label: string;
-  ariaLabel: string;
-  title?: string;
-  className?: string;
-  iconSize?: number;
-}) {
-  return <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel} title={title} onClick={(event) => event.stopPropagation()} className={twMerge(linkClassName, className)}>
-    {label}
-    <ExternalLink size={iconSize} />
-  </a>;
-}
-
-function getTitleSize(name: string) {
-  if (name.length > 22) {
-    return "clamp(0.95rem, 4vw, 1.15rem)";
-  }
-
-  return "clamp(1.1rem, 4.5vw, 1.35rem)";
+  handleClick?: (href: string) => void;
 }
 
 function getProjectInitials(name: string) {
-  return name.trim().charAt(0).toUpperCase();
+  return name
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((segment) => segment[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+function getProjectHost(project: Project) {
+  const href = project.demo?.href ?? project.link.href;
+
+  try {
+    return new URL(href).host.replace(/^www\./, "");
+  } catch {
+    return href;
+  }
+}
+
+const PREVIEW_VIEWPORT_WIDTH = 1440;
+const PREVIEW_VIEWPORT_HEIGHT = 1024;
+const PREVIEW_SCALE = 0.5;
+
+interface PreviewFrameLayout {
+  offsetX: number;
+  offsetY: number;
+  scale: number;
 }
 
 const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
+  const [frameReady, setFrameReady] = useState(false);
+  const [previewFrameLayout, setPreviewFrameLayout] =
+    useState<PreviewFrameLayout>({
+      offsetX: 0,
+      offsetY: 0,
+      scale: PREVIEW_SCALE,
+    });
+  const previewViewportRef = useRef<HTMLDivElement | null>(null);
   const $t = useDictionary();
 
-  const topics = project.topics ?? [];
-  const languageEntries = project.languages ?? [];
-  const primaryLanguageColor = languageEntries[0]?.color;
-
-  const hasTopics = topics.length > 0;
-  const isSelectable = !!handleClick;
   const fallbackText = getProjectInitials(project.name);
+  const host = getProjectHost(project);
+  const isSelectable = !!handleClick;
+  const demoHref = project.demo?.href;
+  const canPreviewDemo = Boolean(demoHref);
+  const clickHref = project.demo?.href ?? project.link.href;
+
+  useLayoutEffect(() => {
+    const previewViewport = previewViewportRef.current;
+
+    if (!previewViewport) {
+      return;
+    }
+
+    const previewViewportElement = previewViewport;
+
+    function updatePreviewFrameLayout() {
+      const { width, height } = previewViewportElement.getBoundingClientRect();
+
+      if (!width || !height) {
+        return;
+      }
+
+      const coverScale = Math.max(
+        width / PREVIEW_VIEWPORT_WIDTH,
+        height / PREVIEW_VIEWPORT_HEIGHT,
+      );
+
+      const nextLayout = {
+        scale: coverScale,
+        offsetX: (width - PREVIEW_VIEWPORT_WIDTH * coverScale) / 2,
+        offsetY: (height - PREVIEW_VIEWPORT_HEIGHT * coverScale) / 2,
+      };
+
+      setPreviewFrameLayout((currentLayout) => {
+        const layoutChanged =
+          Math.abs(currentLayout.scale - nextLayout.scale) > 0.001 ||
+          Math.abs(currentLayout.offsetX - nextLayout.offsetX) > 0.5 ||
+          Math.abs(currentLayout.offsetY - nextLayout.offsetY) > 0.5;
+
+        return layoutChanged ? nextLayout : currentLayout;
+      });
+    }
+
+    updatePreviewFrameLayout();
+
+    const resizeObserver = new ResizeObserver(updatePreviewFrameLayout);
+    resizeObserver.observe(previewViewportElement);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const projectLabel = (template: string) =>
     template.replace("{project}", project.name);
 
-  const hasTheme = !!project.theme?.hasTheme;
-  const themeCss = project.theme?.css ?? "";
-  const darkThemeCss = hasTheme ? (project.theme?.darkCss ?? "") : "";
-
-  const themeStyle = {
-    "--portfolio-card-image": project.theme?.cardSrc
-      ? `url("${project.theme.cardSrc}")`
-      : "none",
-    "--portfolio-card-dark-image": project.theme?.cardDarkSrc
-      ? `url("${project.theme.cardDarkSrc}")`
-      : project.theme?.cardSrc
-        ? `url("${project.theme.cardSrc}")`
-        : "none",
-    "--portfolio-url-color": primaryLanguageColor,
-  } as CSSProperties;
-
-  const cardClassName = twMerge(
-    "relative flex h-full w-full min-h-fit rounded-2xl border border-border bg-card",
-    isSelectable && "hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-  );
-
-  const descriptionLineHeightClass = () => {
-    const l = project.description.length;
-    const lClass = l > 290  ? "leading-[1.4]" 
-      : l > 280 ? "leading-[1.5]" 
-      : l > 270 ? "leading-[1.6]" 
-      : l > 260 ? "leading-[1.7]" 
-      : l > 250 ? "leading-[1.8]" 
-      : l > 140 ? "leading-[1.9]" 
-      : l > 170 ? "leading-[2.0]" 
-      : l > 130 ? "leading-[2.1]" 
-      : l > 120 ? "leading-[2.2]" 
-      : l > 110 ? "leading-[2.3]" 
-      : l > 90 ? "leading-[2.4]" : "leading-[2.5]";
-
-    return twMerge(lClass, 'lg:leading-[1.5]');
-  }
-  
-  const githubLink = project.private ? (
-    <span
-      title={$t.projects.github.privateTitle}
-      className={twMerge(linkClassName, "opacity-50")}
-    >
-      {$t.projects.github.link}
-      <Lock size={13} />
-    </span>
-  ) : (
-    <ProjectCardLink
-      href={project.link.href}
-      label={$t.projects.github.link}
-      ariaLabel={projectLabel($t.projects.github.projectAria)}
-      title={$t.projects.github.sourceTitle}
-    />
-  );
-
-  const demoLink = project.demo ? (
-    <ProjectCardLink
-      href={project.demo.href}
-      label={$t.projects.demo.link}
-      ariaLabel={projectLabel($t.projects.demo.aria)}
-      className="shrink-0"
-      iconSize={14}
-    />
-  ) : null;
-
-  return (
-    <Card
-      role={isSelectable ? "button" : undefined}
-      tabIndex={isSelectable ? 0 : undefined}
-      aria-label={
-        isSelectable ? projectLabel($t.projects.github.detailsAria) : undefined
-      }
-      onClick={handleClick ? () => handleClick(project) : undefined}
-      onKeyDown={
-        handleClick
-          ? (event) => {
-              if (event.key !== "Enter" && event.key !== " ") return;
-
-              event.preventDefault();
-              handleClick(project);
-            }
-          : undefined
-      }
-      style={themeStyle}
-      data-portfolio-theme={project.name}
-      data-portfolio-has-theme={hasTheme ? "true" : "false"}
-      data-portfolio-has-dark-theme={project.theme?.hasDarkTheme ? "true" : "false"}
-      className={cardClassName}
-    >
-      {(themeCss || darkThemeCss) && (
-        <style>{`${themeCss}\n${darkThemeCss}`}</style>
-      )}
-      <div className="portfolio-card-background rounded-2xl mb-2 absolute inset-0" />
-      <div className="relative z-10 flex min-h-full w-full flex-col">
-        <div className="flex flex-1 flex-col p-5">
-          <header className="mb-4 flex items-start gap-3">
-            <span className="shrink-0">
-              <ProjectAvatar icon={project.icon} fallbackText={fallbackText} />
-            </span>
-            <div className="min-w-0">
-              <TypographyH3
-                className="portfolio-card-title break-words leading-tight"
-                style={{ fontSize: getTitleSize(project.name) }}
-              >
-                {project.name}
-              </TypographyH3>
+  const previewPanel = (
+    <div className="relative aspect-[1.12] sm:aspect-[1.28] lg:aspect-[1.5] overflow-hidden rounded-[1.5rem] bg-[#0d1015] shadow-[0_24px_80px_rgba(0,0,0,0.32)] ring-1 ring-white/10">
+      <div className="relative flex h-11 items-center border-b border-white/10 bg-[#11141a] px-4 text-[0.68rem] uppercase tracking-[0.28em] text-white/45">
+        <div className="flex items-center gap-2">
+          <span className="size-2.5 rounded-full bg-white/18" />
+          <span className="size-2.5 rounded-full bg-white/12" />
+          <span className="size-2.5 rounded-full bg-white/12" />
+        </div>
+        <span className="pointer-events-none absolute inset-x-0 text-center normal-case tracking-[0.2em] text-white/50">
+          {host}
+        </span>
+      </div>
+      <div
+        ref={previewViewportRef}
+        className="relative h-[calc(100%-2.75rem)] overflow-hidden bg-[#090b10]"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent" />
+        {canPreviewDemo && (
+          <div className="absolute inset-0 overflow-hidden">
+            <iframe
+              title={`${project.name} preview`}
+              src={demoHref}
+              loading="lazy"
+              scrolling="no"
+              onLoad={() => setFrameReady(true)}
+              className={cn(
+                "absolute left-0 top-0 border-0 transition-opacity duration-500 pointer-events-none",
+                frameReady ? "opacity-100" : "opacity-0",
+              )}
+              style={{
+                width: PREVIEW_VIEWPORT_WIDTH,
+                height: PREVIEW_VIEWPORT_HEIGHT,
+                transform: `translate(${previewFrameLayout.offsetX}px, ${previewFrameLayout.offsetY}px) scale(${previewFrameLayout.scale})`,
+                transformOrigin: "top left",
+              }}
+            />
+          </div>
+        )}
+        <div
+          className={cn(
+            "absolute inset-0 transition-opacity duration-500",
+            frameReady && canPreviewDemo && "opacity-0",
+          )}
+        >
+          {project.icon?.src ? (
+            <Image
+              src={project.icon.src}
+              alt={project.icon.alt}
+              fill
+              sizes="(max-width: 640px) 84vw, (max-width: 1024px) 32rem, 33vw"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-black">
+              <ProjectAvatar
+                icon={project.icon}
+                fallbackText={fallbackText}
+                className="size-24 rounded-[1.75rem] border border-white/10 bg-white/10 text-2xl font-semibold text-white"
+              />
             </div>
-          </header>
-          <p className={twMerge("portfolio-surface rounded-md p-4 pb-6", descriptionLineHeightClass())}>{project.description}</p>
-          {(hasTopics || languageEntries.length > 0) && (
-            <section className="mt-auto grid grid-cols-2 items-center gap-5 pt-5">
-              {hasTopics && (
-                <ProjectTopicBadgeList
-                  topics={topics}
-                  surfaceClassName="portfolio-surface"
-                />
-              )}
-              {languageEntries.length > 0 && (
-                <div className={twMerge("flex justify-center", !hasTopics && "col-start-2")}>
-                  <ProjectLanguageMeter languages={languageEntries} />
-                </div>
-              )}
-            </section>
           )}
         </div>
-        <footer className="portfolio-footer relative overflow-hidden border-t border-border px-5 py-4">
-          <div className="portfolio-footer-surface absolute inset-0 rounded-b-[1rem]" />
-          <div className="relative z-10 flex items-center justify-between gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <div className="portfolio-footer-surface flex size-10 shrink-0 items-center justify-center rounded-md text-md">
-                {"</>"}
-              </div>
-              <div className="flex min-w-0 flex-col justify-center gap-1">
-                <TypographySmall>{$t.projects.repository}</TypographySmall>
-                {githubLink}
-              </div>
-            </div>
-            <div className="flex shrink-0 items-center">{demoLink}</div>
+        {isSelectable && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/55 group-hover:opacity-100 group-focus-visible:bg-black/55 group-focus-visible:opacity-100">
+            <span className="rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-sm">
+              View Site
+            </span>
           </div>
-        </footer>
+        )}
       </div>
-    </Card>
+    </div>
+  );
+
+  const cardContent = (
+    <>
+      <div className="space-y-3 px-2 sm:px-1">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h3 className="truncate text-2xl font-semibold tracking-tight text-foreground">
+              {project.name}
+            </h3>
+          </div>
+        </div>
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          {project.description}
+        </p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-base text-muted-foreground">
+          {project.private ? (
+            <span
+              title={$t.projects.github.privateTitle}
+              className="inline-flex items-center gap-1.5 opacity-70"
+            >
+              <Lock size={14} />
+              {$t.projects.github.link}
+            </span>
+          ) : (
+            <a
+              href={project.link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={projectLabel($t.projects.github.projectAria)}
+              title={$t.projects.github.sourceTitle}
+              onClick={(event) => event.stopPropagation()}
+              className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-70"
+            >
+              {$t.projects.github.link}
+              <ExternalLink size={14} />
+            </a>
+          )}
+        </div>
+      </div>
+    </>
+  );
+
+  if (!isSelectable) {
+    return (
+      <article className="flex h-full flex-col gap-6 px-2 sm:px-0">
+        {previewPanel}
+        {cardContent}
+      </article>
+    );
+  }
+
+  return (
+    <article className="flex h-full flex-col gap-6 px-2 sm:px-0">
+      <button
+        type="button"
+        onClick={() => handleClick(clickHref)}
+        aria-label={projectLabel($t.projects.github.detailsAria)}
+        className="group text-left transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+      >
+        {previewPanel}
+      </button>
+      {cardContent}
+    </article>
   );
 };
 

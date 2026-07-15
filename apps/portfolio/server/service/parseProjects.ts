@@ -51,8 +51,7 @@ export function parseProject(project: InternalGithubProject): Project {
         demo: project.homepage ? { href: project.homepage, label: ""} : undefined,
         image: project.owner?.avatar_url,
         topics: project.topics,
-        languages,
-        theme: project.theme
+        languages
     }
     return parsedProject
 }

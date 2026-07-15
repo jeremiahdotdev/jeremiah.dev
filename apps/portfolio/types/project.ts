@@ -2,15 +2,6 @@ import { Icon } from "./icon";
 import { Languages } from "./languages";
 import { Link } from "./link";
 
-export type ProjectTheme = {
-  css?: string;
-  darkCss?: string;
-  hasTheme?: boolean;
-  hasDarkTheme?: boolean;
-  cardSrc?: string;
-  cardDarkSrc?: string;
-};
-
 export type Project = {
   name: string;
   description: string;
@@ -22,5 +13,4 @@ export type Project = {
   demo?: Link;
   image?: string;
   languages?: Languages;
-  theme?: ProjectTheme;
 };

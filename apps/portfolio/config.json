@@ -12,11 +12,7 @@
         "raw": "https://raw.githubusercontent.com",
         "portfolio": {
             "path": ".portfolio",
-            "thumbnail": "thumbnail.png",
-            "theme": "portfolio.css",
-            "themeDark": "portfolio-dark.css",
-            "card": "card.webp",
-            "cardDark": "card-dark.webp"
+            "thumbnail": "thumbnail.png"
         }
     }
 }

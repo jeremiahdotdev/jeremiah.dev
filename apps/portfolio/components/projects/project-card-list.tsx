@@ -7,47 +7,30 @@ import ProjectCard from "./project-card";
 
 interface ProjectCardProps {
     projects: Project[];
-    handleClick?: (project: Project) => void;
-    orientation?: "vertical" | "horizontal";
+    handleClick?: (href: string) => void;
 }
   
-const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick, orientation = "horizontal" }: ProjectCardProps) => {
-    const isVertical = orientation === "vertical";
-
-    if (!isVertical) {
-        return (
-            <Carousel
-                opts={{
-                    align: "start",
-                    loop: false,
-                }}
-                className="w-full min-h-fit"
-            >
-                <CarouselContent className="items-stretch px-4 py-4 min-h-fit">
-                    {projects.map((project) => (
-                        <CarouselItem
-                            key={project.name}
-                            className="flex basis-[calc(100vw-2rem)] sm:basis-[24rem] lg:basis-[20rem] xl:basis-[24rem]"
-                        >
-                            <ProjectCard project={project} />
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-                <CarouselDots label="Show project group" />
-            </Carousel>
-        );
-    }
-
+const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick }: ProjectCardProps) => {
     return (
-        <div className="h-full min-h-0 w-full max-w-[25rem] overflow-y-auto overflow-x-hidden">
-            <div className="flex min-h-full flex-col gap-4 p-4">
+        <Carousel
+            opts={{
+                align: "start",
+                loop: false,
+            }}
+            className="w-full"
+        >
+            <CarouselContent className="-ml-6 items-stretch px-6 py-3">
                 {projects.map((project) => (
-                    <div key={project.name} className="flex w-full shrink-0">
+                    <CarouselItem
+                        key={project.name}
+                        className="basis-[84vw] pl-6 sm:basis-[32rem]"
+                    >
                         <ProjectCard handleClick={handleClick} project={project} />
-                    </div>
+                    </CarouselItem>
                 ))}
-            </div>
-        </div>
+            </CarouselContent>
+            <CarouselDots label="Show project group" />
+        </Carousel>
     );
 };
 

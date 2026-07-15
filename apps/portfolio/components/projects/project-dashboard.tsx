@@ -1,40 +1,88 @@
 "use client"
 import { Project } from "@/types/project";
-import { memo, FC, useState } from "react"
+import { memo, FC } from "react"
 import ProjectCardList from "./project-card-list";
-import { Info as InfoIcon } from "lucide-react"
-import ProjectDisplay from "./project-display";
-import { useDictionary } from "@/components/content/content-provider";
-import { ClickTooltip } from "../shared/click-tooltip";
-import { TypographyP } from "../ui/typography";
+import ProjectCard from "./project-card";
+import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/components/ui/carousel";
 
 interface ProjectDashboardProps {
     projects: Project[];
 }
+
+function chunkProjects(projects: Project[], size: number) {
+    const pages: Project[][] = [];
+
+    for (let index = 0; index < projects.length; index += size) {
+        pages.push(projects.slice(index, index + size));
+    }
+
+    return pages;
+}
   
 const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashboardProps) => {
-    const $t = useDictionary();
-    const [selectedProject, setSelectedProject] = useState<Project>();
+    function handleOpenProject(href: string) {
+        window.open(href, "_blank", "noopener,noreferrer");
+    }
+
+    const mediumPages = chunkProjects(projects, 4);
+    const extraLargePages = chunkProjects(projects, 6);
 
     return (
         <>
-            <div className="hidden h-dashboard-content max-h-page-content w-full flex-1 flex-col overflow-hidden rounded-md border border-border bg-dashboard shadow-inner lg:flex">
-                <div className="flex min-h-14 items-center justify-end gap-4 border-b border-border bg-dashboard-header p-4 shadow-xl">
-                    <ClickTooltip tooltip={$t.projects.info} className="font-serif tracking-tight">
-                        <InfoIcon className="cursor-pointer hover:text-muted-foreground"/>
-                    </ClickTooltip>
-                </div>
-                <div className="flex min-h-0 w-full flex-1 flex-row">
-                    <div className="flex min-h-0 w-[25rem] shrink-0 overflow-hidden border-r border-border">
-                        <ProjectCardList orientation="vertical" projects={projects} handleClick={setSelectedProject} />
-                    </div>
-                    <div className="m-4 flex min-h-0 flex-1">
-                        <ProjectDisplay project={selectedProject}/>
-                    </div>
-                </div>
+            <div className="hidden w-full md:block xl:hidden">
+                <Carousel
+                    opts={{
+                        align: "start",
+                        loop: false,
+                    }}
+                    className="w-full"
+                >
+                    <CarouselContent className="-ml-8 px-8 py-3">
+                        {mediumPages.map((page, pageIndex) => (
+                            <CarouselItem key={`md-page-${pageIndex}`} className="basis-full pl-8">
+                                <div className="grid grid-cols-2 gap-x-10 gap-y-14">
+                                    {page.map((project) => (
+                                        <ProjectCard
+                                            key={project.name}
+                                            project={project}
+                                            handleClick={handleOpenProject}
+                                        />
+                                    ))}
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    {mediumPages.length > 1 && <CarouselDots label="Show project page" />}
+                </Carousel>
             </div>
-            <div className="relative flex min-h-page-content w-full flex-1 flex-col justify-center overflow-x-hidden lg:hidden">
-                <ProjectCardList orientation="horizontal" projects={projects} />
+            <div className="hidden w-full xl:block">
+                <Carousel
+                    opts={{
+                        align: "start",
+                        loop: false,
+                    }}
+                    className="w-full"
+                >
+                    <CarouselContent className="-ml-8 px-8 py-3">
+                        {extraLargePages.map((page, pageIndex) => (
+                            <CarouselItem key={`xl-page-${pageIndex}`} className="basis-full pl-8">
+                                <div className="grid grid-cols-3 gap-x-10 gap-y-14">
+                                    {page.map((project) => (
+                                        <ProjectCard
+                                            key={project.name}
+                                            project={project}
+                                            handleClick={handleOpenProject}
+                                        />
+                                    ))}
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    {extraLargePages.length > 1 && <CarouselDots label="Show project page" />}
+                </Carousel>
+            </div>
+            <div className="relative w-full overflow-x-hidden md:hidden">
+                <ProjectCardList projects={projects} handleClick={handleOpenProject} />
             </div>
         </>
     );

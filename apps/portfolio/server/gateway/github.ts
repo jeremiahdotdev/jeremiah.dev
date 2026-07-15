@@ -1,7 +1,6 @@
 import config from "@/config.json";
 import { Octokit } from "octokit";
 import { GithubDocument, GithubRepository, InternalGithubDocument, InternalGithubLanguages, InternalGithubProject, SimpleCache } from "@/types/github";
-import { scopePortfolioTheme } from "../service/scopePortfolioTheme";
 
 const githubAuthToken = [
     process.env.GITHUB_TOKEN,
@@ -243,27 +242,6 @@ async function LoadGitHubProjects() {
             ? `data:${mimeType};base64,${content.replace(/\s/g, "")}`
             : undefined;
     };
-    const getPortfolioThemeCss = async (
-        repo: InternalGithubProject,
-        filename: string,
-        dark = false
-    ) => {
-        const response = await octokit.request(repo.contents_url, {
-            path: getPortfolioAssetPath(filename)
-        }).catch(() => null);
-        const content = "content" in (response?.data ?? {})
-            ? response?.data.content
-            : undefined;
-
-        if (!content) return undefined;
-
-        return scopePortfolioTheme(
-            Buffer.from(content, "base64").toString("utf8"),
-            repo.name,
-            dark
-        );
-    };
-
     const getPublicRepoPortfolio = async (repo: InternalGithubProject) => {
         const owner = repo.owner?.login;
         if (!owner) return {};
@@ -271,67 +249,23 @@ async function LoadGitHubProjects() {
         const branch = repo.default_branch ?? "main";
         const rawPortfolioPath = `${config.github.raw}/${owner}/${repo.name}/${branch}/${portfolioConfig.path}`;
         const { hasFile } = await getPortfolioFiles(repo);
-        const hasTheme = hasFile(portfolioConfig.theme);
-        const hasDarkTheme = hasFile(portfolioConfig.themeDark);
-        const hasCard = hasFile(portfolioConfig.card);
-        const hasCardDark = hasFile(portfolioConfig.cardDark);
-        const [css, darkCss] = await Promise.all([
-            hasTheme ? getPortfolioThemeCss(repo, portfolioConfig.theme) : undefined,
-            hasDarkTheme ? getPortfolioThemeCss(repo, portfolioConfig.themeDark, true) : undefined
-        ]);
 
         return {
-            image: `${rawPortfolioPath}/${portfolioConfig.thumbnail}`,
-            theme: css || darkCss
-                ? {
-                    css,
-                    darkCss,
-                    hasTheme: hasTheme || hasCard,
-                    hasDarkTheme: hasDarkTheme || hasCardDark,
-                    cardSrc: hasCard
-                        ? `${rawPortfolioPath}/${portfolioConfig.card}`
-                        : undefined,
-                    cardDarkSrc: hasCardDark
-                        ? `${rawPortfolioPath}/${portfolioConfig.cardDark}`
-                        : undefined
-                }
+            image: hasFile(portfolioConfig.thumbnail)
+                ? `${rawPortfolioPath}/${portfolioConfig.thumbnail}`
                 : undefined
         };
     };
     const getPrivateRepoPortfolio = async (repo: InternalGithubProject) => {
         const { hasFile } = await getPortfolioFiles(repo);
-        const hasTheme = hasFile(portfolioConfig.theme);
-        const hasDarkTheme = hasFile(portfolioConfig.themeDark);
-        const [image, css, darkCss, cardSrc, cardDarkSrc] = await Promise.all([
+        const [image] = await Promise.all([
             hasFile(portfolioConfig.thumbnail)
                 ? getPrivateRepoFileDataUrl(repo, portfolioConfig.thumbnail, "image/png")
-                : undefined,
-            hasTheme
-                ? getPortfolioThemeCss(repo, portfolioConfig.theme)
-                : undefined,
-            hasDarkTheme
-                ? getPortfolioThemeCss(repo, portfolioConfig.themeDark, true)
-                : undefined,
-            hasTheme && hasFile(portfolioConfig.card)
-                ? getPrivateRepoFileDataUrl(repo, portfolioConfig.card, "image/webp")
-                : undefined,
-            hasTheme && hasFile(portfolioConfig.cardDark)
-                ? getPrivateRepoFileDataUrl(repo, portfolioConfig.cardDark, "image/webp")
                 : undefined
         ]);
 
         return {
-            image,
-            theme: css || darkCss
-                ? {
-                    css,
-                    darkCss,
-                    hasTheme: hasTheme || hasFile(portfolioConfig.card),
-                    hasDarkTheme: hasDarkTheme || hasFile(portfolioConfig.cardDark),
-                    cardSrc,
-                    cardDarkSrc
-                }
-                : undefined
+            image
         };
     };
     const getLanguages = async (repo: InternalGithubProject) => {
@@ -347,7 +281,6 @@ async function LoadGitHubProjects() {
         return {
             ...el,
             image: portfolio.image,
-            theme: portfolio.theme,
             languages: await getLanguages(el)
         };
     }));

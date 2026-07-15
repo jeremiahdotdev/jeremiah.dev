@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, useMemo, useCallback, FC, useEffect, useState } from "react"
+import { memo, useMemo, useCallback, FC, useSyncExternalStore } from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes";
 import { useDictionary } from '@/components/content/content-provider';
@@ -13,12 +13,12 @@ interface ThemeToggleProps {
 const ThemeToggle: FC<ThemeToggleProps> = ({className}: ThemeToggleProps) => {
   const { setTheme, resolvedTheme } = useTheme();
   const $t = useDictionary();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const isPressed = resolvedTheme === "light"
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const setChangeTheme = useCallback((wasPressed: boolean) => {
     setTheme(wasPressed ? 'light' : 'dark')
