@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import { useDictionary } from "@/components/content/content-provider";
 import ProjectAvatar from "./project-avatar";
+import ProjectLanguageMeter from "./project-language-meter";
 import { cn } from "@/lib/utils";
 import { Project } from "@/types/project";
 
@@ -110,22 +111,18 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
     template.replace("{project}", project.name);
 
   const previewPanel = (
-    <div className="relative aspect-[1.12] sm:aspect-[1.28] lg:aspect-[1.5] overflow-hidden rounded-[1.5rem] bg-[#0d1015] shadow-[0_24px_80px_rgba(0,0,0,0.32)] ring-1 ring-white/10">
-      <div className="relative flex h-11 items-center border-b border-white/10 bg-[#11141a] px-4 text-[0.68rem] uppercase tracking-[0.28em] text-white/45">
+    <div className="relative flex aspect-video flex-col overflow-hidden rounded-3xl border border-border/60 bg-card shadow-xl shadow-foreground/10">
+      <div className="relative flex h-11 items-center border-b border-border/60 bg-muted px-4 text-xs uppercase tracking-widest text-muted-foreground">
         <div className="flex items-center gap-2">
-          <span className="size-2.5 rounded-full bg-white/18" />
-          <span className="size-2.5 rounded-full bg-white/12" />
-          <span className="size-2.5 rounded-full bg-white/12" />
+          <span className="size-2.5 rounded-full bg-foreground/25" />
+          <span className="size-2.5 rounded-full bg-foreground/15" />
+          <span className="size-2.5 rounded-full bg-foreground/15" />
         </div>
-        <span className="pointer-events-none absolute inset-x-0 text-center normal-case tracking-[0.2em] text-white/50">
+        <span className="pointer-events-none absolute inset-x-0 text-center normal-case tracking-widest text-muted-foreground">
           {host}
         </span>
       </div>
-      <div
-        ref={previewViewportRef}
-        className="relative h-[calc(100%-2.75rem)] overflow-hidden bg-[#090b10]"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent" />
+      <div ref={previewViewportRef} className="relative flex-1 overflow-hidden bg-background">
         {canPreviewDemo && (
           <div className="absolute inset-0 overflow-hidden">
             <iframe
@@ -162,18 +159,18 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-black">
+            <div className="flex h-full w-full items-center justify-center bg-muted">
               <ProjectAvatar
                 icon={project.icon}
                 fallbackText={fallbackText}
-                className="size-24 rounded-[1.75rem] border border-white/10 bg-white/10 text-2xl font-semibold text-white"
+                className="size-24 rounded-3xl border border-border/60 bg-accent text-2xl font-semibold text-accent-foreground"
               />
             </div>
           )}
         </div>
         {isSelectable && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/55 group-hover:opacity-100 group-focus-visible:bg-black/55 group-focus-visible:opacity-100">
-            <span className="rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-sm">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition-all duration-300 group-hover:bg-background/80 group-hover:opacity-100 group-focus-visible:bg-background/80 group-focus-visible:opacity-100">
+            <span className="rounded-full border border-border/60 bg-card px-5 py-2 text-sm font-semibold uppercase tracking-widest text-card-foreground shadow-sm shadow-foreground/10 backdrop-blur-sm">
               View Site
             </span>
           </div>
@@ -195,6 +192,9 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
         <p className="text-lg leading-relaxed text-muted-foreground">
           {project.description}
         </p>
+        {project.languages?.length ? (
+          <ProjectLanguageMeter languages={project.languages} />
+        ) : null}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-base text-muted-foreground">
           {project.private ? (
             <span
