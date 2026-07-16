@@ -1,6 +1,6 @@
 import { academics as fallbackAcademics } from '@/data/academics'
+import AcademicFocusIcon from '@/components/academics/academic-focus-icon'
 import { ImportedAcademics } from '@/types/academics'
-import Image from 'next/image'
 import { client } from '../client'
 import { hasSanityConfig } from '../env'
 import { academicRecordQuery } from '../queries'
@@ -48,14 +48,10 @@ function toFocusIcon(focus: {name?: string, icon?: {asset?: {url?: string}}}) {
   const iconUrl = focus.icon?.asset?.url
 
   return iconUrl ? (
-    <Image
+    <AcademicFocusIcon
       src={iconUrl}
       alt={focus.name ? `${focus.name} icon` : ''}
-      width={48}
-      height={48}
-      className="h-12 w-12"
       unoptimized
-      loading="lazy"
     />
   ) : undefined
 }

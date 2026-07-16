@@ -35,6 +35,7 @@ export const siteSettings = defineType({
         defineField({name: 'navigation', title: 'Navigation', type: 'array', of: [{type: 'object', fields: [
           {name: 'id', title: 'Section ID', type: 'string'},
           {name: 'heading', title: 'Heading', type: 'string'},
+          {name: 'icon', title: 'Icon', type: 'file', options: {accept: 'image/svg+xml'}},
         ]}]}),
         defineField({name: 'home', title: 'Home', type: 'object', fields: [
           {name: 'id', title: 'Section ID', type: 'string'},

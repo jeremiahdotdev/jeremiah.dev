@@ -4,10 +4,10 @@ import {
     EducationalTestingService,
     AssociationForComputingMachinery
 } from '@/components/utility/SVGs'
-import Image from 'next/image'
+import AcademicFocusIcon from '@/components/academics/academic-focus-icon'
 
 const academicFocusIcon = (src: string, alt: string) => (
-    <Image src={src} alt={alt} width={48} height={48} className="h-12 w-12" />
+    <AcademicFocusIcon src={src} alt={alt} />
 )
 
 export const decorations = {

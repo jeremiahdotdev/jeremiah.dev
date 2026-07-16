@@ -3,7 +3,14 @@ import { groq } from 'next-sanity'
 export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
   title,
   description,
-  dictionary
+  dictionary {
+    ...,
+    navigation[] {
+      id,
+      heading,
+      "icon": icon.asset->url
+    }
+  }
 }`
 
 export const blogPostsQuery = groq`*[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc) {

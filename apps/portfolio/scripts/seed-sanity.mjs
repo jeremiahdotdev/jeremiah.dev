@@ -47,6 +47,7 @@ const ref = (_ref) => ({_type: 'reference', _ref})
 
 const skillIconsDir = path.join(process.cwd(), 'scripts', 'skill-icons')
 const academicFocusIconsDir = path.join(process.cwd(), 'scripts', 'academic-focus-icons')
+const navigationIconsDir = path.join(process.cwd(), 'scripts', 'navigation-icons')
 
 const findExistingSvgAsset = async (filename) => {
   return client.fetch(
@@ -91,6 +92,27 @@ const uploadAcademicFocusIconAsset = async (iconName) => {
   }
 
   console.log(`Uploading SVG asset for academic focus ${iconName} from ${filePath}`)
+  return client.assets.upload('file', fs.createReadStream(filePath), {
+    filename,
+    contentType: 'image/svg+xml',
+  })
+}
+
+const uploadNavigationIconAsset = async (iconName) => {
+  const filename = `${iconName}.svg`
+  const filePath = path.join(navigationIconsDir, filename)
+
+  if (!fs.existsSync(filePath)) {
+    return null
+  }
+
+  const existingAsset = await findExistingSvgAsset(filename)
+  if (existingAsset?._id) {
+    console.log(`Re-using existing SVG asset for navigation ${iconName}`)
+    return existingAsset
+  }
+
+  console.log(`Uploading SVG asset for navigation ${iconName} from ${filePath}`)
   return client.assets.upload('file', fs.createReadStream(filePath), {
     filename,
     contentType: 'image/svg+xml',
@@ -330,6 +352,14 @@ const academicFocusIconNames = {
   'christian-apologetics': 'christianApologetics',
 }
 
+const navigationIconNames = {
+  home: 'home',
+  career: 'briefcase',
+  academics: 'bookOpen',
+  projects: 'code',
+  contact: 'mail',
+}
+
 const siteSettings = {
   _id: 'siteSettings',
   _type: 'siteSettings',
@@ -340,8 +370,6 @@ const siteSettings = {
 
 async function seed() {
   const transaction = client.transaction()
-
-  transaction.createOrReplace(siteSettings)
 
   for (const skill of skills) {
     if (skill.iconKey) {
@@ -366,6 +394,27 @@ async function seed() {
 
   for (const employer of careerEmployers) transaction.createOrReplace(employer)
 
+  for (const navigationItem of siteSettings.dictionary.navigation) {
+    const iconName = navigationIconNames[navigationItem.id]
+
+    if (iconName) {
+      try {
+        const asset = await uploadNavigationIconAsset(iconName)
+        if (asset?._id) {
+          navigationItem.icon = {
+            _type: 'file',
+            asset: {
+              _type: 'reference',
+              _ref: asset._id,
+            },
+          }
+        }
+      } catch (error) {
+        console.warn(`Failed to upload SVG asset for navigation ${iconName}:`, error)
+      }
+    }
+  }
+
   for (const focus of academicRecord.focuses) {
     const iconName = academicFocusIconNames[focus._key]
 
@@ -387,6 +436,7 @@ async function seed() {
     }
   }
 
+  transaction.createOrReplace(siteSettings)
   transaction.createOrReplace(academicRecord)
 
   const result = await transaction.commit()
