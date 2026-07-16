@@ -8,27 +8,27 @@ interface CommendationProps {
 export default function Commendation({ commendation }: CommendationProps) {
     const content = (
         <>
-            <span className="flex aspect-square w-10 shrink-0 items-center justify-center [&_svg]:h-10 [&_svg]:w-10">
+            <span className="flex aspect-square w-20 shrink-0 items-center justify-center [&_svg]:h-20 [&_svg]:w-20">
                 {commendation.image}
             </span>
-            <span className="flex w-full flex-col gap-1">
-                <span className="flex w-full items-center gap-2 justify-between">
-                    <span className="text-md font-bold leading-tight">{commendation.title}</span>
-                    <span className="truncate text-xs font-semibold text-muted-foreground">({commendation.dates})</span>
+            <span className="flex min-w-0 flex-1 flex-col gap-2">
+                <span className="text-xl font-bold leading-tight">{commendation.title}</span>
+                <span className="text-base leading-snug text-muted-foreground">{commendation.subtitle}</span>
+                <span className="w-fit rounded-md bg-primary/10 px-2 py-1 text-sm font-semibold text-primary">
+                    {commendation.dates}
                 </span>
-                <span className="truncate text-sm text-muted-foreground">{commendation.subtitle}</span>
             </span>
         </>
     )
 
     return commendation.link ? (
-        <CardBase asChild className="flex min-w-0 items-center gap-3 p-3 transition-colors hover:bg-muted">
+        <CardBase asChild className="flex min-w-0 items-center gap-5 p-5 transition-colors hover:bg-muted md:p-6">
             <a href={commendation.link} target="_blank" rel="noopener noreferrer">
                 {content}
             </a>
         </CardBase>
     ) : (
-        <CardBase className="flex min-w-0 items-center gap-3 p-3">
+        <CardBase className="flex min-w-0 items-center gap-5 p-5 md:p-6">
             {content}
         </CardBase>
     )

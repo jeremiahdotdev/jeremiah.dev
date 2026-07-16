@@ -132,6 +132,12 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       <div ref={previewViewportRef} className="relative flex-1 overflow-hidden bg-background">
         {canPreviewDemo && (
           <div className="absolute inset-0 overflow-hidden">
+            <div
+              className={cn(
+                "absolute inset-0 animate-pulse bg-muted transition-opacity duration-300",
+                frameReady && "opacity-0",
+              )}
+            />
             <iframe
               title={`${project.name} preview`}
               src={demoHref}
@@ -154,10 +160,11 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
         <div
           className={cn(
             "absolute inset-0 transition-opacity duration-500",
+            canPreviewDemo && "pointer-events-none",
             frameReady && canPreviewDemo && "opacity-0",
           )}
         >
-          {project.icon?.src ? (
+          {!canPreviewDemo && project.icon?.src ? (
             <Image
               src={project.icon.src}
               alt={project.icon.alt}
@@ -165,7 +172,8 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
               sizes="(max-width: 640px) 84vw, (max-width: 1024px) 32rem, 33vw"
               className="object-cover"
             />
-          ) : (
+          ) : null}
+          {!canPreviewDemo && !project.icon?.src ? (
             <div className="flex h-full w-full items-center justify-center bg-muted">
               <ProjectAvatar
                 icon={project.icon}
@@ -173,7 +181,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
                 className="size-24 rounded-3xl border border-border/60 bg-accent text-2xl font-semibold text-accent-foreground"
               />
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

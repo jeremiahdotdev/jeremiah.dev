@@ -45,6 +45,11 @@ export const careerEmployersQuery = groq`*[_type == "careerEmployer"] | order(or
 
 export const academicRecordQuery = groq`*[_type == "academicRecord"][0]{
   degree,
+  emblem {
+    lightSrc,
+    darkSrc,
+    alt
+  },
   institution,
   location,
   startDate,
@@ -54,6 +59,7 @@ export const academicRecordQuery = groq`*[_type == "academicRecord"][0]{
     type,
     name,
     gpa,
+    icon{asset->{url}},
     description
   },
   commendations[] {

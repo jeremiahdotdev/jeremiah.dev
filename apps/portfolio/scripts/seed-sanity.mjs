@@ -46,6 +46,7 @@ const bullets = (items) => items.map((text) => ({
 const ref = (_ref) => ({_type: 'reference', _ref})
 
 const skillIconsDir = path.join(process.cwd(), 'scripts', 'skill-icons')
+const academicFocusIconsDir = path.join(process.cwd(), 'scripts', 'academic-focus-icons')
 
 const findExistingSvgAsset = async (filename) => {
   return client.fetch(
@@ -69,6 +70,27 @@ const uploadSkillIconAsset = async (iconKey) => {
   }
 
   console.log(`Uploading SVG asset for ${iconKey} from ${filePath}`)
+  return client.assets.upload('file', fs.createReadStream(filePath), {
+    filename,
+    contentType: 'image/svg+xml',
+  })
+}
+
+const uploadAcademicFocusIconAsset = async (iconName) => {
+  const filename = `${iconName}.svg`
+  const filePath = path.join(academicFocusIconsDir, filename)
+
+  if (!fs.existsSync(filePath)) {
+    return null
+  }
+
+  const existingAsset = await findExistingSvgAsset(filename)
+  if (existingAsset?._id) {
+    console.log(`Re-using existing SVG asset for academic focus ${iconName}`)
+    return existingAsset
+  }
+
+  console.log(`Uploading SVG asset for academic focus ${iconName} from ${filePath}`)
   return client.assets.upload('file', fs.createReadStream(filePath), {
     filename,
     contentType: 'image/svg+xml',
@@ -219,6 +241,11 @@ const academicRecord = {
   _id: 'academicRecord.college-of-the-ozarks',
   _type: 'academicRecord',
   degree: "Bachelor's Degree",
+  emblem: {
+    lightSrc: '/academics/cofo_light.png',
+    darkSrc: '/academics/cofo_dark.png',
+    alt: 'College of the Ozarks emblem',
+  },
   institution: 'College of the Ozarks',
   location: 'Point Lookout, Missouri',
   startDate: '2015-09-01',
@@ -250,10 +277,10 @@ const academicRecord = {
     {
       _key: 'christian-apologetics',
       type: 'Minor',
-      name: 'Christian Apologetics',
+      name: 'Biblical Studies',
       gpa: '3.71',
       description: [
-        block('My minor in Christian Apologetics allowed me to engage deeply with philosophical and theological concepts, enhancing my understanding of faith and reason. I studied key arguments for the soundness of theology and scripture, examining historical, ethical, and scientific perspectives.'),
+        block('Biblical Studies: Christian Apologetics allowed me to engage deeply with philosophical and theological concepts, enhancing my understanding of faith and reason. I studied key arguments for the soundness of theology and scripture, examining historical, ethical, and scientific perspectives.'),
         block('This coursework not only strengthened my ability to articulate and defend my beliefs but also cultivated critical thinking and persuasive communication skills. My experience in this field has enriched my worldview and informed my interactions with ethical perspectives in both personal and professional contexts.'),
       ],
     },
@@ -297,6 +324,12 @@ const academicRecord = {
   ],
 }
 
+const academicFocusIconNames = {
+  'computer-science': 'computerScience',
+  mathematics: 'mathematics',
+  'christian-apologetics': 'christianApologetics',
+}
+
 const siteSettings = {
   _id: 'siteSettings',
   _type: 'siteSettings',
@@ -332,6 +365,28 @@ async function seed() {
   }
 
   for (const employer of careerEmployers) transaction.createOrReplace(employer)
+
+  for (const focus of academicRecord.focuses) {
+    const iconName = academicFocusIconNames[focus._key]
+
+    if (iconName) {
+      try {
+        const asset = await uploadAcademicFocusIconAsset(iconName)
+        if (asset?._id) {
+          focus.icon = {
+            _type: 'file',
+            asset: {
+              _type: 'reference',
+              _ref: asset._id,
+            },
+          }
+        }
+      } catch (error) {
+        console.warn(`Failed to upload SVG asset for academic focus ${iconName}:`, error)
+      }
+    }
+  }
+
   transaction.createOrReplace(academicRecord)
 
   const result = await transaction.commit()

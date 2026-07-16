@@ -4,6 +4,11 @@ import {
     EducationalTestingService,
     AssociationForComputingMachinery
 } from '@/components/utility/SVGs'
+import Image from 'next/image'
+
+const academicFocusIcon = (src: string, alt: string) => (
+    <Image src={src} alt={alt} width={48} height={48} className="h-12 w-12" />
+)
 
 export const decorations = {
     MathAndPhysicsClubPresident: {title: "President", dates:"2019-2020", subtitle: "Math & Physics Club", link: process.env.COLLEGE_OF_THE_OZARKS_URL, image:MathAndPhysicsClub()},
@@ -14,7 +19,13 @@ export const decorations = {
 
 export const academics = {
     degree: "Bachelor's Degree",
+    emblem: {
+        lightSrc: "/academics/cofo_light.png",
+        darkSrc: "/academics/cofo_dark.png",
+        alt: "College of the Ozarks emblem",
+    },
     focuses: [{
+        icon: academicFocusIcon("/academic-focus-icons/computerScience.svg", "Computer Science icon"),
         type: "Major",
         name: "Computer Science",
         gpa: "3.90",
@@ -27,6 +38,7 @@ export const academics = {
                 </p>
             </div>) 
     },{
+        icon: academicFocusIcon("/academic-focus-icons/mathematics.svg", "Mathematics icon"),
         type: "Major",
         name: "Mathematics",
         gpa: "3.91",
@@ -39,12 +51,13 @@ export const academics = {
             </p>      
         </div>)
     },{
+        icon: academicFocusIcon("/academic-focus-icons/christianApologetics.svg", "Biblical Studies icon"),
         type: "Minor",
-        name: "Christian Apologetics",
+        name: "Biblical Studies",
         gpa: "3.71",
         description: (<div>
             <p>
-                My minor in Christian Apologetics allowed me to engage deeply with philosophical and theological concepts, enhancing my understanding of faith and reason. I studied key arguments for the soundness of theology and scripture, examining historical, ethical, and scientific perspectives.
+                Biblical Studies: Christian Apologetics allowed me to engage deeply with philosophical and theological concepts, enhancing my understanding of faith and reason. I studied key arguments for the soundness of theology and scripture, examining historical, ethical, and scientific perspectives.
             </p>
             <p>
                 This coursework not only strengthened my ability to articulate and defend my beliefs but also cultivated critical thinking and persuasive communication skills. My experience in this field has enriched my worldview and informed my interactions with ethical perspectives in both personal and professional contexts.
@@ -63,5 +76,3 @@ export const academics = {
         decorations.AssociationForComputingMachinery
     ],
 }
-
-

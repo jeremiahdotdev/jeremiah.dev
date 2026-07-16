@@ -2,8 +2,15 @@ import { ReactNode } from "react"
 import { Commendation } from "./commendation"
 import { Focus } from "./focus"
 
+export type AcademicEmblem = {
+    lightSrc: string,
+    darkSrc: string,
+    alt: string,
+}
+
 export type Academics = {
     degree: string,
+    emblem?: AcademicEmblem,
     focuses: Focus[],
     description: ReactNode,
     institution: string,
@@ -16,6 +23,7 @@ export type Academics = {
 
 export type ImportedAcademics = {
     degree: string,
+    emblem?: AcademicEmblem,
     focuses: Focus[],
     description: ReactNode,
     institution: string,

@@ -27,7 +27,7 @@ export default async function Academics({ dictionary }: AcademicsProps) {
       <PageSectionHeader>{$t.academics.heading}</PageSectionHeader>
       <PageSectionContent>
         <div className="w-full px-4 py-8 md:px-8 md:py-10">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+          <div className="mx-auto flex w-full max-w-screen-xl flex-col gap-6">
             <AcademicSummaryCard academics={academics} institutionHref={$t.academics.cofo}/>
             <FocusList focuses={academics.focuses} gpaLabel={$t.academics.focus.gpaLabel}/>
             <div className="flex flex-col gap-3">

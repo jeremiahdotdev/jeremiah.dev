@@ -6,6 +6,16 @@ export const academicRecord = defineType({
   type: 'document',
   fields: [
     defineField({name: 'degree', title: 'Degree', type: 'string'}),
+    defineField({
+      name: 'emblem',
+      title: 'Emblem',
+      type: 'object',
+      fields: [
+        {name: 'lightSrc', title: 'Light mode source', type: 'string'},
+        {name: 'darkSrc', title: 'Dark mode source', type: 'string'},
+        {name: 'alt', title: 'Alt text', type: 'string'},
+      ],
+    }),
     defineField({name: 'institution', title: 'Institution', type: 'string'}),
     defineField({name: 'location', title: 'Location', type: 'string'}),
     defineField({name: 'startDate', title: 'Start date', type: 'date'}),
@@ -21,6 +31,7 @@ export const academicRecord = defineType({
           {name: 'type', title: 'Type', type: 'string'},
           {name: 'name', title: 'Name', type: 'string'},
           {name: 'gpa', title: 'GPA', type: 'string'},
+          {name: 'icon', title: 'Icon', type: 'file', options: {accept: 'image/svg+xml'}},
           {name: 'description', title: 'Description', type: 'blockContent'},
         ],
       }],
