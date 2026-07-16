@@ -13,18 +13,18 @@ const Focus: FC<FocusProps> = ({ focus, gpaLabel }: FocusProps) => {
         <article className="flex h-full flex-col">
             <div className="flex flex-col gap-2 text-left">
                 <span className="flex items-start justify-between gap-4">
-                    <span className="flex min-w-0 items-start gap-4">
-                        {focus.icon ? (
+                    <span className="flex min-w-0 items-center gap-4">
+                        {focus.icon && (
                             <span
                                 aria-hidden="true"
-                                className="mt-1 flex size-12 shrink-0 items-center justify-center text-primary [&_svg]:h-10 [&_svg]:w-10 [&_svg]:stroke-[1.5]"
+                                className="flex size-12 shrink-0 items-center justify-center text-primary/70 [&_svg]:h-10 [&_svg]:w-10"
                             >
                                 {focus.icon}
                             </span>
-                        ) : null}
+                        )}
                         <span className="min-w-0">
-                            <span className="block text-xl font-semibold leading-tight tracking-tight text-foreground md:text-2xl">{focus.name}</span>
-                            <span className="mt-1 block text-base font-medium text-primary">{gpaLabel}: {focus.gpa}</span>
+                            <span className="block text-lg font-semibold leading-tight tracking-tight text-foreground md:text-xl">{focus.name}</span>
+                            <span className="mt-1 block text-sm md:text-md font-medium text-primary">{gpaLabel}: {focus.gpa}</span>
                         </span>
                     </span>
                     <span className="shrink-0 rounded-md bg-muted px-3 py-1.5 text-sm font-medium text-foreground">{focus.type}</span>

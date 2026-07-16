@@ -13,7 +13,7 @@ export default function AcademicFocusIcon({ src, alt, unoptimized }: AcademicFoc
             alt={alt}
             width={48}
             height={48}
-            className="h-12 w-12 dark:invert"
+            className="h-12 w-12 opacity-70 dark:invert"
             unoptimized={unoptimized}
             loading="lazy"
         />
