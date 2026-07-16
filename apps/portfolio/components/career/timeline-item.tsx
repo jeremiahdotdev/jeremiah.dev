@@ -2,10 +2,11 @@
 
 import { FC, ReactNode, memo, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { TypographyH2, TypographyMuted, TypographySmall } from "@/components/ui/typography"
+import { TypographyH1, TypographyMuted, TypographySmall } from "@/components/ui/typography"
 import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "../ui/carousel"
 import RoleCard from "./role-card"
 import type { ClientCareerEvent, ClientJob } from "./timeline"
+import { Separator } from "@radix-ui/react-dropdown-menu"
 
 interface TimelineItem {
     event: ClientCareerEvent
@@ -43,22 +44,25 @@ const getOrganizationMark = (employer: string) => {
 
 const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
     return (
-        <Carousel opts={{
-            align: "start",
-            loop: false,
-        }}>
-            <CarouselContent className="items-stretch">
-                {roles.map((role) => {
+        <Carousel
+            opts={{
+                align: "center",
+                loop: false,
+            }}
+            className="w-full"
+        >
+            <CarouselContent className="items-stretch px-4 py-3">
+                {roles.map((role, index) => {
                     const roleId = getRoleId(role)
 
                     return (
                         <CarouselItem key={roleId} className={getRoleItemClassName(roles.length)}>
-                            <RoleCard role={role}/>
+                            <RoleCard role={role} className={index === 0 ? "md:ml-8" : index === roles.length - 1 ? "md:mr-8" : ""}/>
                         </CarouselItem>
                     )
                 })}
             </CarouselContent>
-            <CarouselDots label="Show position group" />
+            {roles.length > 1 && <CarouselDots label="Show position" />}
         </Carousel>
     )
 }
@@ -80,59 +84,34 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, childre
                     toggleExpanded()
                 }
             }}
-            className="group relative grid cursor-pointer grid-cols-1 gap-0 md:grid-cols-[4rem_minmax(0,1fr)] md:gap-6"
+            className="group relative grid cursor-pointer grid-cols-1 py-2 gap-0"
         >
-            <div className="hidden justify-center md:flex">
-                <Avatar className="relative z-10 h-12 w-12 rounded-lg border border-border bg-card p-2 shadow-md transition-colors group-hover:bg-muted md:h-16 md:w-16">
-                    <AvatarImage src={event.icon?.src} alt={event.icon?.alt || event.employer} className="object-contain" />
-                    <AvatarFallback className="rounded-md bg-transparent text-xs font-bold text-primary md:text-sm">
-                        {getOrganizationMark(event.employer)}
-                    </AvatarFallback>
+            <div className="px-4 flex w-full flex-row gap-4">
+                <Avatar className="relative h-16 w-16 items-center justify-center rounded-full border border-border bg-background md:h-20 md:w-20">
+                    <AvatarImage src={event.icon?.src} alt={event.icon?.alt || event.employer} className="h-10 w-10 md:h-12 md:w-12 object-contain" />
+                    <AvatarFallback>{getOrganizationMark(event.employer)}</AvatarFallback>
                 </Avatar>
-            </div>
-            <article className="min-w-0">
-                <header className="relative mb-4 flex flex-col gap-2 md:pl-8">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div className="flex flex-col">
-                            <TypographyH2 text={event.employer} className="border-b-0 p-0 text-2xl font-semibold leading-tight tracking-normal" />
-                            <TypographyMuted asChild>
-                                <span>{event.location}</span>
-                            </TypographyMuted>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-muted-foreground sm:justify-end">
-                            <TypographySmall className="text-muted-foreground whitespace-nowrap">
-                                {event.startDate} - {event.endDate}
-                            </TypographySmall>
-                            <span aria-hidden="true">·</span>
-                            <TypographySmall className="text-muted-foreground whitespace-nowrap">
-                                {event.duration}
-                            </TypographySmall>
-                        </div>
+                <div className="relative flex flex-row justify-between items-center w-full">
+                    <div className="relative flex flex-col gap-1">
+                        <TypographyH1 className="font-semibold">{event.employer}</TypographyH1>
+                        <TypographyMuted className="text-sm">{event.location}</TypographyMuted>
+                        <TypographySmall className="text-sm text-muted-foreground md:hidden">{event.startYear} - {event.endYear} · {event.duration}</TypographySmall>
                     </div>
-                </header>
-                <div className="min-w-0 md:pl-8">
-                    <div
-                        className={`relative overflow-hidden ${
-                            expanded ? "max-h-[32rem] md:max-h-[36rem]" : "max-h-28 md:max-h-32"
-                        }`}
-                    >
-                        <RoleCarousel roles={event.roles}/>
-                        {!expanded && (
-                            <span className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-background-secondary"/>
-                        )}
+                    <div className="relative flex-col gap-1 items-end hidden md:flex">
+                        <TypographySmall className="text-sm text-muted-foreground">{event.startYear} - {event.endYear}</TypographySmall>
+                        <TypographySmall className="text-sm text-muted-foreground">{event.duration}</TypographySmall>
                     </div>
-                    {expanded && (
-                        <div
-                            className="mt-6 flex flex-col gap-3"
-                            onClick={(event) => event.stopPropagation()}
-                            onKeyDown={(event) => event.stopPropagation()}
-                        >
-                            <hr></hr>
-                            {children}
-                        </div>
-                    )}
                 </div>
-            </article>
+            </div>
+            {expanded && (
+                <div className="col-span-full">
+                    <RoleCarousel roles={event.roles}/>
+                    <div className="p-4 px-8 md:px-20">
+                        <Separator className="m-2 border-t border-border"/>
+                        {children}
+                    </div>
+                </div>
+            )}
         </section>
     )
 }

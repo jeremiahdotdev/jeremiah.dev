@@ -2,7 +2,7 @@
 import { memo, FC } from "react"
 import { Linkedin } from "lucide-react"
 import { useDictionary } from '@/components/content/content-provider';
-import IconLink from "../shared/icon-link";
+import ControlBadgeLink from "./control-badge-link";
 
 interface LinkedInProps {
   className?: string;
@@ -10,7 +10,14 @@ interface LinkedInProps {
 
 const LinkedIn: FC<LinkedInProps> = ({className}: LinkedInProps) => {
   const $t = useDictionary();
-  return (<IconLink Icon={Linkedin} tooltip={$t.controls.linkedIn} url={$t.links.linkedIn} className={className} />);
+  return (
+    <ControlBadgeLink
+      href={$t.links.linkedIn}
+      label={$t.controls.linkedIn}
+      Icon={Linkedin}
+      className={className}
+    />
+  );
 };
 
 export default memo(LinkedIn);

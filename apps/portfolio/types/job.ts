@@ -18,6 +18,8 @@ export type CareerEvent = {
     icon?: Icon,
     startDate: string,
     endDate: string,
+    startYear: string,
+    endYear: string,
     duration: string,
     location: string,
     roles: Job[]

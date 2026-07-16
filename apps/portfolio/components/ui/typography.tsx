@@ -80,7 +80,7 @@ const TypographyH1 = React.forwardRef<
   return <Comp
     ref={ref}
     className={cn(
-      "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+      "scroll-m-20 text-2xl font-extrabold tracking-tight md:text-3xl lg:text-4xl",
       className
     )}
     {...props}

@@ -12,7 +12,7 @@ export default function Controls() {
         </div>
         <ThemeToggle className="pointer-events-auto absolute right-0 top-0 z-30"/>
         <AskAiFloat className="pointer-events-auto fixed bottom-4 right-4 z-40"/>
-        <span className="pointer-events-auto absolute bottom-0 left-0 z-30 flex gap-4 p-4 pt-6">
+        <span className="pointer-events-auto fixed bottom-4 left-4 z-40 flex gap-2">
           <LinkedIn/>
           <Resume/>
         </span>

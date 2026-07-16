@@ -39,6 +39,9 @@ const config = {
         "dashboard-content": "calc(100vh - 164px)",
         "dashboard-pane": "320px"
       },
+      aspectRatio: {
+        preview: "3 / 2",
+      },
       boxShadow: {
         outer: '0 4px 10px rgba(0, 0, 0, 0.1)', 
       },

@@ -26,6 +26,7 @@ export function parseCareerEvent(event: ImportedCareerEvent, endDateDefault: str
             .filter((date): date is Date => Boolean(date))
             .sort((a, b) => b.getTime() - a.getTime())[0]
     const parseDate = (date: Date) => date.toLocaleString('default', { month: 'short', year: 'numeric' })
+    const parseYear = (date: Date) => date.getFullYear().toString()
 
     return {
         employer: event.employer,
@@ -34,6 +35,8 @@ export function parseCareerEvent(event: ImportedCareerEvent, endDateDefault: str
         roles,
         startDate: parseDate(startDate),
         endDate: endDate ? parseDate(endDate) : endDateDefault,
+        startYear: parseYear(startDate),
+        endYear: endDate ? parseYear(endDate) : endDateDefault,
         duration: getDurationBetweenDates(startDate, endDate ?? new Date())
     }
 }

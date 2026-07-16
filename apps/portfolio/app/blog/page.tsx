@@ -38,7 +38,7 @@ export default async function BlogPage() {
     <PageSection id={$t.blog.id} variant={PageSectionVariant.Primary} showBorder={true}>
       <PageSectionHeader>{$t.blog.heading}</PageSectionHeader>
       <PageSectionContent>
-        <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 py-8 md:px-8 md:py-10">
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 py-8">
           {posts.length === 0 ? (
             <p className="text-sm text-muted-foreground">{$t.blog.empty}</p>
           ) : posts.map((post) => (

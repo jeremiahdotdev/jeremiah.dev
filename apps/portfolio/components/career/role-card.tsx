@@ -7,10 +7,11 @@ import type { ClientJob } from "./timeline"
 
 interface RoleCardProps {
     role: ClientJob
+    className?: string
 }
 
-const RoleCard: FC<RoleCardProps> = ({role}: RoleCardProps) => (
-    <CardBase asChild className="h-full p-3 md:p-4">
+const RoleCard: FC<RoleCardProps> = ({role, className}: RoleCardProps) => (
+    <CardBase asChild className={`h-full p-3 md:p-4 ${className ?? ""}`}>
         <article>
             <div className="flex w-full flex-col gap-2 text-left">
                 <span className="flex items-start justify-between gap-3">

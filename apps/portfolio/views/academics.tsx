@@ -26,11 +26,13 @@ export default async function Academics({ dictionary }: AcademicsProps) {
     <PageSection id={$t.academics.id} variant={PageSectionVariant.Primary} showBorder={true}>
       <PageSectionHeader>{$t.academics.heading}</PageSectionHeader>
       <PageSectionContent>
-        <div className="w-full px-4 py-8 md:px-8 md:py-10">
+        <div className="w-full py-8 md:py-10">
           <div className="mx-auto flex w-full max-w-screen-xl flex-col gap-6">
-            <AcademicSummaryCard academics={academics} institutionHref={$t.academics.cofo}/>
+            <div className="px-4 md:px-8">
+              <AcademicSummaryCard academics={academics} institutionHref={$t.academics.cofo}/>
+            </div>
             <FocusList focuses={academics.focuses} gpaLabel={$t.academics.focus.gpaLabel}/>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 px-4 md:px-8">
               <CommendationList commendations={academics.commendations || []} />
             </div>
           </div>

@@ -9,7 +9,7 @@ interface FocusProps {
 
 const Focus: FC<FocusProps> = ({ focus, gpaLabel }: FocusProps) => {
     const component = useMemo(() => (
-        <CardBase asChild className="h-full border-border/70 bg-card/95 p-5 shadow-sm shadow-foreground/10 backdrop-blur-sm md:p-6">
+        <CardBase asChild className="h-full border-border/70 bg-card/95 shadow-sm shadow-foreground/10 backdrop-blur-sm p-6">
         <article className="flex h-full flex-col">
             <div className="flex flex-col gap-2 text-left">
                 <span className="flex items-start justify-between gap-4">

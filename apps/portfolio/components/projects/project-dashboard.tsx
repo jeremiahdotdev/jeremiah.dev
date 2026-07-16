@@ -32,12 +32,12 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
             <div className="hidden w-full md:block xl:hidden">
                 <Carousel
                     opts={{
-                        align: "start",
+                        align: "center",
                         loop: false,
                     }}
                     className="w-full"
                 >
-                    <CarouselContent className="-ml-8 px-8 py-3">
+                    <CarouselContent className="-ml-8 px-6 py-3 lg:px-10">
                         {mediumPages.map((page, pageIndex) => (
                             <CarouselItem key={`md-page-${pageIndex}`} className="basis-full pl-8">
                                 <div className="grid grid-cols-2 gap-x-10 gap-y-14">
@@ -58,12 +58,12 @@ const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashbo
             <div className="hidden w-full xl:block">
                 <Carousel
                     opts={{
-                        align: "start",
+                        align: "center",
                         loop: false,
                     }}
                     className="w-full"
                 >
-                    <CarouselContent className="-ml-8 px-8 py-3">
+                    <CarouselContent className="-ml-8 px-14 py-3">
                         {extraLargePages.map((page, pageIndex) => (
                             <CarouselItem key={`xl-page-${pageIndex}`} className="basis-full pl-8">
                                 <div className="grid grid-cols-3 gap-x-10 gap-y-14">

@@ -35,8 +35,11 @@ const AcademicSummaryCard: FC<AcademicSummaryCardProps> = ({ academics, institut
             ) : null}
             <span className="flex min-w-0 flex-1 flex-col justify-center gap-3">
                 <span className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-                    <span className="flex min-w-0 flex-col gap-1">
-                        <h2 className="text-2xl font-semibold leading-tight tracking-tight">{academics.degree}</h2>
+                    <span className="flex w-full flex-col gap-1">
+                        <span className="flex justify-between pr-4">
+                            <h2 className="text-2xl font-semibold leading-tight tracking-tight">{academics.degree}</h2>
+                            <span className="text-2xl font-semibold leading-tight tracking-tight">{endYear}</span>
+                        </span>
                         <a
                             href={institutionHref}
                             target="_blank"
@@ -46,7 +49,6 @@ const AcademicSummaryCard: FC<AcademicSummaryCardProps> = ({ academics, institut
                             {academics.institution} · {academics.location}
                         </a>
                     </span>
-                    <span className="shrink-0 px-4 text-2xl font-semibold leading-tight tracking-tight text-foreground">{endYear}</span>
                 </span>
                 <span className="max-w-3xl border-primary/20 text-md text-muted-foreground">
                     {academics.description}

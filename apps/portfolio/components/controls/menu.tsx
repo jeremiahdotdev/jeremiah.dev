@@ -187,8 +187,8 @@ const Menu: FC<MenuProps> = () => {
                         {MenuToggle}
                     </SheetTitle>
                 </SheetClose>
-                <span className="flex items-center absolute right-0 bottom-0">
-                    <LinkedIn className="px-3"/>
+                <span className="absolute bottom-0 right-0 flex items-center gap-3 p-3">
+                    <LinkedIn/>
                     <Resume/>
                 </span>
             </SheetContent>

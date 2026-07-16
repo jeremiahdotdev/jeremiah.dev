@@ -22,7 +22,7 @@ export default async function Projects({ dictionary }: ProjectsProps) {
   return (
     <PageSection id={$t.projects.id} variant={PageSectionVariant.Secondary}>
       <PageSectionHeader>{$t.projects.heading}</PageSectionHeader>
-      <PageSectionContent className="px-4 pb-6 sm:px-6 lg:px-10 xl:px-14">
+      <PageSectionContent className="pb-6">
         <div className="w-full lg:flex lg:min-h-0 lg:flex-1 lg:py-6">
           <ProjectDashboard projects={projects}/>
         </div>

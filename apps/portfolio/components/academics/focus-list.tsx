@@ -1,6 +1,9 @@
+"use client"
+
 import { Focus as FocusType } from "@/types/focus"
 import { FC, memo, useMemo } from "react"
 import Focus from "./focus"
+import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/components/ui/carousel"
 
 interface FocusListProps {
     focuses: FocusType[]
@@ -9,12 +12,32 @@ interface FocusListProps {
 
 const FocusList: FC<FocusListProps> = ({ focuses, gpaLabel }: FocusListProps) => {
     const component = useMemo(() => (
-        <div className="grid gap-4 lg:grid-cols-3">
-            {focuses.map((focus) => (
-                <Focus key={`${focus.type}-${focus.name}`} focus={focus} gpaLabel={gpaLabel}/>
-            ))}
-        </div>
-    ), [focuses, gpaLabel])
+        <>
+            <div className="lg:hidden">
+                <Carousel
+                    opts={{
+                        align: "center",
+                        loop: false,
+                    }}
+                    className="w-full"
+                >
+                    <CarouselContent className="items-stretch">
+                        {focuses.map((focus) => (
+                            <CarouselItem key={`${focus.type}-${focus.name}`} className="flex basis-10/12 justify-center sm:basis-8/12">
+                                <Focus focus={focus} gpaLabel={gpaLabel}/>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselDots label="Show academic focus" />
+                </Carousel>
+            </div>
+            <div className="hidden gap-4 lg:grid lg:grid-cols-3 px-8">
+                {focuses.map((focus) => (
+                    <Focus key={`${focus.type}-${focus.name}`} focus={focus} gpaLabel={gpaLabel}/>
+                ))}
+            </div>
+        </>
+        ), [focuses, gpaLabel])
 
     return component
 }

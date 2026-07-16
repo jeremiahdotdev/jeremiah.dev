@@ -14,7 +14,7 @@ const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick }: Projec
     return (
         <Carousel
             opts={{
-                align: "start",
+                align: "center",
                 loop: false,
             }}
             className="w-full"
@@ -23,13 +23,13 @@ const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick }: Projec
                 {projects.map((project) => (
                     <CarouselItem
                         key={project.name}
-                        className="basis-[84vw] pl-6 sm:basis-[32rem]"
+                        className="flex basis-[84vw] justify-center pl-6 sm:basis-[32rem]"
                     >
                         <ProjectCard handleClick={handleClick} project={project} />
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselDots label="Show project group" />
+            <CarouselDots label="Show project" />
         </Carousel>
     );
 };
