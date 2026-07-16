@@ -103,7 +103,7 @@ const ProjectPreview: FC<ProjectPreviewProps> = ({ project, isSelectable }) => {
   }, []);
 
   return (
-    <div className="relative flex aspect-preview flex-col overflow-hidden rounded-3xl border border-border/60 bg-card shadow-xl shadow-foreground/10">
+    <div className="relative flex aspect-preview flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-foreground/10">
       {isSelectable && (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-background/0 opacity-0 transition-all duration-300 group-hover:bg-background/80 group-hover:opacity-100 group-focus-visible:bg-background/80 group-focus-visible:opacity-100">
           <span className="rounded-full border border-border/60 bg-card px-5 py-2 text-sm font-semibold uppercase tracking-widest text-card-foreground shadow-sm shadow-foreground/10 backdrop-blur-sm">

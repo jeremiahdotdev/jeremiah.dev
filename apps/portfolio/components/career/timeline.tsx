@@ -1,6 +1,7 @@
 "use client"
 
 import TimelineItem from "./timeline-item"
+import React from "react"
 import { CareerEvent, Job } from "@/types/job"
 import { Skill } from "@/types/skill"
 import HoverBadgeList from "../shared/hover-badge-list"
@@ -41,14 +42,14 @@ export default function Timeline({events}: Timeline) {
             <div className="relative flex flex-col gap-4">
                 <span className="absolute bottom-8 left-14 top-8 hidden w-px bg-border flex-col md:flex"/>
                 {events.map((job: CareerEvent, index: number) => (
-                    <>
+                    <React.Fragment key={job.employer}>
                         <TimelineItem key={job.employer} event={toClientEvent(job)} defaultExpanded={index === 0}>
                             <HoverBadgeList badges={getUniqueSkills(job)}/>
                         </TimelineItem>
                         {index < events.length - 1 && (
                             <Separator key={`${job.employer}-separator`} className="border-t border-border/50 md:hidden"/>
                         )}
-                    </>
+                    </React.Fragment>
                 ))}
             </div>
         </div>

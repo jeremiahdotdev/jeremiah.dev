@@ -21,9 +21,9 @@ const FocusList: FC<FocusListProps> = ({ focuses, gpaLabel }: FocusListProps) =>
                     }}
                     className="w-full"
                 >
-                    <CarouselContent className="items-stretch">
+                    <CarouselContent className="items-stretch px-4">
                         {focuses.map((focus) => (
-                            <CarouselItem key={`${focus.type}-${focus.name}`} className="flex basis-10/12 justify-center sm:basis-8/12">
+                            <CarouselItem key={`${focus.type}-${focus.name}`} className="flex basis-full justify-center">
                                 <Focus focus={focus} gpaLabel={gpaLabel}/>
                             </CarouselItem>
                         ))}
