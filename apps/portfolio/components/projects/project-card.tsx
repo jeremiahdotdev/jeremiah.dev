@@ -9,6 +9,7 @@ import ProjectAvatar from "./project-avatar";
 import ProjectLanguageMeter from "./project-language-meter";
 import { cn } from "@/lib/utils";
 import { Project } from "@/types/project";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ProjectCardProps {
   project: Project;
@@ -86,7 +87,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       const nextLayout = {
         scale: coverScale,
         offsetX: (width - PREVIEW_VIEWPORT_WIDTH * coverScale) / 2,
-        offsetY: (height - PREVIEW_VIEWPORT_HEIGHT * coverScale) / 2,
+        offsetY: 0,
       };
 
       setPreviewFrameLayout((currentLayout) => {
@@ -132,9 +133,9 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
       <div ref={previewViewportRef} className="relative flex-1 overflow-hidden bg-background">
         {canPreviewDemo && (
           <div className="absolute inset-0 overflow-hidden">
-            <div
+            <Skeleton
               className={cn(
-                "absolute inset-0 animate-pulse bg-muted transition-opacity duration-300",
+                "absolute inset-0 animate-none rounded-none transition-opacity duration-300",
                 frameReady && "opacity-0",
               )}
             />
@@ -144,10 +145,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
               loading="lazy"
               scrolling="no"
               onLoad={() => setFrameReady(true)}
-              className={cn(
-                "absolute left-0 top-0 border-0 transition-opacity duration-500 pointer-events-none",
-                frameReady ? "opacity-100" : "opacity-0",
-              )}
+              className="pointer-events-none absolute left-0 top-0 border-0"
               style={{
                 width: PREVIEW_VIEWPORT_WIDTH,
                 height: PREVIEW_VIEWPORT_HEIGHT,

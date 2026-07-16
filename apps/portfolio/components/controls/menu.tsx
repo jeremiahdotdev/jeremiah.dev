@@ -6,12 +6,13 @@ import {
     SheetDescription,
     SheetTitle,
   } from "@/components/ui/sheet"
-import { memo, useMemo, FC, useCallback, useState } from "react"
+import { memo, useMemo, FC, useCallback, useEffect, useState, type MouseEventHandler } from "react"
 import { useDictionary } from "@/components/content/content-provider";
 import { Toggle } from "@radix-ui/react-toggle";
 import { BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, type LucideIcon } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import ThemeToggle from "../theme/theme-toggle";
 import LinkedIn from "./linked-in";
 import Resume from "./resume";
@@ -30,13 +31,15 @@ interface BaseLinkProps {
     id: string;
     heading: string;
     icon?: string;
+    isActive?: boolean;
     className: string;
     iconClassName?: string;
+    onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 export interface MenuProps {}
 
-const BaseLink: FC<BaseLinkProps> = ({id, heading, icon, className, iconClassName}: BaseLinkProps) => {
+const BaseLink: FC<BaseLinkProps> = ({id, heading, icon, isActive, className, iconClassName, onClick}: BaseLinkProps) => {
     const FallbackIcon = navigationIconFallbacks[id]
     const iconSrc = icon && (icon.startsWith("/") || icon.startsWith("http")) ? icon : undefined
 
@@ -44,7 +47,13 @@ const BaseLink: FC<BaseLinkProps> = ({id, heading, icon, className, iconClassNam
         <Link
             href={`/#${id}`} 
             scroll
-            className={className}
+            aria-current={isActive ? "page" : undefined}
+            onClick={onClick}
+            className={cn(
+                className,
+                "border-b transition-colors",
+                isActive ? "border-primary text-foreground" : "border-transparent hover:border-foreground/50",
+            )}
         >
             {iconSrc ? (
                 <Image
@@ -65,7 +74,42 @@ const BaseLink: FC<BaseLinkProps> = ({id, heading, icon, className, iconClassNam
 
 const Menu: FC<MenuProps> = () => {
     const [isPressed, setIsPressed] = useState<boolean>(false)
+    const [activeId, setActiveId] = useState<string>("home")
     const $t = useDictionary();
+
+    useEffect(() => {
+        const getHashId = () => window.location.hash.replace("#", "")
+
+        const handleHashChange = () => {
+            const hashId = getHashId()
+            if (hashId) setActiveId(hashId)
+        }
+
+        handleHashChange()
+        window.addEventListener("hashchange", handleHashChange)
+
+        const sections = $t.navigation
+            .map(({ id }) => document.getElementById(id))
+            .filter((section): section is HTMLElement => !!section)
+
+        const observer = new IntersectionObserver((entries) => {
+            const visibleEntry = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+
+            if (visibleEntry?.target.id) setActiveId(visibleEntry.target.id)
+        }, {
+            rootMargin: "-35% 0px -45% 0px",
+            threshold: [0.2, 0.4, 0.6],
+        })
+
+        sections.forEach((section) => observer.observe(section))
+
+        return () => {
+            window.removeEventListener("hashchange", handleHashChange)
+            observer.disconnect()
+        }
+    }, [$t.navigation])
 
     const setChangeDrawerOpen = useCallback((isPressed: boolean) => {
       setIsPressed(isPressed)
@@ -88,18 +132,20 @@ const Menu: FC<MenuProps> = () => {
                     id={id}
                     heading={heading}
                     icon={icon}
-                    className="flex items-center gap-3 text-xl font-serif tracking-widest font-thin text-foreground/80 hover:cursor-pointer hover:underline"
-                    iconClassName="h-5 w-5 shrink-0"
+                    isActive={activeId === id}
+                    onClick={() => setActiveId(id)}
+                    className="flex w-fit items-center gap-2.5 pb-1 text-lg font-serif tracking-widest font-thin text-foreground/80 hover:cursor-pointer"
+                    iconClassName="h-4 w-4 shrink-0"
                 />
             </SheetClose>
         )
         
         return (
-            <nav className="m-4 flex flex-col gap-6 border-t-2 border-border pt-8">
+            <nav className="m-4 flex flex-col gap-5 border-t border-border pt-6">
                 <>{ $t.navigation.map(mobileTabletOption) }</>
             </nav>
         )
-    }, [$t, togglePressed])
+    }, [$t, activeId, togglePressed])
     
     const DesktopNavigation = useMemo(() => {
         const desktopOption = ({id, heading, icon}: {id: string, heading: string, icon?: string}) => (
@@ -108,19 +154,21 @@ const Menu: FC<MenuProps> = () => {
                 id={id}
                 heading={heading}
                 icon={icon}
-                className="flex items-center gap-2 px-4 py-2 font-serif text-sm tracking-widest text-foreground/75 hover:cursor-pointer hover:underline"
+                isActive={activeId === id}
+                onClick={() => setActiveId(id)}
+                className="flex items-center gap-2 px-4 pb-2 pt-2 font-serif text-sm tracking-widest text-foreground/75 hover:cursor-pointer"
                 iconClassName="h-5 w-5 shrink-0"
             />
         )
         return (
             <nav
                 aria-label={$t.menu.description}
-                className="fixed left-1/2 bottom-4 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 shadow-sm shadow-foreground/10"
+                className="fixed left-1/2 bottom-4 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-4 py-1.5 shadow-sm shadow-foreground/10"
             >
                 {$t.navigation.map(desktopOption)}
             </nav>
         )
-    }, [$t])
+    }, [$t, activeId])
 
     // Memoized component
     const MobileTabletMenu = useMemo(() => (
