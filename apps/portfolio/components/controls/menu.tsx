@@ -9,7 +9,7 @@ import {
 import { memo, useMemo, FC, useCallback, useState } from "react"
 import { useDictionary } from "@/components/content/content-provider";
 import { Toggle } from "@radix-ui/react-toggle";
-import { Menu as MenuIcon } from "lucide-react"
+import { BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, type LucideIcon } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "../theme/theme-toggle";
@@ -18,12 +18,12 @@ import Resume from "./resume";
 import MobileTabletOnly from "../breakpoints/mobile-tablet-only";
 import DesktopOnly from "../breakpoints/desktop-only";
 
-const navigationIconFallbacks: Record<string, string> = {
-    home: "/navigation-icons/home.svg",
-    career: "/navigation-icons/briefcase.svg",
-    academics: "/navigation-icons/bookOpen.svg",
-    projects: "/navigation-icons/code.svg",
-    contact: "/navigation-icons/mail.svg",
+const navigationIconFallbacks: Record<string, LucideIcon> = {
+    home: Home,
+    career: BriefcaseBusiness,
+    academics: BookOpen,
+    projects: Code2,
+    contact: Mail,
 }
 
 interface BaseLinkProps {
@@ -37,7 +37,8 @@ interface BaseLinkProps {
 export interface MenuProps {}
 
 const BaseLink: FC<BaseLinkProps> = ({id, heading, icon, className, iconClassName}: BaseLinkProps) => {
-    const iconSrc = icon ?? navigationIconFallbacks[id]
+    const FallbackIcon = navigationIconFallbacks[id]
+    const iconSrc = icon && (icon.startsWith("/") || icon.startsWith("http")) ? icon : undefined
 
     return (
         <Link
@@ -51,9 +52,11 @@ const BaseLink: FC<BaseLinkProps> = ({id, heading, icon, className, iconClassNam
                     alt=""
                     width={20}
                     height={20}
-                    className={iconClassName}
+                    className={`${iconClassName ?? ""} dark:invert`}
                     unoptimized={iconSrc.startsWith("http")}
                 />
+            ) : FallbackIcon ? (
+                <FallbackIcon aria-hidden="true" className={iconClassName} />
             ) : null}
             <span>{heading}</span>
         </Link>

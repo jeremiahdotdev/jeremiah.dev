@@ -18,11 +18,11 @@
         "resume": "View Resume"
     },
     "navigation": [
-        {"id": "home", "heading":"Home", "icon": "/navigation-icons/home.svg"},
-        {"id": "career", "heading":"Career", "icon": "/navigation-icons/briefcase.svg"},
-        {"id": "academics", "heading":"Academics", "icon": "/navigation-icons/bookOpen.svg"},
-        {"id": "projects", "heading":"Projects", "icon": "/navigation-icons/code.svg"},
-        {"id": "contact", "heading":"Contact", "icon": "/navigation-icons/mail.svg"}
+        {"id": "home", "heading":"Home"},
+        {"id": "career", "heading":"Career"},
+        {"id": "academics", "heading":"Academics"},
+        {"id": "projects", "heading":"Projects"},
+        {"id": "contact", "heading":"Contact"}
     ],
     "home": {
         "id": "home",
