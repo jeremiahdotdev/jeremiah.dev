@@ -48,7 +48,7 @@ const AcademicSummaryCard: FC<AcademicSummaryCardProps> = ({ academics, institut
                     </span>
                     <span className="shrink-0 px-4 text-2xl font-semibold leading-tight tracking-tight text-foreground">{endYear}</span>
                 </span>
-                <span className="max-w-3xl border-l-2 border-primary/20 pl-3 text-md leading-6 text-muted-foreground md:pl-4">
+                <span className="max-w-3xl border-primary/20 text-md text-muted-foreground">
                     {academics.description}
                 </span>
             </span>
