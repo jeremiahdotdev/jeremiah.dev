@@ -1,6 +1,7 @@
 "use client"
 
-import { FC, ReactNode, memo, useState } from "react"
+import { CSSProperties, FC, ReactNode, memo, useLayoutEffect, useRef, useState } from "react"
+import { ChevronDown } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TypographyH1, TypographyMuted, TypographySmall } from "@/components/ui/typography"
 import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "../ui/carousel"
@@ -26,10 +27,10 @@ const getRoleItemClassName = (roleCount: number) => {
     }
 
     if (roleCount === 2) {
-        return "basis-full md:basis-1/2"
+        return "basis-[84%] md:basis-1/2"
     }
 
-    return "basis-[88%] sm:basis-[70%] lg:basis-1/2 xl:basis-1/3"
+    return "basis-[84%] sm:basis-[70%] lg:basis-1/2 xl:basis-1/3"
 }
 
 const getOrganizationMark = (employer: string) => {
@@ -42,6 +43,17 @@ const getOrganizationMark = (employer: string) => {
         .toUpperCase()
 }
 
+const ChevronIndicator = ({expanded}: {expanded: boolean}) => (
+    <span
+        aria-hidden="true"
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background/80 text-muted-foreground transition-all duration-300 ease-out group-hover:border-primary/30 group-hover:text-foreground ${
+            expanded && "rotate-180 text-foreground"
+        }`}
+    >
+        <ChevronDown className="h-4 w-4" />
+    </span>
+)
+
 const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
     return (
         <Carousel
@@ -49,9 +61,9 @@ const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
                 align: "center",
                 loop: false,
             }}
-            className="w-full"
+            className="relative w-[100vw]"
         >
-            <CarouselContent className="items-stretch px-4 py-3">
+            <CarouselContent className="py-3">
                 {roles.map((role, index) => {
                     const roleId = getRoleId(role)
 
@@ -69,7 +81,60 @@ const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
 
 const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, children}: TimelineItem) => {
     const [expanded, setExpanded] = useState(defaultExpanded)
-    const toggleExpanded = () => setExpanded((current) => !current)
+    const [contentMounted, setContentMounted] = useState(defaultExpanded)
+    const [contentHeight, setContentHeight] = useState(0)
+    const contentRef = useRef<HTMLDivElement>(null)
+    const toggleExpanded = () => {
+        if (!expanded) {
+            setContentHeight(0)
+            setContentMounted(true)
+            setExpanded(true)
+
+            return
+        }
+
+        const content = contentRef.current
+
+        if (content) {
+            setContentHeight(content.scrollHeight)
+            window.requestAnimationFrame(() => setExpanded(false))
+
+            return
+        }
+
+        setExpanded((current) => !current)
+    }
+
+    useLayoutEffect(() => {
+        if (!contentMounted || !expanded) {
+            return
+        }
+
+        const content = contentRef.current
+
+        if (!content) {
+            return
+        }
+
+        const updateContentHeight = () => setContentHeight(content.scrollHeight)
+        let resizeObserver: ResizeObserver | undefined
+        const animationFrame = window.requestAnimationFrame(() => {
+            updateContentHeight()
+            resizeObserver = new ResizeObserver(updateContentHeight)
+            resizeObserver.observe(content)
+        })
+
+        return () => {
+            window.cancelAnimationFrame(animationFrame)
+            resizeObserver?.disconnect()
+        }
+    }, [contentMounted, expanded])
+
+    const contentStyle = {
+        maxHeight: expanded ? `${contentHeight}px` : "0px",
+        opacity: expanded ? 1 : 0,
+        transition: "max-height 300ms ease-out, opacity 300ms ease-out",
+    } satisfies CSSProperties
 
     return (
         <section
@@ -91,24 +156,38 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, childre
                     <AvatarImage src={event.icon?.src} alt={event.icon?.alt || event.employer} className="h-12 w-12 md:h-14 md:w-14 object-contain" />
                     <AvatarFallback>{getOrganizationMark(event.employer)}</AvatarFallback>
                 </Avatar>
-                <div className="relative flex flex-row justify-between items-center w-full">
-                    <div className="relative flex flex-col gap-1">
+                <div className="relative flex w-full flex-row items-center justify-between gap-4">
+                    <div className="relative flex min-w-0 flex-col gap-1">
                         <TypographyH1 className="font-semibold">{event.employer}</TypographyH1>
                         <TypographyMuted className="text-sm">{event.location}</TypographyMuted>
                         <TypographySmall className="text-sm text-muted-foreground md:hidden">{event.startYear} - {event.endYear} · {event.duration}</TypographySmall>
                     </div>
-                    <div className="relative flex-col gap-1 items-end hidden md:flex">
-                        <TypographySmall className="text-sm text-muted-foreground">{event.startYear} - {event.endYear}</TypographySmall>
-                        <TypographySmall className="text-sm text-muted-foreground">{event.duration}</TypographySmall>
+                    <div className="flex items-center gap-3">
+                        <div className="relative hidden flex-col items-end gap-1 md:flex">
+                            <TypographySmall className="text-sm text-muted-foreground">{event.startYear} - {event.endYear}</TypographySmall>
+                            <TypographySmall className="text-sm text-muted-foreground">{event.duration}</TypographySmall>
+                        </div>
+                        <ChevronIndicator expanded={expanded} />
                     </div>
                 </div>
             </div>
-            {expanded && (
-                <div className="col-span-full">
-                    <RoleCarousel roles={event.roles}/>
-                    <div className="p-4 px-8 md:px-20">
-                        <Separator className="m-2 border-t border-border"/>
-                        {children}
+            {contentMounted && (
+                <div
+                    className="col-span-full overflow-hidden"
+                    style={contentStyle}
+                    onTransitionEnd={(event) => {
+                        if (event.currentTarget === event.target && event.propertyName === "max-height" && !expanded) {
+                            setContentHeight(0)
+                            setContentMounted(false)
+                        }
+                    }}
+                >
+                    <div ref={contentRef} className="overflow-hidden">
+                        <RoleCarousel roles={event.roles}/>
+                        <div className="p-4 md:px-20">
+                            <Separator className="m-2 border-t border-border"/>
+                            {children}
+                        </div>
                     </div>
                 </div>
             )}
