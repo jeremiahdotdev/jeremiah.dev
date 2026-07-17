@@ -19,7 +19,7 @@ const ProjectCardList: FC<ProjectCardProps> = ({ projects, handleClick }: Projec
             }}
             className="w-full"
         >
-            <CarouselContent className="-ml-6 items-stretch px-6 py-3">
+            <CarouselContent className="flex gap-6 items-stretch px-6 py-3">
                 {projects.map((project) => (
                     <CarouselItem
                         key={project.name}

@@ -72,7 +72,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
 
   if (!isSelectable) {
     return (
-      <article className="flex h-full w-full flex-col gap-6 px-2 sm:px-0">
+      <article className="flex h-full w-full flex-col gap-6">
         {previewPanel}
         {cardContent}
       </article>
@@ -80,7 +80,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
   }
 
   return (
-    <article className="flex h-full w-full flex-col gap-6 px-2 sm:px-0">
+    <article className="flex h-full w-full flex-col gap-6">
       <button
         type="button"
         onClick={() => handleClick(clickHref)}
