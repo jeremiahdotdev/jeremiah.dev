@@ -11,7 +11,7 @@ const typographyH2Variants = cva(
       variant: {
         default: "",
         section:
-          "border-b-0 p-4 pt-8 flex flex-col text-2xl w-full font-serif font-thin tracking-widest text-foreground items-center justify-center sm:justify-end sm:align-start sm:px-16",
+          "border-b-0 p-4 pt-8 flex flex-col text-3xl w-full font-serif font-thin tracking-widest text-foreground items-center justify-center sm:justify-end sm:align-start sm:px-16",
       },
     },
     defaultVariants: {

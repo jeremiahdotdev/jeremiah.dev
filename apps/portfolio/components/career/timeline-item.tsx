@@ -87,8 +87,8 @@ const TimelineItem: FC<TimelineItem> = ({event, defaultExpanded = false, childre
             className="group relative grid cursor-pointer grid-cols-1 py-2 gap-0"
         >
             <div className="px-4 flex w-full flex-row gap-4">
-                <Avatar className="relative h-16 w-16 items-center justify-center rounded-full border border-border bg-background md:h-20 md:w-20">
-                    <AvatarImage src={event.icon?.src} alt={event.icon?.alt || event.employer} className="h-10 w-10 md:h-12 md:w-12 object-contain" />
+                <Avatar className="relative h-16 w-16 items-center justify-center rounded-lg border border-border bg-background md:h-20 md:w-20">
+                    <AvatarImage src={event.icon?.src} alt={event.icon?.alt || event.employer} className="h-12 w-12 md:h-14 md:w-14 object-contain" />
                     <AvatarFallback>{getOrganizationMark(event.employer)}</AvatarFallback>
                 </Avatar>
                 <div className="relative flex flex-row justify-between items-center w-full">
