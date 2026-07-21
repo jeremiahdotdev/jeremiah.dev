@@ -60,3 +60,4 @@ Each file should use this schema:
 - `sections` headings are distinct and meaningful.
 - Every non-empty point is a complete sentence.
 - No sensitive or path-specific data is present.
+
