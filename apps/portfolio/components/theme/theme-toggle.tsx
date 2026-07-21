@@ -4,7 +4,7 @@ import { memo, useMemo, useCallback, FC, useSyncExternalStore } from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes";
 import { useDictionary } from '@/components/content/content-provider';
-import { Toggle } from "../ui/toggle";
+import ControlBadgeToggle from "../controls/control-badge-toggle";
 
 interface ThemeToggleProps {
   className?: string;
@@ -31,12 +31,12 @@ const ThemeToggle: FC<ThemeToggleProps> = ({className}: ThemeToggleProps) => {
     }
 
     return (
-      <Toggle className={`aspect-square ${className}`} aria-label={$t.theme.toggle} pressed={isPressed} onPressedChange={setChangeTheme}>
+      <ControlBadgeToggle className={className} aria-label={$t.theme.toggle} pressed={isPressed} onPressedChange={setChangeTheme}>
         { isPressed
           ? <Moon className="h-[1.4rem] w-[1.4rem]" />
           : <Sun className="h-[1.4rem] w-[1.4rem]" />
         }
-      </Toggle>
+      </ControlBadgeToggle>
     );
   }, [$t, mounted, isPressed, setChangeTheme, className]);
 

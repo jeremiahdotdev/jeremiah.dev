@@ -10,9 +10,9 @@ export default function Controls() {
         <div className="pointer-events-auto">
           <Menu/>
         </div>
-        <ThemeToggle className="pointer-events-auto absolute right-0 top-0 z-30"/>
-        <AskAiFloat className="pointer-events-auto fixed bottom-4 right-4 z-40"/>
-        <span className="pointer-events-auto absolute bottom-4 left-4 z-40 flex gap-2">
+        <ThemeToggle className="pointer-events-auto absolute right-2 top-2 z-30"/>
+        <AskAiFloat className="pointer-events-auto fixed bottom-2 right-2 z-40"/>
+        <span className="pointer-events-auto absolute bottom-2 left-2 z-40 flex gap-2">
           <LinkedIn/>
           <Resume/>
         </span>

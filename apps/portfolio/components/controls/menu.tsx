@@ -8,16 +8,16 @@ import {
   } from "@/components/ui/sheet"
 import { memo, useMemo, FC, useCallback, useEffect, useState, type MouseEventHandler } from "react"
 import { useDictionary } from "@/components/content/content-provider";
-import { Toggle } from "@radix-ui/react-toggle";
-import { BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, type LucideIcon } from "lucide-react"
+import { BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, X, type LucideIcon } from "lucide-react"
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import ThemeToggle from "../theme/theme-toggle";
 import LinkedIn from "./linked-in";
 import Resume from "./resume";
 import MobileTabletOnly from "../breakpoints/mobile-tablet-only";
 import DesktopOnly from "../breakpoints/desktop-only";
+import ControlBadgeToggle from "./control-badge-toggle";
+import { Toggle } from "@radix-ui/react-toggle";
 
 const navigationIconFallbacks: Record<string, LucideIcon> = {
     home: Home,
@@ -119,10 +119,16 @@ const Menu: FC<MenuProps> = () => {
         setIsPressed(i => !i)
     }, [])
 
-    const MenuToggle = useMemo(() =>(
-        <Toggle className={`aspect-square rounded-md p-2`} aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
-          <MenuIcon className={`${isPressed ? "rotate-90" : "rotate-0"} transition-all`}/>
+    const MenuToggleClose = useMemo(() =>(
+        <Toggle className={`aspect-square p-2`} aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
+          <X/>
         </Toggle>
+    ), [$t, isPressed, setChangeDrawerOpen])
+
+    const MenuToggleOpen = useMemo(() =>(
+        <ControlBadgeToggle aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
+          <MenuIcon/>
+        </ControlBadgeToggle>
     ), [$t, isPressed, setChangeDrawerOpen])
 
     const MobileTabletNavigation = useMemo(() => {
@@ -173,8 +179,8 @@ const Menu: FC<MenuProps> = () => {
     // Memoized component
     const MobileTabletMenu = useMemo(() => (
         <Sheet open={isPressed}>
-            <div className="fixed left-0 top-0 z-40 p-2" >
-                {MenuToggle}
+            <div className="fixed left-2 top-2 z-40" >
+                {MenuToggleOpen}
             </div>
             <SheetContent side={"left"}>
                 <SheetDescription className="sr-only">
@@ -184,7 +190,7 @@ const Menu: FC<MenuProps> = () => {
                 <SheetClose asChild className="absolute left-0 right-0 top-0">
                     <SheetTitle className="flex justify-between items-center p-0 pl-4 font-serif text-md font-serif">
                         {$t.menu.heading} 
-                        {MenuToggle}
+                        {MenuToggleClose}
                     </SheetTitle>
                 </SheetClose>
                 <span className="absolute bottom-0 right-0 flex items-center gap-3 p-3">
@@ -193,7 +199,7 @@ const Menu: FC<MenuProps> = () => {
                 </span>
             </SheetContent>
         </Sheet>
-    ), [$t, MenuToggle, MobileTabletNavigation, isPressed]);
+    ), [$t, MenuToggleOpen, MenuToggleClose, MobileTabletNavigation, isPressed]);
 
     return (<>
         <MobileTabletOnly>
