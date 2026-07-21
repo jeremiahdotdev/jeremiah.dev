@@ -11,8 +11,8 @@ export default function Controls() {
           <Menu/>
         </div>
         <ThemeToggle className="pointer-events-auto absolute right-2 top-2 z-30"/>
-        <AskAiFloat className="pointer-events-auto fixed bottom-2 right-2 z-40"/>
-        <span className="pointer-events-auto absolute bottom-8 left-2 z-40 flex gap-2">
+        <AskAiFloat className="pointer-events-auto fixed bottom-4 right-2 z-40"/>
+        <span className="pointer-events-auto absolute bottom-4 left-2 z-40 flex gap-2">
           <LinkedIn/>
           <Resume/>
         </span>
