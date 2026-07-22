@@ -39,9 +39,9 @@ const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
         </p>
       </div>
       <div className="mt-auto space-y-3 pt-4">
-        {project.languages?.length ? (
+        {project.languages?.length && (
           <ProjectLanguageMeter languages={project.languages} />
-        ) : null}
+        )}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-base text-muted-foreground">
           {project.private ? (
             <span
