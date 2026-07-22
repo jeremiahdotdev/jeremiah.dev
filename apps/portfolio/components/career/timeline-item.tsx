@@ -61,7 +61,7 @@ const RoleCarousel: FC<RoleCarousel> = ({roles}: RoleCarousel) => {
                 align: "center",
                 loop: false,
             }}
-            className="relative w-[100vw]"
+            className="relative max-w-screen-xl w-[100vw]"
         >
             <CarouselContent className="py-3">
                 {roles.map((role, index) => {
