@@ -54,7 +54,7 @@ export default function Menu() {
 
   return (
     <>
-        <nav aria-label={$t.menu.description} className="fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 items-center rounded-full border border-border/60 bg-background/90 px-2 py-1.5 text-foreground shadow-sm shadow-foreground/10 lg:flex xl:gap-1 xl:px-4">
+        <nav aria-label={$t.menu.description} className="fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 text-foreground shadow-sm shadow-foreground/10 lg:flex xl:gap-2 xl:px-4">
           <ThemeToggle className={menuItemClassName} />
           <ResourcesMenu className={menuItemClassName} />
           {links.map(({ id, label, href, icon }) => {

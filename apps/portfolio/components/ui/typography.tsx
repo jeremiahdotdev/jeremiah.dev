@@ -27,13 +27,13 @@ const typographyVariants = cva("not-italic", {
       "career-intro":
         "font-light font-title text-[clamp(1.75rem,calc(0.75rem_+_1.6*min(1vw,15px)_+_1vh),3.75rem)] leading-tight tracking-tight normal-case text-foreground [overflow-wrap:anywhere]",
       "career-employer":
-        "font-normal font-sans text-[clamp(0.875rem,calc(0.75rem_+_0.35vw),1.125rem)] leading-normal tracking-normal normal-case text-muted-foreground",
+        "font-light font-sans text-[clamp(0.875rem,calc(0.75rem_+_0.35vw),1.125rem)] leading-normal tracking-normal normal-case text-muted-foreground/80",
       "diagram-title":
-        "font-light font-title text-[1.5625rem] leading-tight tracking-tight normal-case text-foreground lg:text-[clamp(2.25rem,calc(2.97*var(--type-vw,1vw)),3.375rem)]",
-      "diagram-body":
-        "font-normal font-sans text-[clamp(1rem,calc(1.395*var(--type-vw,1vw)),1.35rem)] leading-snug tracking-normal normal-case text-muted-foreground",
+        "font-light font-title text-2xl leading-[1.05] tracking-tighter normal-case text-foreground whitespace-normal [overflow-wrap:anywhere] lg:text-3xl xl:text-4xl",
       "diagram-label":
-        "font-normal font-mono text-xs leading-normal tracking-[0.2em] uppercase tabular-nums text-muted-foreground lg:text-[clamp(0.9rem,calc(1.035*var(--type-vw,1vw)),1.0125rem)]",
+        "font-normal font-mono text-xs leading-tight tracking-[0.1em] uppercase tabular-nums text-muted-foreground whitespace-normal [overflow-wrap:anywhere] lg:text-base",
+      "diagram-body":
+        "font-normal font-sans text-sm leading-snug tracking-tight normal-case text-muted-foreground whitespace-normal [overflow-wrap:anywhere] lg:text-lg",
       intro:
         "font-light font-title text-[clamp(1.5rem,calc(2.3*var(--type-vw,1vw)),2.75rem)] leading-[1.15] tracking-[-0.035em] normal-case text-muted-foreground [overflow-wrap:anywhere]",
       "project-intro":

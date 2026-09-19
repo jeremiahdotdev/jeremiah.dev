@@ -6,19 +6,21 @@ type PerspectiveContent = Dictionary["academics"]["perspective"];
 
 function PerspectiveItem({ content }: { content: PerspectiveContent["mathematics"] }) {
   return (
-    <>
-      <Typography variant="diagram-label" noWrap>{content.label}</Typography>
-      <div className="mt-1"><Typography as="h3" variant="diagram-title" noWrap>{content.heading}</Typography></div>
-      <div className="mx-auto mt-1 max-w-xs">
-        <Typography variant="diagram-body">{content.description}</Typography>
-      </div>
-    </>
+    <div className="min-w-0 max-w-full">
+      <Typography variant="diagram-label">{content.label}</Typography>
+      <Typography as="h3" variant="diagram-title">{content.heading}</Typography>
+      {content.description && (
+        <div className="mx-auto max-w-xs">
+          <Typography variant="diagram-body">{content.description}</Typography>
+        </div>
+      )}
+    </div>
   );
 }
 
 function CircleSurface() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-[1%] -z-10 hidden rounded-full border border-black/10 bg-white bg-[linear-gradient(to_right,rgba(0,0,0,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.045)_1px,transparent_1px)] bg-[size:24px_24px] bg-center shadow-[inset_0_3px_6px_rgba(0,0,0,0.16),inset_0_12px_24px_rgba(0,0,0,0.12),inset_0_-1px_0_rgba(255,255,255,0.4)] dark:bg-[#eee8dc] dark:shadow-[inset_0_4px_8px_rgba(0,0,0,0.28),inset_0_16px_28px_rgba(0,0,0,0.18),inset_0_-1px_0_rgba(255,255,255,0.3)] md:block" />
+    <div aria-hidden="true" className="pointer-events-none absolute inset-[0%] -z-10 hidden rounded-full border border-black/10 bg-white bg-[linear-gradient(to_right,rgba(0,0,0,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.045)_1px,transparent_1px)] bg-[size:24px_24px] bg-center shadow-[inset_0_3px_6px_rgba(0,0,0,0.16),inset_0_12px_24px_rgba(0,0,0,0.12),inset_0_-1px_0_rgba(255,255,255,0.4)] dark:bg-[#eee8dc] dark:shadow-[inset_0_4px_8px_rgba(0,0,0,0.28),inset_0_16px_28px_rgba(0,0,0,0.18),inset_0_-1px_0_rgba(255,255,255,0.3)] md:block" />
   );
 }
 
@@ -43,23 +45,14 @@ export default function AcademicPerspective({ content }: { content: PerspectiveC
       </div>
       <div className="relative isolate hidden aspect-square w-full max-w-[44rem] place-items-center [--foreground:210_12%_13%] [--muted-foreground:210_10%_26%] lg:grid">
         <CircleSurface />
-        <div className="h-[60%] w-[76%]">
-          <div className="flex h-full min-h-0 w-full flex-col justify-center">
-            <div className="grid shrink-0 gap-y-4 text-center sm:grid-cols-2 sm:gap-x-4">
-              <div className="min-w-0">
-                <PerspectiveItem content={content.mathematics} />
-              </div>
-              <div className="min-w-0 border-t border-foreground/15 pt-6 sm:border-t-0 sm:pt-0">
-                <PerspectiveItem content={content.faith} />
-              </div>
-            </div>
-
-            <svg aria-hidden="true" viewBox="0 0 400 168" preserveAspectRatio="none" className="mt-3 hidden max-h-24 min-h-4 w-full flex-1 text-foreground/30 sm:block">
+        <div className="grid w-[76%] grid-cols-2 items-start gap-x-4 gap-y-3 py-12 text-center">
+          <PerspectiveItem content={content.mathematics} />
+          <PerspectiveItem content={content.faith} />
+          <div className="col-span-2 min-w-0">
+            <svg aria-hidden="true" viewBox="0 0 400 168" preserveAspectRatio="none" className="h-[clamp(2rem,5vw,6rem)] w-full text-foreground/30">
               <path d="M100 0V24H300V0M200 24V168" fill="none" stroke="currentColor" vectorEffect="non-scaling-stroke" />
             </svg>
-            <div aria-hidden="true" className="mx-auto mt-3 h-4 w-px bg-foreground/30 sm:hidden" />
-
-            <div className="relative shrink-0 pt-4 text-center">
+            <div className="relative pt-4">
               <span aria-hidden="true" className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-foreground/60" />
               <PerspectiveItem content={content.software} />
             </div>

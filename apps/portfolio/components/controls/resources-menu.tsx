@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowUpRight, ChevronUp, FileText, FolderOpen, Linkedin } from "lucide-react";
+import { ArrowUpRight, FileText, Folder, FolderOpen, Linkedin } from "lucide-react";
 import { useDictionary } from "@/components/content/content-provider";
 import { Typography } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
@@ -43,9 +43,9 @@ export default function ResourcesMenu({ className }: { className?: string }) {
       if (!event.currentTarget.contains(event.relatedTarget)) event.currentTarget.open = false;
     }}>
       <summary ref={triggerRef} className={cn("flex cursor-pointer list-none items-center gap-2 text-foreground/75 hover:text-foreground [&::-webkit-details-marker]:hidden", className)}>
-        <FolderOpen aria-hidden="true" className="size-5 shrink-0" />
+        <Folder aria-hidden="true" className="size-5 shrink-0 group-open:hidden" />
+        <FolderOpen aria-hidden="true" className="hidden size-5 shrink-0 group-open:block" />
         <Typography as="span" variant="menu">{$t.menu.resources}</Typography>
-        <ChevronUp aria-hidden="true" className="size-4 shrink-0 group-open:rotate-180" />
       </summary>
       <nav aria-label={$t.menu.resources} className="absolute bottom-full left-0 mb-2 w-48 rounded-xl border border-border/60 bg-background p-2 shadow-lg">
         {links.map(({ href, label, ariaLabel, Icon }) => (
