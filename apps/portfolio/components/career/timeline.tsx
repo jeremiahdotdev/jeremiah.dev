@@ -1,57 +1,49 @@
-"use client"
+"use client";
 
-import TimelineItem from "./timeline-item"
-import React from "react"
-import { CareerEvent, Job } from "@/types/job"
-import { Skill } from "@/types/skill"
-import HoverBadgeList from "../shared/hover-badge-list"
-import { Separator } from "@radix-ui/react-dropdown-menu"
+import type { Skill } from "@/types/skill";
+import type { CareerMilestone } from "@/lib/career-milestones";
+import { cn } from "@/lib/utils";
+import { Typography } from "@/components/ui/typography";
+import { useDictionary } from "@/components/content/content-provider";
+import { formatTemplate } from "@/lib/format-template";
+import { Carousel, CarouselContent, CarouselItem, CarouselNavigation } from "@/components/ui/carousel";
+import CareerMilestoneCard from "./career-milestone-card";
+import CareerSkills from "./career-skills";
 
-interface Timeline {
-    events: CareerEvent[]
-}
+const accents = [
+  "[--career-accent:153_30%_35%] dark:[--career-accent:151_30%_62%]",
+  "[--career-accent:208_38%_42%] dark:[--career-accent:208_42%_66%]",
+  "[--career-accent:12_35%_45%] dark:[--career-accent:12_40%_66%]",
+];
 
-const getUniqueSkills = (event: CareerEvent) => {
-    const skills = event.roles.flatMap((role) => role.skills)
-    return skills.filter((skill, index) => (
-        skills.findIndex((existingSkill) => existingSkill.subtitle === skill.subtitle) === index
-    ))
-}
+export default function Timeline({ milestones, skills }: { milestones: CareerMilestone[]; skills: Skill[] }) {
+  const $t = useDictionary();
 
-type ClientSkill = Omit<Skill, "image">
-type ClientJob = Omit<Job, "skills"> & {
-    skills: ClientSkill[]
-}
-type ClientCareerEvent = Omit<CareerEvent, "roles"> & {
-    roles: ClientJob[]
-}
+  if (!milestones.length) return null;
 
-const toClientEvent = (event: CareerEvent): ClientCareerEvent => ({
-    ...event,
-    roles: event.roles.map((role) => ({
-        ...role,
-        skills: role.skills.map(({ image, ...skill }) => skill),
-    })),
-})
-
-export type { ClientCareerEvent, ClientJob }
-
-export default function Timeline({events}: Timeline) {
-    return (
-        <div className="w-full max-w-screen-xl py-8">
-            <div className="relative flex flex-col gap-4">
-                <span className="absolute bottom-8 left-14 top-8 hidden w-px bg-border flex-col md:flex"/>
-                {events.map((job: CareerEvent, index: number) => (
-                    <React.Fragment key={job.employer}>
-                        <TimelineItem key={job.employer} event={toClientEvent(job)} defaultExpanded={index === 0}>
-                            <HoverBadgeList badges={getUniqueSkills(job)}/>
-                        </TimelineItem>
-                        {index < events.length - 1 && (
-                            <Separator key={`${job.employer}-separator`} className="border-t border-border/50 md:hidden"/>
-                        )}
-                    </React.Fragment>
-                ))}
-            </div>
-        </div>
-    )
+  return (
+    <div className="mt-3">
+      <Carousel opts={{ align: "start", loop: false }} aria-label={$t.career.timeline.label} className="text-foreground">
+        <CarouselContent className="items-stretch" viewportClassName="px-1 pb-1" fadeEdges={false}>
+          {milestones.map((milestone, index) => (
+            <CarouselItem key={milestone.id} aria-label={formatTemplate($t.career.timeline.roleAria, { role: milestone.role.title, employer: milestone.role.employer })} style={{ flexBasis: "clamp(14.5rem, 19vw, 18rem)" }} className={cn("flex flex-col", accents[milestone.employerIndex % accents.length])}>
+              <div className="relative flex h-28 shrink-0 flex-col items-center pt-2">
+                <Typography as="span" variant="detail-label">{milestone.year}</Typography>
+                <span aria-hidden="true" className={cn("absolute -left-4 right-0 top-12 h-px bg-career-accent/65", index === 0 && "left-1/2", index === milestones.length - 1 && "right-1/2")} />
+                <span aria-hidden="true" className="absolute top-9 flex size-6 items-center justify-center rounded-full border border-career-accent bg-background">
+                  <span className="size-3 rounded-full bg-career-accent" />
+                </span>
+                <span aria-hidden="true" className="absolute bottom-0 top-[3.75rem] border-l border-dashed border-career-accent/65" />
+              </div>
+              <CareerMilestoneCard milestone={milestone} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNavigation itemLabel={$t.career.timeline.item} className="mt-2 px-1" />
+      </Carousel>
+      <div className="mt-3">
+        <CareerSkills skills={skills} />
+      </div>
+    </div>
+  );
 }

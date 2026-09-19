@@ -8,8 +8,13 @@
     },
     "menu": {
         "toggle":"Toggle menu",
+        "label": "Menu",
+        "navigation": "Navigation",
+        "close": "Close menu",
         "heading":"jeremiah.dev",
-        "description":"Links to all sections of the site."
+        "description":"Links to all sections of the site.",
+        "linkedIn": "LinkedIn",
+        "resume": "Résumé"
     },
     "controls": {
         "askAi": "Ask My AI",
@@ -19,8 +24,8 @@
     },
     "navigation": [
         {"id": "home", "heading":"Home"},
-        {"id": "career", "heading":"Career"},
         {"id": "academics", "heading":"Academics"},
+        {"id": "career", "heading":"Career"},
         {"id": "projects", "heading":"Projects"},
         {"id": "contact", "heading":"Contact"}
     ],
@@ -33,16 +38,70 @@
     "timeline" : {
         "endDateDefault" : "Present"
     },
+    "carousel": {
+        "label": "carousel",
+        "item": "slide",
+        "previous": "Previous",
+        "next": "Next",
+        "previousAria": "Previous {item}",
+        "nextAria": "Next {item}",
+        "showAria": "Show {item}",
+        "numberedItem": "{item} {index}",
+        "position": "{index} of {total}"
+    },
     "career": {
         "id": "career",
-        "heading": "Career"
+        "heading": "Career",
+        "intro": "My journey from lab assistant to software leader.",
+        "experience": {
+            "one": "{count} year",
+            "other": "{count} years"
+        },
+        "timeline": {
+            "label": "Career timeline, newest to oldest",
+            "item": "role",
+            "roleAria": "{role} at {employer}"
+        },
+        "skills": {
+            "heading": "Skills & tools",
+            "label": "Career skills and tools",
+            "play": "Play skills carousel",
+            "pause": "Pause skills carousel",
+            "item": "skill",
+            "websiteAria": "Open {skill} website in a new tab"
+        },
+        "role": {
+            "readMoreAria": "Read more about {role} at {employer}",
+            "close": "Close role details"
+        }
     },
     "academics": {
         "id": "academics",
         "heading": "Academics",
+        "intro": "My foundations in mathematics and faith shape the way I work.",
+        "awardsLabel": "Awards and leadership",
         "cofo": "https://www.cofo.edu/",
         "focus": {
+            "heading": "Academic focus",
             "gpaLabel": "GPA"
+        },
+        "perspective": {
+            "label": "How mathematics and faith inform my software work",
+            "mathematics": {
+                "label": "Mathematics",
+                "heading": "How I reason",
+                "description": "Precision, systems, and problem solving."
+            },
+            "faith": {
+                "label": "Faith",
+                "heading": "Why I build",
+                "description": "Truth, ethics, and human purpose."
+            },
+            "software": {
+                "label": "Software",
+                "heading": "What I build",
+                "description": "Reliable products for people and communities."
+            }
         }
     },
     "projects": {
@@ -54,6 +113,21 @@
         "viewDemo": "VIEW LIVE DEMO",
         "closeDemo": "Close",
         "repository": "repository",
+        "item": "project",
+        "announcement": "Project {index} of {total}: {project}",
+        "product": "The product",
+        "topics": "Topics",
+        "languageBreakdown": "Language breakdown",
+        "languageValue": "{language}: {value}%",
+        "preview": {
+            "live": "Live",
+            "reloadAria": "Reload {project} preview",
+            "title": "{project} preview"
+        },
+        "status": {
+            "deprecated": "This project is not in a stable state and will not be worked on.",
+            "inProgress": "This project is actively being worked on."
+        },
         "github": {
             "link": "GitHub",
             "public": "View source on GitHub.",
@@ -105,6 +179,7 @@
     },
     "footer": {
         "copyright": "jeremiah.dev",
+        "studio": "Sanity",
         "captcha": {
             "url": "https://www.google.com/recaptcha",
             "label": "This site uses",

@@ -1,8 +1,7 @@
 import ContactSectionClient from "@/components/contact/contact-section-client";
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
-import PageSectionHeader from "@/components/page/page-section-header";
-import PageSectionContent from "@/components/page/page-section-content";
+import SectionContainer from "@/components/shared/section-container";
 import type { Dictionary } from "@/types/dictionary";
 
 interface ContactProps {
@@ -13,11 +12,10 @@ export default function Contact({ dictionary }: ContactProps) {
   const $t = dictionary;
 
   return (
-    <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary} showBorder={true} rotate={true}>
-      <PageSectionHeader>{$t.contact.heading}</PageSectionHeader>
-      <PageSectionContent>
+    <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary}>
+      <SectionContainer className="flex flex-1 items-center py-6 lg:py-6">
         <ContactSectionClient />
-      </PageSectionContent>
+      </SectionContainer>
     </PageSection>
   );
 }

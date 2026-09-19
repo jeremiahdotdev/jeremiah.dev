@@ -1,97 +1,92 @@
 "use client";
 
-import { type FC, memo } from "react";
-import { ExternalLink, Lock } from "lucide-react";
-
 import { useDictionary } from "@/components/content/content-provider";
-import ProjectLanguageMeter from "./project-language-meter";
-import { Project } from "@/types/project";
+import { Typography } from "@/components/ui/typography";
+import type { Project } from "@/types/project";
 import ProjectPreview from "./project-preview";
+import ProjectLanguageMeter from "./project-language-meter";
+import ProjectLinks from "./project-links";
+import SectionHeading from "@/components/shared/section-heading";
+import { parseProjectDescription, splitProjectDescription } from "@/lib/project-description";
+import ProjectStatusBadge from "./project-status-badge";
 
 interface ProjectCardProps {
   project: Project;
-  handleClick?: (href: string) => void;
+  index?: number;
+  total?: number;
+  moving?: boolean;
 }
 
-const ProjectCard: FC<ProjectCardProps> = ({ project, handleClick }) => {
-  const $t = useDictionary();
-
-  const isSelectable = !!handleClick;
-  const clickHref = project.demo?.href ?? project.link.href;
-
-  const projectLabel = (template: string) =>
-    template.replace("{project}", project.name);
-
-  const previewPanel = <ProjectPreview project={project} isSelectable={isSelectable} />;
-
-  const cardContent = (
-    <div className="flex flex-1 flex-col px-2 sm:px-1">
-      <div className="space-y-3">
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h3 className="truncate text-2xl font-semibold tracking-tight text-foreground">
-              {project.name}
-            </h3>
-          </div>
-        </div>
-        <p className="text-lg leading-relaxed text-muted-foreground">
-          {project.description}
-        </p>
-      </div>
-      <div className="mt-auto space-y-3 pt-4">
-        {project.languages?.length && (
-          <ProjectLanguageMeter languages={project.languages} />
-        )}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-base text-muted-foreground">
-          {project.private ? (
-            <span
-              title={$t.projects.github.privateTitle}
-              className="inline-flex items-center gap-1.5 opacity-70"
-            >
-              <Lock size={14} />
-              {$t.projects.github.link}
-            </span>
-          ) : (
-            <a
-              href={project.link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={projectLabel($t.projects.github.projectAria)}
-              title={$t.projects.github.sourceTitle}
-              onClick={(event) => event.stopPropagation()}
-              className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-70"
-            >
-              {$t.projects.github.link}
-              <ExternalLink size={14} />
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  if (!isSelectable) {
-    return (
-      <article className="flex h-full w-full flex-col gap-6">
-        {previewPanel}
-        {cardContent}
-      </article>
-    );
-  }
+export default function ProjectCard({ project, index = 0, total = 1, moving = false }: ProjectCardProps) {
+  const { projects: labels } = useDictionary();
+  const technologies = [...new Set(project.topics ?? [])].slice(0, 6);
+  const languages = project.languages ?? [];
+  const { description, badges } = parseProjectDescription(project.description);
+  const { description: summary } = parseProjectDescription(project.summary);
+  const { intro, remainder } = splitProjectDescription(description);
+  const productSummary = intro && summary.startsWith(intro) ? summary.slice(intro.length).trim() : summary;
+  const hasSummary = productSummary && productSummary !== remainder;
+  const heading = <SectionHeading as="h2" label={labels.heading} metadata={`${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`} />;
 
   return (
-    <article className="flex h-full w-full flex-col gap-6">
-      <button
-        type="button"
-        onClick={() => handleClick(clickHref)}
-        aria-label={projectLabel($t.projects.github.detailsAria)}
-        className="group text-left transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
-      >
-        {previewPanel}
-      </button>
-      {cardContent}
+    <article className="mx-auto grid w-full max-w-project items-start gap-x-8 gap-y-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] lg:gap-x-10 xl:gap-x-14 max-md:min-h-[calc(100svh-126px)] max-md:grid-rows-[auto_auto_1fr]">
+      <div className="block lg:hidden">{heading}</div>
+      <div className="min-w-0 max-md:self-stretch lg:flex lg:self-stretch">
+        <ProjectPreview project={project} moving={moving} />
+      </div>
+      <div className="min-w-0 py-1">
+        <header>
+          <div className="hidden lg:block">{heading}</div>
+          <div className="mt-5 border-b border-foreground/40 pb-5">
+            <Typography as="h3" variant="display">{project.name}</Typography>
+            {intro && (
+              <div className="mt-3">
+                <Typography variant="project-intro">{intro}</Typography>
+              </div>
+            )}
+          </div>
+        </header>
+        {remainder && (
+          <div className="mt-5">
+            <Typography variant="body-muted">{remainder}</Typography>
+          </div>
+        )}
+        <div className="mt-7 space-y-7 lg:mt-8 lg:space-y-8">
+          {hasSummary && (
+            <div>
+              <Typography as="h4" variant="detail-label">{labels.product}</Typography>
+              <div className="mt-3">
+                <Typography variant="body">{productSummary}</Typography>
+              </div>
+            </div>
+          )}
+          {(badges.length > 0 || technologies.length > 0 || languages.length > 0) && (
+            <div>
+              <Typography as="h4" variant="detail-label">{labels.topics}</Typography>
+              {(badges.length > 0 || technologies.length > 0) && (
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {badges.map((label) => (
+                    <li key={`status-${label}`}>
+                      <ProjectStatusBadge label={label} />
+                    </li>
+                  ))}
+                  {technologies.map((technology) => (
+                    <li key={technology} className="rounded-full bg-foreground/10 px-4 py-2">
+                      <Typography as="span" variant="caption">{technology.replace(/-/g, " ")}</Typography>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {languages.length > 0 && (
+                <div className="mt-5">
+                  <ProjectLanguageMeter languages={languages} />
+                </div>
+              )}
+            </div>
+          )}
+          <ProjectLinks project={project} />
+        </div>
+      </div>
     </article>
   );
-};
-
-export default memo(ProjectCard);
+}

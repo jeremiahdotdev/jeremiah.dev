@@ -1,6 +1,6 @@
 import config from "@/config.json";
 import { Octokit } from "octokit";
-import { GithubDocument, GithubRepository, InternalGithubDocument, InternalGithubLanguages, InternalGithubProject, SimpleCache } from "@/types/github";
+import { GithubRepository, InternalGithubLanguages, InternalGithubProject, SimpleCache } from "@/types/github";
 
 const githubAuthToken = [
     process.env.GITHUB_TOKEN,
@@ -18,15 +18,13 @@ const basePath = config.github.api + config.github.repos
 const GITHUB_REPOSITORIES: SimpleCache<GithubRepository> = { value: [], dateUpdated: null }
 const GITHUB_PROJECTS: SimpleCache<InternalGithubProject> = { value: [], dateUpdated: null }
 const GITHUB_LANGUAGES: SimpleCache<InternalGithubLanguages> = { value: [], dateUpdated: null }
-const GITHUB_DOCUMENTS: SimpleCache<InternalGithubDocument> = { value: [], dateUpdated: null }
 
-type GitHubResourceKey = "repositories" | "projects" | "languages" | "documents";
+type GitHubResourceKey = "repositories" | "projects" | "languages";
 
 const GITHUB_RETRY_AFTER: Record<GitHubResourceKey, Date | null> = {
     repositories: null,
     projects: null,
-    languages: null,
-    documents: null
+    languages: null
 };
 
 const RATE_LIMIT_FALLBACK_MS = 5 * 60 * 1000;
@@ -38,19 +36,11 @@ function isDifferenceLessThanThreshold(date: Date | null, thresholdInHours: numb
     return differenceInHours < thresholdInHours;
 }
 
-function stateIsValid(state: SimpleCache<GithubRepository | InternalGithubLanguages | InternalGithubDocument>) {
+function stateIsValid(state: SimpleCache<GithubRepository | InternalGithubLanguages>) {
     var stateIsNotNull = !!state
     const stateIsNotOutdated = isDifferenceLessThanThreshold(state.dateUpdated, 1)
 
     return stateIsNotNull && stateIsNotOutdated
-}
-
-function stateContainsValue(state: SimpleCache<InternalGithubLanguages | InternalGithubDocument>, keyValue: string) {
-    for (const item of state.value) {
-        if (item.key === keyValue) return item
-    }
-
-    return null
 }
 
 function hasStateValue(state: SimpleCache<unknown>) {
@@ -160,39 +150,6 @@ export async function GetGitHubLanguages() {
         }
     }
     return GITHUB_LANGUAGES
-}
-
-export async function GetGitHubDocumentsByDocument(documentPath: string) {
-    const documentIsMissing = !stateContainsValue(GITHUB_DOCUMENTS, documentPath);
-
-    if ((!stateIsValid(GITHUB_DOCUMENTS) || documentIsMissing) && !retryWindowIsActive("documents")) {
-        try {
-            await loadWithRetryWindow(
-                "documents",
-                GITHUB_DOCUMENTS,
-                () => LoadGitHubDocumentsByDocument(documentPath)
-            )
-        } catch (error) {
-            console.error(`Failed to load GitHub documents for '${documentPath}'.`, error)
-        }
-    }
-
-    return stateContainsValue(GITHUB_DOCUMENTS, documentPath)
-}
-
-async function LoadGitHubDocumentsByDocument(documentPath: string) {
-    const response = await octokit.request(basePath + documentPath);
-    
-    const documents = []
-    for (let file of response.data) {
-        const document = await octokit.request(file.url);
-        documents.push({title: file.name, document: Buffer.from(document.data.content, 'base64').toString('ascii')});
-    }
-
-    GITHUB_DOCUMENTS.value.push({ key: documentPath, documents: documents})
-    GITHUB_DOCUMENTS.dateUpdated = new Date()
-
-    return response.status;
 }
 
 async function LoadGitHubRepositories() {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
+import Menu from "@/components/controls/menu";
 import SplashBackdrop from "@/components/theme/splash-backdrop";
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { ContentProvider } from "@/components/content/content-provider";
@@ -9,6 +10,13 @@ import { getCachedSiteSettings } from "@/sanity/lib/getCachedSiteSettings";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+});
+
+const titleFont = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "500"],
+  display: "swap",
+  variable: "--font-title",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,7 +37,7 @@ export default async function RootLayout({ children }:  Readonly<{
   return (
       <html lang="en" suppressHydrationWarning>
         <head />
-        <body className={inter.className}>
+        <body className={`${inter.className} ${titleFont.variable}`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -38,6 +46,7 @@ export default async function RootLayout({ children }:  Readonly<{
             <SplashBackdrop />
             <div className="relative z-10">
               <ContentProvider dictionary={settings.dictionary}>
+                <Menu />
                 {children}
               </ContentProvider>
             </div>

@@ -1,0 +1,15 @@
+{
+  "careerEmployer.oreilly": {
+    "software-engineer-ii": "I build and maintain reliable applications across the software lifecycle.",
+    "scrum-master": "I helped teams plan, collaborate, and deliver through Scrum.",
+    "technical-lead": "I lead front-end initiatives for the Online Store Team.",
+    "software-engineer-i": "I developed and tested application features with cross-functional teams.",
+    "ui-ux-developer-ii": "I built and tested user interfaces with HTML, CSS, and JavaScript."
+  },
+  "careerEmployer.netsmart": {
+    "software-engineer": "I built and shipped software from requirements through deployment."
+  },
+  "careerEmployer.college-of-the-ozarks": {
+    "lab-assistant": "I supported students in mathematics and physics lab classes."
+  }
+}

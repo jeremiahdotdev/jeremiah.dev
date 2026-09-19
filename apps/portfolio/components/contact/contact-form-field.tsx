@@ -19,6 +19,8 @@ type ContactFormFieldProps = {
   placeholder: string;
 };
 
+const fieldClassName = "rounded-lg border-border/60 bg-background/60 text-base placeholder:text-muted-foreground/70";
+
 const ContactFormField: FC<ContactFormFieldProps> = ({ type, name, label, description, placeholder }) => {
   const { control } = useFormContext();
 
@@ -31,8 +33,8 @@ const ContactFormField: FC<ContactFormFieldProps> = ({ type, name, label, descri
           <FormLabel>{label}</FormLabel>
           <FormControl>
             {type === "textarea" 
-              ? <Textarea placeholder={placeholder} {...field} />
-              : <Input autoComplete={field.name} type={type} placeholder={placeholder} {...field} />
+              ? <Textarea className={`${fieldClassName} min-h-40 resize-y`} placeholder={placeholder} {...field} />
+              : <Input className={`${fieldClassName} h-12`} autoComplete={field.name} type={type} placeholder={placeholder} {...field} />
             }
           </FormControl>
           <FormDescription>{description}</FormDescription>

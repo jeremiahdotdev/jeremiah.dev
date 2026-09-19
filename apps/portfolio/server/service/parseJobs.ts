@@ -1,7 +1,7 @@
 import { CareerEvent, ImportedCareerEvent, ImportedRole, Job } from "@/types/job";
 import { getDurationBetweenDates } from "./getDurationBetweenDates";
 
-export function parseJob(job: ImportedRole, employer: string, location: string, endDateDefault: string): Job {
+function parseJob(job: ImportedRole, employer: string, location: string, endDateDefault: string): Job {
     const parseDate = (date: Date) => date.toLocaleString('default', { month: 'short', year: 'numeric' })
     const parsedJob: Job = {
         ...job,
@@ -14,7 +14,7 @@ export function parseJob(job: ImportedRole, employer: string, location: string, 
     return parsedJob
 }
 
-export function parseCareerEvent(event: ImportedCareerEvent, endDateDefault: string): CareerEvent {
+function parseCareerEvent(event: ImportedCareerEvent, endDateDefault: string): CareerEvent {
     const roles = event.roles.map((role) => parseJob(role, event.employer, event.location, endDateDefault))
     const sortedRoles = [...event.roles].sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
     const startDate = sortedRoles[0]?.startDate ?? new Date()

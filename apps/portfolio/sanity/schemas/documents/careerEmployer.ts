@@ -27,6 +27,7 @@ export const careerEmployer = defineType({
           {name: 'employmentType', title: 'Employment type', type: 'string'},
           {name: 'startDate', title: 'Start date', type: 'date'},
           {name: 'endDate', title: 'End date', type: 'date'},
+          {name: 'summary', title: 'Milestone summary', type: 'text', rows: 2},
           {name: 'description', title: 'Description', type: 'blockContent'},
           {name: 'skills', title: 'Skills', type: 'array', of: [{type: 'reference', to: [{type: 'skill'}]}]},
         ],

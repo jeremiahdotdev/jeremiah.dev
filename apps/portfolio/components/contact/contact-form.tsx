@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useDictionary } from "@/components/content/content-provider";
 import { ContactFormResponse, ContactFormSchema, ContactFormSchemaType } from "@/types/contact";
 import config from "@/config.json";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContactFormField from "./contact-form-field";
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { TypographyMuted } from "../ui/typography";
-import { Card } from "../ui/card";
+import { Typography } from "../ui/typography";
+import SectionCard from "../shared/section-card";
 
 export function ContactForm() {
   const [timesUsed, setTimesUsed] = useState<number>(-1);
@@ -18,7 +18,7 @@ export function ContactForm() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const loggedMessage = useRef(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const enableButton = useCallback(() => { setIsDisabled(false); }, []);
+  const cooldownTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const $t = useDictionary();
   const attemptThreshold = 1;
 
@@ -37,49 +37,54 @@ export function ContactForm() {
     loggedMessage.current = true
   }, [$t])
 
-  const onSubmit = useCallback(
-    async (values: ContactFormSchemaType) => {
+  useEffect(() => () => clearTimeout(cooldownTimer.current), []);
+
+  async function onSubmit(values: ContactFormSchemaType) {
       if (!executeRecaptcha) {
         setResponseMessage($t.contact.captchaFailed);
+        setResponseFailed(true);
       } else {
-        const token = await executeRecaptcha("submit");
         setResponseMessage("");
+        setResponseFailed(false);
         setIsDisabled(true);
         try {
+          const token = await executeRecaptcha("submit");
           const response = await fetch(config.api.email, {
             method: 'POST',
-            headers: { token: token },
+            headers: { token, "Content-Type": "application/json" },
             body: JSON.stringify(values),
           });
           const { success, message }: ContactFormResponse = await response.json();
           setResponseMessage(message);
           setResponseFailed(!success);
-          form.reset();
+          if (success) form.reset();
         } catch (error) {
           console.error(error);
+          setResponseMessage($t.contact.failureMessage);
+          setResponseFailed(true);
         } finally {
           setTimesUsed(value => value + 1);
-          setTimeout(enableButton, 5000 * (2 ** timesUsed));
+          cooldownTimer.current = setTimeout(() => setIsDisabled(false), 5000 * (2 ** timesUsed));
         }
       }
-    }, [$t, form, enableButton, executeRecaptcha, timesUsed]
-  );
+  }
       
   return (
-      <Card className="w-full p-8 flex flex-col items-center justify-center gap-2 max-w-screen-sm mx-4">
+      <SectionCard className="mx-auto w-full max-w-3xl sm:py-6">
+        <div className="text-center"><Typography as="h2" variant="section-label">{$t.contact.heading}</Typography></div>
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col w-full gap-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 flex w-full flex-col gap-5">
             <ContactFormField name="email" type="email" label={$t.contact.email.label} placeholder={$t.contact.email.placeholder} description={$t.contact.email.description} />
             <ContactFormField name="subject" type="text" label={$t.contact.subject.label} placeholder={$t.contact.subject.placeholder} description={$t.contact.subject.description} />
             <ContactFormField name="body" type="textarea" label={$t.contact.body.label} placeholder={$t.contact.body.placeholder} description={$t.contact.body.description} />
-            <Button disabled={isDisabled} type="submit">
+            <Button disabled={isDisabled} type="submit" className="min-h-12 rounded-lg px-8 text-sm sm:self-end">
               {((timesUsed < attemptThreshold) || !isDisabled) ? $t.contact.button.label : $t.contact.button.pastAttemptThreshold}
             </Button>
-            <TypographyMuted variant="status" tone={responseFailed ? "destructive" : "default"} className="flex justify-end items-center">
+            <Typography variant={responseFailed ? "error" : "caption"} role="status" aria-live="polite">
               {responseMessage}
-            </TypographyMuted>
+            </Typography>
           </form>
         </FormProvider>
-      </Card>
+      </SectionCard>
   );
 }

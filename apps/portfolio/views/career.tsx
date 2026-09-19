@@ -1,11 +1,14 @@
+import { Typography } from "@/components/ui/typography";
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
+import SectionCard from "@/components/shared/section-card";
+import SectionHeading from "@/components/shared/section-heading";
 import Timeline from "@/components/career/timeline";
-import { CareerEvent } from "@/types/job";
-import PageSectionContent from "@/components/page/page-section-content";
-import PageSectionHeader from "@/components/page/page-section-header";
+import SectionContainer from "@/components/shared/section-container";
 import { getCareerData } from "@/server/getCareerData";
+import { getCareerMilestones } from "@/lib/career-milestones";
 import type { Dictionary } from "@/types/dictionary";
+import { formatTemplate } from "@/lib/format-template";
 
 async function loadCareerData(endDateDefault: string) {
   const data = await getCareerData(endDateDefault)
@@ -18,14 +21,24 @@ interface CareerProps {
 
 export default async function Career({ dictionary }: CareerProps) {
   const $t = dictionary;
-  const jobs: CareerEvent[] = await loadCareerData($t.timeline.endDateDefault)
+  const { jobs, skills, experience: experienceYears } = await loadCareerData($t.timeline.endDateDefault)
+  const experienceLabel = formatTemplate(
+    experienceYears === 1 ? $t.career.experience.one : $t.career.experience.other,
+    { count: experienceYears },
+  );
+  const milestones = getCareerMilestones(jobs, $t.timeline.endDateDefault);
 
   return (
-    <PageSection id={$t.career.id} variant={PageSectionVariant.Secondary}>
-      <PageSectionHeader>{$t.career.heading}</PageSectionHeader>
-      <PageSectionContent>
-        <Timeline events={jobs} />
-      </PageSectionContent>
+    <PageSection id={$t.career.id} variant={PageSectionVariant.Primary}>
+      <SectionContainer>
+        <SectionCard className="pb-6 pt-14 sm:py-8">
+          <SectionHeading as="h2" label={$t.career.heading} metadata={experienceLabel} />
+          <div className="mt-4">
+            <Typography variant="title">{$t.career.intro}</Typography>
+          </div>
+        </SectionCard>
+        <Timeline milestones={milestones} skills={skills} />
+      </SectionContainer>
     </PageSection>
   );
 }

@@ -39,6 +39,7 @@ export const careerEmployersQuery = groq`*[_type == "careerEmployer"] | order(or
     employmentType,
     startDate,
     endDate,
+    summary,
     description,
     skills[]->{
       title,
@@ -63,6 +64,7 @@ export const academicRecordQuery = groq`*[_type == "academicRecord"][0]{
   endDate,
   description,
   focuses[] {
+    _key,
     type,
     name,
     gpa,
@@ -70,6 +72,8 @@ export const academicRecordQuery = groq`*[_type == "academicRecord"][0]{
     description
   },
   commendations[] {
+    label,
+    focusKey,
     title,
     subtitle,
     tooltip,

@@ -9,6 +9,7 @@ export type Job = {
     startDate: string,
     endDate: string,
     location: string,
+    summary?: string,
     description: React.ReactNode,
     skills: Skill[]
 }
@@ -30,6 +31,7 @@ export type ImportedRole = {
     type: string,
     startDate: Date,
     endDate?: Date,
+    summary?: string,
     description: React.ReactNode,
     skills: Skill[]
 }

@@ -20,6 +20,7 @@ type SanityAcademicRecord = {
   endDate?: string
   description?: PortableTextValue
   focuses?: Array<{
+    _key: string
     type?: string
     name?: string
     gpa?: string
@@ -33,6 +34,8 @@ type SanityAcademicRecord = {
   commendations?: Array<{
     title?: string
     subtitle?: string
+    label?: string
+    focusKey?: string
     tooltip?: string
     dates?: string
     iconKey?: string
@@ -71,9 +74,9 @@ export async function getAcademicContent(): Promise<ImportedAcademics> {
     return {
       degree: record.degree || '',
       emblem: {
-        lightSrc: record.emblem?.lightSrc || fallbackAcademics.emblem?.lightSrc || '',
-        darkSrc: record.emblem?.darkSrc || fallbackAcademics.emblem?.darkSrc || '',
-        alt: record.emblem?.alt || fallbackAcademics.emblem?.alt || '',
+        lightSrc: record.emblem?.lightSrc ?? fallbackAcademics.emblem?.lightSrc ?? '',
+        darkSrc: record.emblem?.darkSrc ?? fallbackAcademics.emblem?.darkSrc ?? '',
+        alt: record.emblem?.alt ?? fallbackAcademics.emblem?.alt ?? '',
       },
       institution: record.institution || '',
       location: record.location || '',
@@ -81,6 +84,7 @@ export async function getAcademicContent(): Promise<ImportedAcademics> {
       endDate: toDate(record.endDate),
       description: renderPortableText(record.description) || null,
       focuses: (record.focuses || []).map((focus) => ({
+        key: focus._key,
         type: focus.type || '',
         name: focus.name || '',
         gpa: focus.gpa || '',
@@ -90,6 +94,8 @@ export async function getAcademicContent(): Promise<ImportedAcademics> {
       commendations: (record.commendations || []).map((commendation) => ({
         title: commendation.title || '',
         subtitle: commendation.subtitle || '',
+        label: commendation.label,
+        focusKey: commendation.focusKey,
         tooltip: commendation.tooltip,
         dates: commendation.dates || '',
         link: commendation.link,

@@ -1,9 +1,12 @@
 import {createClient} from '@sanity/client'
-import nextEnv from '@next/env'
+import {createRequire} from 'node:module'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 
+const require = createRequire(import.meta.url)
+const nextDir = path.dirname(require.resolve('next/package.json'))
+const nextEnv = require(require.resolve('@next/env', {paths: [nextDir]}))
 nextEnv.loadEnvConfig(process.cwd())
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -29,6 +32,16 @@ const client = createClient({
 
 const dictionary = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), 'dictionaries/en.json'), 'utf8'),
+)
+
+dictionary.navigation = dictionary.navigation.map((item) => ({_key: item.id, ...item}))
+
+const academicFocusDescriptions = JSON.parse(
+  fs.readFileSync(new URL('../data/academic-focus-descriptions.json', import.meta.url), 'utf8'),
+)
+
+const careerRoleSummaries = JSON.parse(
+  fs.readFileSync(new URL('../data/career-role-summaries.json', import.meta.url), 'utf8'),
 )
 
 const block = (text) => ({
@@ -128,6 +141,11 @@ const skills = [
   href,
 }))
 
+const featuredSkillDocuments = JSON.parse(
+  fs.readFileSync(new URL('../data/featured-skills.json', import.meta.url), 'utf8'),
+).map((skill) => ({...skill, _type: 'skill'}))
+skills.push(...featuredSkillDocuments)
+
 const careerEmployers = [
   {
     _id: 'careerEmployer.oreilly',
@@ -138,6 +156,7 @@ const careerEmployers = [
     roles: [
       {
         _key: 'software-engineer-ii',
+        summary: careerRoleSummaries['careerEmployer.oreilly']['software-engineer-ii'],
         title: 'Software Engineer II',
         employmentType: 'Full-time',
         startDate: '2025-09-01',
@@ -150,6 +169,7 @@ const careerEmployers = [
       },
       {
         _key: 'scrum-master',
+        summary: careerRoleSummaries['careerEmployer.oreilly']['scrum-master'],
         title: 'Scrum Master',
         employmentType: 'Part-time',
         startDate: '2025-06-01',
@@ -163,6 +183,7 @@ const careerEmployers = [
       },
       {
         _key: 'technical-lead',
+        summary: careerRoleSummaries['careerEmployer.oreilly']['technical-lead'],
         title: 'Technical Lead',
         employmentType: 'Full-time',
         startDate: '2024-03-01',
@@ -174,6 +195,7 @@ const careerEmployers = [
       },
       {
         _key: 'software-engineer-i',
+        summary: careerRoleSummaries['careerEmployer.oreilly']['software-engineer-i'],
         title: 'Software Engineer I',
         employmentType: 'Full-time',
         startDate: '2025-06-01',
@@ -186,6 +208,7 @@ const careerEmployers = [
       },
       {
         _key: 'ui-ux-developer-ii',
+        summary: careerRoleSummaries['careerEmployer.oreilly']['ui-ux-developer-ii'],
         title: 'UI/UX Developer II',
         employmentType: 'Full-time',
         startDate: '2022-02-01',
@@ -206,6 +229,7 @@ const careerEmployers = [
     orderRank: 20,
     roles: [{
       _key: 'software-engineer',
+      summary: careerRoleSummaries['careerEmployer.netsmart']['software-engineer'],
       title: 'Software Engineer',
       employmentType: 'Full-time',
       startDate: '2020-07-01',
@@ -225,6 +249,7 @@ const careerEmployers = [
     orderRank: 30,
     roles: [{
       _key: 'lab-assistant',
+      summary: careerRoleSummaries['careerEmployer.college-of-the-ozarks']['lab-assistant'],
       title: 'Lab Assistant',
       employmentType: 'Part-time',
       startDate: '2017-09-01',
@@ -259,35 +284,28 @@ const academicRecord = {
       type: 'Major',
       name: 'Computer Science',
       gpa: '3.90',
-      description: [
-        block('My Computer Science major provided a strong foundation in theoretical concepts, including algorithms, data structures, and system design. These courses enhanced my understanding of software and hardware interactions and deepened my ability to grasp complex system architectures.'),
-        block('Through my studies, I developed a keen ability to learn and adapt to new technologies. This theoretical knowledge has been crucial in my five years of professional experience, where it continues to inform my approach to problem-solving and innovation in the tech industry.'),
-      ],
+      description: [block(academicFocusDescriptions['computer-science'])],
     },
     {
       _key: 'mathematics',
       type: 'Major',
       name: 'Mathematics',
       gpa: '3.91',
-      description: [
-        block("In my General Mathematics major, I explored a range of mathematical topics, developing a solid understanding of both theoretical and applied mathematics. I served as a teacher's aide and tutor, which reinforced my problem-solving skills and ability to communicate complex ideas."),
-        block('This major taught me to approach challenges with both abstract and practical thinking. I was honored with the Mathematics Achievement Award for my excellence in upper-division courses and creativity in problem-solving.'),
-      ],
+      description: [block(academicFocusDescriptions['mathematics'])],
     },
     {
       _key: 'christian-apologetics',
       type: 'Minor',
       name: 'Biblical Studies',
       gpa: '3.71',
-      description: [
-        block('Biblical Studies: Christian Apologetics allowed me to engage deeply with philosophical and theological concepts, enhancing my understanding of faith and reason. I studied key arguments for the soundness of theology and scripture, examining historical, ethical, and scientific perspectives.'),
-        block('This coursework not only strengthened my ability to articulate and defend my beliefs but also cultivated critical thinking and persuasive communication skills. My experience in this field has enriched my worldview and informed my interactions with ethical perspectives in both personal and professional contexts.'),
-      ],
+      description: [block(academicFocusDescriptions['christian-apologetics'])],
     },
   ],
   commendations: [
     {
       _key: 'major-field-exam',
+      focusKey: 'mathematics',
+      label: 'Major Field Exam 189/200',
       title: '189/200',
       dates: '2020',
       subtitle: 'Major Field Exam',
@@ -297,6 +315,8 @@ const academicRecord = {
     },
     {
       _key: 'math-and-physics-club-president',
+      focusKey: 'mathematics',
+      label: 'Math & Physics Club President',
       title: 'President',
       dates: '2019-2020',
       subtitle: 'Math & Physics Club',
@@ -305,6 +325,8 @@ const academicRecord = {
     },
     {
       _key: 'sigma-zeta-president',
+      focusKey: 'mathematics',
+      label: 'Sigma Zeta President',
       title: 'President',
       dates: '2020',
       subtitle: 'ΣΖ Honor Society',
@@ -314,6 +336,8 @@ const academicRecord = {
     },
     {
       _key: 'association-for-computing-machinery',
+      focusKey: 'computer-science',
+      label: 'ACM Vice-president',
       title: 'Vice-President',
       dates: '2018-2019',
       subtitle: 'ACM Club',
@@ -330,8 +354,17 @@ const academicFocusIconNames = {
   'christian-apologetics': 'christianApologetics',
 }
 
+const careerSkillIds = [...new Set([
+  ...featuredSkillDocuments.map((skill) => skill._id),
+  ...careerEmployers.flatMap((employer) => employer.roles)
+    .sort((a, b) => b.startDate.localeCompare(a.startDate))
+    .flatMap((role) => role.skills.map((skill) => skill._ref)),
+])]
+
 const siteSettings = {
   _id: 'siteSettings',
+  contentOwnershipVersion: 1,
+  careerSkills: careerSkillIds.map((_ref, index) => ({...ref(_ref), _key: `career-skill-${index + 1}`})),
   _type: 'siteSettings',
   title: 'jeremiah.dev',
   description: 'Jeremiah "J" Gage Portfolio, Works, Skills, Achievements.',

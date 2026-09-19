@@ -1,4 +1,6 @@
-export const skills = {
+import careerRoleSummaries from "./career-role-summaries.json";
+
+const skills = {
     JavaScript: {
         subtitle: "JavaScript",
         href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
@@ -89,6 +91,7 @@ export const experiences = [
         roles: [
             {
                 title: "Software Engineer II",
+                summary: careerRoleSummaries["careerEmployer.oreilly"]["software-engineer-ii"],
                 type: "Full-time",
                 startDate: new Date(2025, 8, 1),
                 description: (<ul>
@@ -106,6 +109,7 @@ export const experiences = [
             },
             {
                 title: "Scrum Master",
+                summary: careerRoleSummaries["careerEmployer.oreilly"]["scrum-master"],
                 type: "Part-time",
                 startDate: new Date(2025, 5, 1),
                 endDate: new Date(2025, 2, 1),
@@ -118,6 +122,7 @@ export const experiences = [
             },
             {
                 title: "Technical Lead",
+                summary: careerRoleSummaries["careerEmployer.oreilly"]["technical-lead"],
                 type: "Full-time",
                 startDate: new Date(2024, 2, 1),
                 description: (<ul>
@@ -133,6 +138,7 @@ export const experiences = [
             },
             {
                 title: "Software Engineer I",
+                summary: careerRoleSummaries["careerEmployer.oreilly"]["software-engineer-i"],
                 type: "Full-time",
                 startDate: new Date(2025, 5, 1),
                 endDate: new Date(2025, 8, 1),
@@ -149,6 +155,7 @@ export const experiences = [
             },
             {
                 title: "UI/UX Developer II",
+                summary: careerRoleSummaries["careerEmployer.oreilly"]["ui-ux-developer-ii"],
                 type: "Full-time",
                 startDate: new Date(2022, 1, 1),
                 endDate: new Date(2025, 5, 1),
@@ -174,6 +181,7 @@ export const experiences = [
         roles: [
             {
                 title: "Software Engineer",
+                summary: careerRoleSummaries["careerEmployer.netsmart"]["software-engineer"],
                 type: "Full-time",
                 startDate: new Date(2020, 6, 1),
                 endDate: new Date(2022, 1, 1), 
@@ -201,6 +209,7 @@ export const experiences = [
         roles: [
             {
                 title: "Lab Assistant",
+                summary: careerRoleSummaries["careerEmployer.college-of-the-ozarks"]["lab-assistant"],
                 type: "Part-time",
                 startDate: new Date(2017, 8, 1),
                 endDate: new Date(2020, 5, 1), 

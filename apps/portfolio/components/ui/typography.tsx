@@ -1,211 +1,83 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@/lib/utils"
-
-const typographyH2Variants = cva(
-  "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
-  {
-    variants: {
-      variant: {
-        default: "",
-        section:
-          "border-b-0 p-4 pt-8 flex flex-col text-3xl w-full font-serif font-thin tracking-widest text-foreground items-center justify-center sm:justify-end sm:align-start sm:px-16",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
-
-const typographyPVariants = cva("leading-7", {
+// Keep responsive sizing in the shared CSS type scale.
+const typographyVariants = cva("not-italic", {
   variants: {
     variant: {
-      default: "",
-      dashboard:
-        "text-base font-serif tracking-tight text-dashboard-foreground [&:not(:first-child)]:mt-0",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
-})
-
-const typographySmallVariants = cva("text-sm font-medium leading-none", {
-  variants: {
-    variant: {
-      default: "",
-      label: "block font-serif font-semibold",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
-})
-
-const typographyMutedVariants = cva("text-sm", {
-  variants: {
-    variant: {
-      default: "text-muted-foreground",
+      display:
+        "font-light font-title text-5xl leading-tight tracking-tighter normal-case text-foreground break-words sm:text-6xl lg:text-8xl",
+      page:
+        "font-light font-title text-[clamp(2rem,3.5vw,3.5rem)] leading-[1.05] tracking-[-0.045em] normal-case text-foreground [overflow-wrap:anywhere] lg:text-[clamp(3.75rem,5.625vw,4.5rem)]",
+      "academic-heading":
+        "font-light font-title text-[clamp(2.125rem,3.75vw,3.75rem)] leading-[1.05] tracking-[-0.045em] normal-case text-foreground [overflow-wrap:anywhere] lg:text-[clamp(4rem,6vw,4.875rem)]",
+      "academic-intro":
+        "font-light font-title text-[clamp(1.625rem,2.5vw,3rem)] leading-[1.15] tracking-[-0.035em] normal-case text-muted-foreground [overflow-wrap:anywhere]",
+      title:
+        "font-light font-title text-[1.75rem] leading-tight tracking-tight normal-case text-foreground [overflow-wrap:anywhere] lg:text-[clamp(2.25rem,calc(4.6875vw_-_0.75rem),3.75rem)]",
+      "role-title":
+        "font-light font-title text-[1.625rem] leading-tight tracking-[-0.055em] antialiased normal-case text-foreground [overflow-wrap:anywhere] lg:text-[clamp(2.125rem,calc(4.375vw_-_0.75rem),3.5rem)]",
+      "diagram-title":
+        "font-light font-title text-[clamp(2.5rem,3.3vw,3.75rem)] leading-tight tracking-tight normal-case text-foreground",
+      "diagram-body":
+        "font-normal font-sans text-[clamp(1.125rem,1.55vw,1.5rem)] leading-snug tracking-normal normal-case text-muted-foreground",
+      "diagram-label":
+        "font-normal font-mono text-[clamp(1rem,1.15vw,1.125rem)] leading-normal tracking-[0.2em] uppercase tabular-nums text-muted-foreground",
+      intro:
+        "font-light font-title text-[clamp(1.5rem,2.3vw,2.75rem)] leading-[1.15] tracking-[-0.035em] normal-case text-muted-foreground [overflow-wrap:anywhere]",
+      "project-intro":
+        "font-medium font-title text-[clamp(1.625rem,2.55vw,3rem)] leading-[1.15] tracking-[-0.035em] normal-case text-muted-foreground [overflow-wrap:anywhere]",
+      body:
+        "font-normal font-sans text-base leading-relaxed tracking-normal normal-case text-foreground lg:text-[clamp(1.125rem,1.5625vw,1.5rem)]",
+      "body-muted":
+        "font-normal font-sans text-[15px] leading-relaxed tracking-normal normal-case text-muted-foreground lg:text-[clamp(1.125rem,1.5625vw,1.5rem)]",
+      lead:
+        "font-normal font-sans text-base leading-relaxed tracking-normal normal-case text-muted-foreground lg:text-[clamp(1.25rem,1.7vw,1.625rem)]",
+      "section-label":
+        "font-normal font-mono text-base leading-normal tracking-[0.16em] uppercase tabular-nums text-foreground sm:text-[clamp(1.125rem,1.171875vw,1.5rem)]",
+      "detail-label":
+        "font-normal font-mono text-xs leading-normal tracking-[0.2em] uppercase tabular-nums text-muted-foreground lg:text-[clamp(0.875rem,1.041667vw,1rem)]",
+      menu:
+        "font-normal font-serif text-lg leading-normal tracking-widest normal-case text-foreground/75 lg:text-sm [[aria-current=location]_&]:text-foreground",
+      caption:
+        "font-normal font-sans text-sm leading-normal tracking-normal normal-case tabular-nums text-muted-foreground lg:text-[clamp(1rem,1.171875vw,1.125rem)]",
       footer:
-        "font-thin tracking-tight text-foreground dark:text-muted-foreground",
-      status: "text-foreground",
+        "font-normal font-sans text-xs leading-normal tracking-normal normal-case tabular-nums text-muted-foreground",
+      "skill-label":
+        "font-light font-sans text-sm leading-normal tracking-tight normal-case tabular-nums text-muted-foreground lg:text-[clamp(1rem,1.171875vw,1.125rem)]",
+      error:
+        "font-normal font-sans text-sm leading-normal tracking-normal normal-case text-red-600 dark:text-red-400 lg:text-[clamp(1rem,1.171875vw,1.125rem)]",
     },
-    tone: {
-      default: "",
-      destructive: "text-red-600",
+    noWrap: {
+      true: "whitespace-nowrap",
     },
-  },
-  defaultVariants: {
-    variant: "default",
-    tone: "default",
   },
 })
 
-type AsChildProps = {
-  asChild?: boolean
+type TypographyVariant = NonNullable<VariantProps<typeof typographyVariants>["variant"]>
+type TypographyElement = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div" | "small" | "label" | "blockquote"
+
+type TypographyProps<T extends TypographyElement = "p"> = {
+  as?: T
+  variant: TypographyVariant
+  noWrap?: boolean
+  className?: never
+  style?: never
+} & Omit<React.ComponentPropsWithRef<T>, "as" | "className" | "style" | "color">
+
+function Typography<T extends TypographyElement = "p">({
+  as,
+  variant,
+  noWrap,
+  ...props
+}: TypographyProps<T>) {
+  return React.createElement(as ?? "p", {
+    ...props,
+    // Also prevent styles injected by a composing component from overriding the variant.
+    className: typographyVariants({ variant, noWrap }),
+    style: undefined,
+  })
 }
 
-type TextProps = AsChildProps & {
-  text?: string
-}
-
-const TypographyH1 = React.forwardRef<
-  HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement> & TextProps
->(({ asChild, children, className, text, ...props }, ref) => {
-  const Comp = asChild ? Slot : "h1"
-  return <Comp
-    ref={ref}
-    className={cn(
-      "scroll-m-20 text-2xl font-extrabold tracking-tight md:text-3xl lg:text-4xl",
-      className
-    )}
-    {...props}
-  >
-    {children ?? text}
-  </Comp>
-})
-TypographyH1.displayName = "TypographyH1"
-
-const TypographyH2 = React.forwardRef<
-  HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement> &
-    VariantProps<typeof typographyH2Variants> &
-    TextProps
->(({ asChild, children, className, text, variant, ...props }, ref) => {
-  const Comp = asChild ? Slot : "h2"
-  return <Comp
-    ref={ref}
-    className={cn(typographyH2Variants({ variant }), className)}
-    {...props}
-  >
-    {children ?? text}
-  </Comp>
-})
-TypographyH2.displayName = "TypographyH2"
-
-const TypographyH3 = React.forwardRef<
-  HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement> & TextProps
->(({ asChild, children, className, text, ...props }, ref) => {
-  const Comp = asChild ? Slot : "h3"
-  return <Comp
-    ref={ref}
-    className={cn("scroll-m-20 text-2xl font-semibold tracking-tight", className)}
-    {...props}
-  >
-    {children ?? text}
-  </Comp>
-})
-TypographyH3.displayName = "TypographyH3"
-
-const TypographyP = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement> &
-    VariantProps<typeof typographyPVariants> &
-    TextProps
->(({ asChild, children, className, text, variant, ...props }, ref) => {
-  const Comp = asChild ? Slot : "p"
-  return <Comp
-    ref={ref}
-    className={cn(typographyPVariants({ variant }), className)}
-    {...props}
-  >
-    {children ?? text}
-  </Comp>
-})
-TypographyP.displayName = "TypographyP"
-
-const TypographyLead = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement> & TextProps
->(({ asChild, children, className, text, ...props }, ref) => {
-  const Comp = asChild ? Slot : "p"
-  return <Comp
-    ref={ref}
-    className={cn("text-xl text-muted-foreground", className)}
-    {...props}
-  >
-    {children ?? text}
-  </Comp>
-})
-TypographyLead.displayName = "TypographyLead"
-
-const TypographyLarge = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & TextProps
->(({ asChild, children, className, text, ...props }, ref) => {
-  const Comp = asChild ? Slot : "div"
-  return <Comp ref={ref} className={cn("text-lg font-semibold", className)} {...props}>
-    {children ?? text}
-  </Comp>
-})
-TypographyLarge.displayName = "TypographyLarge"
-
-const TypographySmall = React.forwardRef<
-  HTMLElement,
-  React.HTMLAttributes<HTMLElement> &
-    VariantProps<typeof typographySmallVariants> &
-    TextProps
->(({ asChild, children, className, text, variant, ...props }, ref) => {
-  const Comp = asChild ? Slot : "small"
-  return <Comp
-    ref={ref}
-    className={cn(typographySmallVariants({ variant }), className)}
-    {...props}
-  >
-    {children ?? text}
-  </Comp>
-})
-TypographySmall.displayName = "TypographySmall"
-
-const TypographyMuted = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement> &
-    VariantProps<typeof typographyMutedVariants> &
-    TextProps
->(({ asChild, children, className, text, variant, tone, ...props }, ref) => {
-  const Comp = asChild ? Slot : "p"
-  return <Comp
-    ref={ref}
-    className={cn(typographyMutedVariants({ variant, tone }), className)}
-    {...props}
-  >
-    {children ?? text}
-  </Comp>
-})
-TypographyMuted.displayName = "TypographyMuted"
-
-export {
-  TypographyH1,
-  TypographyH2,
-  TypographyH3,
-  TypographyP,
-  TypographyLead,
-  TypographyLarge,
-  TypographySmall,
-  TypographyMuted,
-}
+export { Typography }
+export type { TypographyProps, TypographyVariant }
