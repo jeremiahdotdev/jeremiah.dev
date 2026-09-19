@@ -5,7 +5,7 @@ import {
   SigmaZeta,
 } from '@/components/utility/SVGs'
 
-export const commendationIconMap = {
+const commendationIconMap = {
   mathAndPhysicsClub: MathAndPhysicsClub,
   sigmaZeta: SigmaZeta,
   educationalTestingService: EducationalTestingService,

@@ -4,7 +4,7 @@ import { client } from '../client'
 import { hasSanityConfig } from '../env'
 import { siteSettingsQuery } from '../queries'
 
-export type SiteSettings = {
+type SiteSettings = {
   title: string
   description: string
   dictionary: Dictionary
@@ -47,8 +47,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     )
 
     return {
-      title: settings?.title || fallbackSettings.title,
-      description: settings?.description || fallbackSettings.description,
+      title: settings?.title ?? fallbackSettings.title,
+      description: settings?.description ?? fallbackSettings.description,
       dictionary: mergeDictionaries(fallbackSettings.dictionary, settings?.dictionary),
     }
   } catch {

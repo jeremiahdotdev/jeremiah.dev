@@ -16,7 +16,18 @@ const config = {
       padding: "2rem",
     },
     extend: {
+      maxWidth: {
+        section: "126rem",
+        project: "120rem",
+      },
+      transitionDuration: {
+        600: "600ms",
+      },
+      fontFamily: {
+        title: ["var(--font-title)", "Georgia", "serif"],
+      },
       screens: {
+        'desktop-fit': { 'raw': '(min-width: 1024px) and (min-height: 800px)' },
         'sm-tall': { 'raw': '(min-height: 700px) and (max-width: 640px)' },
         'sm-short': { 'raw': '(max-height: 699px) and (max-width: 640px)' },
       },
@@ -46,6 +57,7 @@ const config = {
         outer: '0 4px 10px rgba(0, 0, 0, 0.1)', 
       },
       colors: {
+        'career-accent': 'hsl(var(--career-accent) / <alpha-value>)',
         'shimmer-light': '#f0f0f0',
         'shimmer-dark': '#e0e0e0',
         border: "hsl(var(--border) / <alpha-value>)",

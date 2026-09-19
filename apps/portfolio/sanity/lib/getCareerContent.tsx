@@ -1,23 +1,10 @@
 import { experiences as fallbackExperiences } from '@/data/career'
 import { ImportedCareerEvent } from '@/types/job'
-import { Skill } from '@/types/skill'
-import Image from 'next/image'
 import { client } from '../client'
 import { hasSanityConfig } from '../env'
 import { careerEmployersQuery } from '../queries'
 import { PortableTextValue, renderPortableText } from './portableText'
-
-type SanitySkill = {
-  title?: string
-  subtitle?: string
-  tooltip?: string
-  href?: string
-  icon?: {
-    asset?: {
-      url?: string
-    }
-  }
-}
+import { type SanitySkill, toSkill } from './skill'
 
 type SanityCareerEmployer = {
   name?: string
@@ -32,30 +19,10 @@ type SanityCareerEmployer = {
     employmentType?: string
     startDate?: string
     endDate?: string
+    summary?: string
     description?: PortableTextValue
-    skills?: SanitySkill[]
+    skills?: Array<SanitySkill | null> | null
   }>
-}
-
-function toSkill(skill: SanitySkill): Skill {
-  const iconUrl = skill.icon?.asset?.url
-
-  return {
-    subtitle: skill.subtitle || skill.title || '',
-    tooltip: skill.tooltip,
-    image: iconUrl ? (
-      <Image
-        src={iconUrl}
-        alt={skill.subtitle || skill.title || ''}
-        className="h-4 w-4"
-        width={16}
-        height={16}
-        unoptimized
-        loading="lazy"
-      />
-    ) : undefined,
-    href: skill.href || '#',
-  }
 }
 
 function toDate(date?: string) {
@@ -66,13 +33,13 @@ export async function getCareerContent(): Promise<ImportedCareerEvent[]> {
   if (!hasSanityConfig) return fallbackExperiences
 
   try {
-    const employers = await client.fetch<SanityCareerEmployer[]>(
+    const employers = await client.fetch<SanityCareerEmployer[] | null>(
       careerEmployersQuery,
       {},
       {next: {revalidate: 60}},
     )
 
-    if (!employers?.length) return fallbackExperiences
+    if (employers == null) return fallbackExperiences
 
     return employers.map((employer) => ({
       employer: employer.name || '',
@@ -86,8 +53,11 @@ export async function getCareerContent(): Promise<ImportedCareerEvent[]> {
         type: role.employmentType || '',
         startDate: toDate(role.startDate) || new Date(),
         endDate: toDate(role.endDate),
+        summary: role.summary,
         description: renderPortableText(role.description) || null,
-        skills: (role.skills || []).map(toSkill),
+        skills: (role.skills || [])
+          .filter((skill): skill is SanitySkill => skill !== null)
+          .map(toSkill),
       })),
     }))
   } catch (error) {

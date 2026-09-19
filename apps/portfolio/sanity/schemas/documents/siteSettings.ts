@@ -5,8 +5,16 @@ export const siteSettings = defineType({
   title: 'Site Settings',
   type: 'document',
   fields: [
+    defineField({name: 'contentOwnershipVersion', type: 'number', hidden: true, readOnly: true}),
     defineField({name: 'title', title: 'Site title', type: 'string'}),
     defineField({name: 'description', title: 'Meta description', type: 'text', rows: 2}),
+    defineField({
+      name: 'careerSkills',
+      title: 'Career skills and tools',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'skill'}]}],
+      description: 'Skills displayed below the career timeline, in this order. Remove all entries to hide the list. Existing sites without this field use the fallback list.',
+    }),
     defineField({
       name: 'dictionary',
       title: 'Static Site Text',
@@ -25,10 +33,18 @@ export const siteSettings = defineType({
         ]}),
         defineField({name: 'menu', title: 'Menu', type: 'object', fields: [
           {name: 'toggle', title: 'Toggle label', type: 'string'},
+          {name: 'label', title: 'Menu button label', type: 'string'},
+          {name: 'navigation', title: 'Navigation label', type: 'string'},
+          {name: 'close', title: 'Close menu label', type: 'string'},
           {name: 'heading', title: 'Heading', type: 'string'},
           {name: 'description', title: 'Description', type: 'string'},
+          {name: 'linkedIn', title: 'LinkedIn link text', type: 'string'},
+          {name: 'resume', title: 'Resume link text', type: 'string'},
+          {name: 'resources', title: 'Resources label', type: 'string'},
         ]}),
         defineField({name: 'controls', title: 'Controls', type: 'object', fields: [
+          {name: 'myAi', title: 'My AI label', type: 'string'},
+          {name: 'askAiPrompt', title: 'Ask AI prompt', type: 'string'},
           {name: 'linkedIn', title: 'LinkedIn label', type: 'string'},
           {name: 'resume', title: 'Resume label', type: 'string'},
         ]}),
@@ -46,16 +62,65 @@ export const siteSettings = defineType({
         defineField({name: 'timeline', title: 'Timeline', type: 'object', fields: [
           {name: 'endDateDefault', title: 'Default end date', type: 'string'},
         ]}),
+        defineField({name: 'carousel', title: 'Carousel labels', type: 'object', fields: [
+          {name: 'label', title: 'Accessible carousel description', type: 'string'},
+          {name: 'item', title: 'Default item label', type: 'string'},
+          {name: 'previous', title: 'Previous button', type: 'string'},
+          {name: 'next', title: 'Next button', type: 'string'},
+          {name: 'previousAria', title: 'Previous accessible label', type: 'string', description: 'Use {item} for the item type.'},
+          {name: 'nextAria', title: 'Next accessible label', type: 'string', description: 'Use {item} for the item type.'},
+          {name: 'showAria', title: 'Show item accessible label', type: 'string', description: 'Use {item} for the item name.'},
+          {name: 'numberedItem', title: 'Numbered item label', type: 'string', description: 'Use {item} and {index}.'},
+          {name: 'position', title: 'Item position', type: 'string', description: 'Use {index} and {total}.'},
+        ]}),
         defineField({name: 'career', title: 'Career', type: 'object', fields: [
           {name: 'id', title: 'Section ID', type: 'string'},
           {name: 'heading', title: 'Heading', type: 'string'},
+          {name: 'intro', title: 'Introduction', type: 'text', rows: 2},
+          {name: 'experience', title: 'Experience labels', type: 'object', fields: [
+            {name: 'one', title: 'One year', type: 'string', description: 'Use {count} for the number of years.'},
+            {name: 'other', title: 'Multiple years', type: 'string', description: 'Use {count} for the number of years.'},
+          ]},
+          {name: 'timeline', title: 'Timeline labels', type: 'object', fields: [
+            {name: 'label', title: 'Accessible label', type: 'string'},
+            {name: 'item', title: 'Item label', type: 'string'},
+            {name: 'roleAria', title: 'Role accessible label', type: 'string', description: 'Use {role} and {employer}.'},
+          ]},
+          {name: 'skills', title: 'Skills labels', type: 'object', fields: [
+            {name: 'heading', title: 'Heading', type: 'string'},
+            {name: 'label', title: 'Accessible label', type: 'string'},
+            {name: 'play', title: 'Play button', type: 'string'},
+            {name: 'pause', title: 'Pause button', type: 'string'},
+            {name: 'item', title: 'Item label', type: 'string'},
+            {name: 'websiteAria', title: 'Website accessible label', type: 'string', description: 'Use {skill} for the skill name.'},
+          ]},
+          {name: 'role', title: 'Role dialog labels', type: 'object', fields: [
+            {name: 'readMoreAria', title: 'Read more accessible label', type: 'string', description: 'Use {role} and {employer}.'},
+            {name: 'close', title: 'Close button', type: 'string'},
+          ]},
         ]}),
         defineField({name: 'academics', title: 'Academics', type: 'object', fields: [
           {name: 'id', title: 'Section ID', type: 'string'},
           {name: 'heading', title: 'Heading', type: 'string'},
+          {name: 'intro', title: 'Introduction', type: 'text', rows: 2},
+          {name: 'awardsLabel', title: 'Awards label', type: 'string'},
           {name: 'cofo', title: 'Institution URL', type: 'url'},
           {name: 'focus', title: 'Focus labels', type: 'object', fields: [
+            {name: 'heading', title: 'Heading', type: 'string'},
             {name: 'gpaLabel', title: 'GPA label', type: 'string'},
+          ]},
+          {name: 'perspective', title: 'Academic perspective', type: 'object', fields: [
+            {name: 'label', title: 'Accessible figure label', type: 'string'},
+            ...['mathematics', 'faith', 'software'].map((name) => ({
+              name,
+              title: name.charAt(0).toUpperCase() + name.slice(1),
+              type: 'object',
+              fields: [
+                {name: 'label', title: 'Label', type: 'string'},
+                {name: 'heading', title: 'Heading', type: 'string'},
+                {name: 'description', title: 'Description', type: 'text', rows: 2},
+              ],
+            })),
           ]},
         ]}),
         defineField({name: 'projects', title: 'Projects', type: 'object', fields: [
@@ -67,6 +132,21 @@ export const siteSettings = defineType({
           {name: 'viewDemo', title: 'View demo label', type: 'string'},
           {name: 'closeDemo', title: 'Close demo label', type: 'string'},
           {name: 'repository', title: 'Repository label', type: 'string'},
+          {name: 'item', title: 'Carousel item label', type: 'string'},
+          {name: 'announcement', title: 'Carousel announcement', type: 'string', description: 'Use {index}, {total}, and {project}.'},
+          {name: 'product', title: 'Product heading', type: 'string'},
+          {name: 'topics', title: 'Topics heading', type: 'string'},
+          {name: 'languageBreakdown', title: 'Language breakdown label', type: 'string'},
+          {name: 'languageValue', title: 'Language percentage label', type: 'string', description: 'Use {language} and {value}.'},
+          {name: 'preview', title: 'Preview labels', type: 'object', fields: [
+            {name: 'live', title: 'Live label', type: 'string'},
+            {name: 'reloadAria', title: 'Reload accessible label', type: 'string', description: 'Use {project} for the project name.'},
+            {name: 'title', title: 'Frame title', type: 'string', description: 'Use {project} for the project name.'},
+          ]},
+          {name: 'status', title: 'Status descriptions', type: 'object', fields: [
+            {name: 'deprecated', title: 'Deprecated tooltip', type: 'string'},
+            {name: 'inProgress', title: 'In progress tooltip', type: 'string'},
+          ]},
           {name: 'github', title: 'GitHub labels', type: 'object', fields: [
             {name: 'link', title: 'Link label', type: 'string'},
             {name: 'public', title: 'Public label', type: 'string'},
@@ -118,6 +198,7 @@ export const siteSettings = defineType({
         ]}),
         defineField({name: 'footer', title: 'Footer', type: 'object', fields: [
           {name: 'copyright', title: 'Copyright', type: 'string'},
+          {name: 'studio', title: 'Studio link label', type: 'string'},
           {name: 'captcha', title: 'Captcha notice', type: 'object', fields: [
             {name: 'url', title: 'URL', type: 'url'},
             {name: 'label', title: 'Label', type: 'string'},
@@ -125,6 +206,7 @@ export const siteSettings = defineType({
           ]},
         ]}),
         defineField({name: 'links', title: 'Links', type: 'object', fields: [
+          {name: 'ai', title: 'AI URL', type: 'url'},
           {name: 'linkedIn', title: 'LinkedIn URL', type: 'url'},
           {name: 'resume', title: 'Resume URL', type: 'url'},
         ]}),

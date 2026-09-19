@@ -1,214 +1,122 @@
-"use client"
-import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetTitle,
-  } from "@/components/ui/sheet"
-import { memo, useMemo, FC, useCallback, useEffect, useState, type MouseEventHandler } from "react"
-import { useDictionary } from "@/components/content/content-provider";
-import { BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, X, type LucideIcon } from "lucide-react"
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { ArrowUpRight, BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, MessageCircle, X } from "lucide-react";
+import { Typography } from "@/components/ui/typography";
+import { useDictionary } from "@/components/content/content-provider";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import ThemeToggle from "@/components/theme/theme-toggle";
 import { cn } from "@/lib/utils";
-import LinkedIn from "./linked-in";
-import Resume from "./resume";
-import MobileTabletOnly from "../breakpoints/mobile-tablet-only";
-import DesktopOnly from "../breakpoints/desktop-only";
-import ControlBadgeToggle from "./control-badge-toggle";
-import { Toggle } from "@radix-ui/react-toggle";
+import ResourcesMenu from "./resources-menu";
 
-const navigationIconFallbacks: Record<string, LucideIcon> = {
-    home: Home,
-    career: BriefcaseBusiness,
-    academics: BookOpen,
-    projects: Code2,
-    contact: Mail,
-}
+const menuItemClassName = "flex shrink-0 items-center gap-2 whitespace-nowrap border-b border-transparent px-3 py-2 hover:border-foreground/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 lg:px-2 xl:px-3";
 
-interface BaseLinkProps {
-    id: string;
-    heading: string;
-    icon?: string;
-    isActive?: boolean;
-    className: string;
-    iconClassName?: string;
-    onClick?: MouseEventHandler<HTMLAnchorElement>;
-}
+export default function Menu() {
+  const $t = useDictionary();
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const [activeId, setActiveId] = useState("");
+  const currentId = pathname === "/" ? activeId : "";
+  const navigationIcons = { [$t.home.id]: Home, [$t.academics.id]: BookOpen, [$t.career.id]: BriefcaseBusiness, [$t.projects.id]: Code2, [$t.contact.id]: Mail };
+  const links = $t.navigation.map(({ id, heading, icon }) => ({
+    label: heading,
+    href: `/#${id}`,
+    id,
+    icon,
+  }));
 
-export interface MenuProps {}
+  useEffect(() => {
+    const desktopNavigation = window.matchMedia("(min-width: 1024px)");
+    function closeMobileMenu(event: MediaQueryListEvent) {
+      if (event.matches) setOpen(false);
+    }
+    desktopNavigation.addEventListener("change", closeMobileMenu);
+    return () => desktopNavigation.removeEventListener("change", closeMobileMenu);
+  }, []);
 
-const BaseLink: FC<BaseLinkProps> = ({id, heading, icon, isActive, className, iconClassName, onClick}: BaseLinkProps) => {
-    const FallbackIcon = navigationIconFallbacks[id]
-    const iconSrc = icon && (icon.startsWith("/") || icon.startsWith("http")) ? icon : undefined
+  useEffect(() => {
+    const sections = $t.navigation.map(({ id }) => id)
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) setActiveId(entry.target.id);
+      }
+    }, { rootMargin: "-20% 0px -65% 0px", threshold: 0 });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [$t, pathname]);
 
-    return (
-        <Link
-            href={`/#${id}`} 
-            scroll
-            aria-current={isActive ? "page" : undefined}
-            onClick={onClick}
-            className={cn(
-                className,
-                "border-b transition-colors",
-                isActive ? "border-primary text-foreground" : "border-transparent hover:border-foreground/50",
-            )}
-        >
-            {iconSrc ? (
-                <Image
-                    src={iconSrc}
-                    alt=""
-                    width={20}
-                    height={20}
-                    className={`${iconClassName ?? ""} dark:invert`}
-                    unoptimized={iconSrc.startsWith("http")}
-                />
-            ) : FallbackIcon ? (
-                <FallbackIcon aria-hidden="true" className={iconClassName} />
-            ) : null}
-            <span>{heading}</span>
-        </Link>
-    )
-}
+  if (pathname.startsWith("/studio")) return null;
 
-const Menu: FC<MenuProps> = () => {
-    const [isPressed, setIsPressed] = useState<boolean>(false)
-    const [activeId, setActiveId] = useState<string>("home")
-    const $t = useDictionary();
-
-    useEffect(() => {
-        const getHashId = () => window.location.hash.replace("#", "")
-
-        const handleHashChange = () => {
-            const hashId = getHashId()
-            if (hashId) setActiveId(hashId)
-        }
-
-        handleHashChange()
-        window.addEventListener("hashchange", handleHashChange)
-
-        const sections = $t.navigation
-            .map(({ id }) => document.getElementById(id))
-            .filter((section): section is HTMLElement => !!section)
-
-        const observer = new IntersectionObserver((entries) => {
-            const visibleEntry = entries
-                .filter((entry) => entry.isIntersecting)
-                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-
-            if (visibleEntry?.target.id) setActiveId(visibleEntry.target.id)
-        }, {
-            rootMargin: "-35% 0px -45% 0px",
-            threshold: [0.2, 0.4, 0.6],
-        })
-
-        sections.forEach((section) => observer.observe(section))
-
-        return () => {
-            window.removeEventListener("hashchange", handleHashChange)
-            observer.disconnect()
-        }
-    }, [$t.navigation])
-
-    const setChangeDrawerOpen = useCallback((isPressed: boolean) => {
-      setIsPressed(isPressed)
-    }, []);
-
-    const togglePressed = useCallback(() => {
-        setIsPressed(i => !i)
-    }, [])
-
-    const MenuToggleClose = useMemo(() =>(
-        <Toggle className={`aspect-square p-2`} aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
-          <X/>
-        </Toggle>
-    ), [$t, isPressed, setChangeDrawerOpen])
-
-    const MenuToggleOpen = useMemo(() =>(
-        <ControlBadgeToggle aria-label={$t.menu.toggle} pressed={isPressed} onPressedChange={setChangeDrawerOpen}>
-          <MenuIcon/>
-        </ControlBadgeToggle>
-    ), [$t, isPressed, setChangeDrawerOpen])
-
-    const MobileTabletNavigation = useMemo(() => {
-        const mobileTabletOption = ({id, heading, icon}: {id: string, heading: string, icon?: string}) => (
-            <SheetClose asChild key={id} onClick={togglePressed} className="flex">
-                <BaseLink
-                    id={id}
-                    heading={heading}
-                    icon={icon}
-                    isActive={activeId === id}
-                    onClick={() => setActiveId(id)}
-                    className="flex w-fit items-center gap-2.5 pb-1 text-lg font-serif tracking-widest font-thin text-foreground/80 hover:cursor-pointer"
-                    iconClassName="h-4 w-4 shrink-0"
-                />
-            </SheetClose>
-        )
-        
-        return (
-            <nav className="m-4 flex flex-col gap-5 border-t border-border pt-6">
-                <>{ $t.navigation.map(mobileTabletOption) }</>
-            </nav>
-        )
-    }, [$t, activeId, togglePressed])
-    
-    const DesktopNavigation = useMemo(() => {
-        const desktopOption = ({id, heading, icon}: {id: string, heading: string, icon?: string}) => (
-            <BaseLink
-                key={id}
-                id={id}
-                heading={heading}
-                icon={icon}
-                isActive={activeId === id}
-                onClick={() => setActiveId(id)}
-                className="flex items-center gap-2 px-4 pb-2 pt-2 font-serif text-sm tracking-widest text-foreground/75 hover:cursor-pointer"
-                iconClassName="h-5 w-5 shrink-0"
-            />
-        )
-        return (
-            <nav
-                aria-label={$t.menu.description}
-                className="fixed left-1/2 bottom-4 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-4 py-1.5 shadow-sm shadow-foreground/10"
-            >
-                {$t.navigation.map(desktopOption)}
-            </nav>
-        )
-    }, [$t, activeId])
-
-    // Memoized component
-    const MobileTabletMenu = useMemo(() => (
-        <Sheet open={isPressed}>
-            <div className="fixed left-2 top-2 z-40" >
-                {MenuToggleOpen}
-            </div>
-            <SheetContent side={"left"}>
-                <SheetDescription className="sr-only">
-                    {$t.menu.description}
-                </SheetDescription>
-                { MobileTabletNavigation }
-                <SheetClose asChild className="absolute left-0 right-0 top-0">
-                    <SheetTitle className="flex justify-between items-center p-0 pl-4 font-serif text-md font-serif">
-                        {$t.menu.heading} 
-                        {MenuToggleClose}
-                    </SheetTitle>
-                </SheetClose>
-                <span className="absolute bottom-0 right-0 flex items-center gap-3 p-3">
-                    <LinkedIn/>
-                    <Resume/>
-                </span>
+  return (
+    <>
+        <nav aria-label={$t.menu.description} className="fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 text-foreground shadow-sm shadow-foreground/10 lg:flex xl:gap-2 xl:px-4">
+          <ThemeToggle className={menuItemClassName} />
+          <ResourcesMenu className={menuItemClassName} />
+          {links.map(({ id, label, href, icon }) => {
+            const Icon = navigationIcons[id];
+            return (
+              <Link key={id} href={href} onClick={() => setActiveId(id)} aria-current={id === currentId ? "location" : undefined} className={cn(menuItemClassName, id === currentId && "border-primary text-foreground")}>
+                {icon ? (
+                  <Image src={icon} alt="" width={20} height={20} className="size-5 shrink-0 dark:invert" unoptimized />
+                ) : Icon && <Icon aria-hidden="true" className="size-5 shrink-0" />}
+                <Typography as="span" variant="menu">{label}</Typography>
+              </Link>
+            );
+          })}
+          <a href={$t.links.ai} target="_blank" rel="noopener noreferrer" className={menuItemClassName}>
+            <MessageCircle aria-hidden="true" className="size-5 shrink-0" />
+            <Typography as="span" variant="menu">{$t.controls.myAi}</Typography>
+            <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
+          </a>
+        </nav>
+        <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-40 flex -translate-x-1/2 items-center rounded-full border border-border/60 bg-background/90 px-1 text-foreground shadow-sm shadow-foreground/10 lg:hidden">
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger aria-label={$t.menu.toggle} className={cn(menuItemClassName, "min-h-11 gap-1.5")}>
+              <MenuIcon aria-hidden="true" className="size-4 shrink-0" />
+              <Typography as="span" variant="menu-trigger">{$t.menu.label}</Typography>
+            </SheetTrigger>
+            <SheetContent side="right" className="flex w-full flex-col gap-0 overflow-y-auto bg-background-secondary px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-foreground sm:max-w-md sm:px-8">
+              <div className="flex items-center justify-between border-b border-foreground/20 pb-4">
+                <SheetTitle asChild><Typography as="h2" variant="title">{$t.menu.heading}</Typography></SheetTitle>
+                <SheetClose aria-label={$t.menu.close} className="flex size-11 items-center justify-center rounded-sm hover:bg-accent"><X className="size-5" /></SheetClose>
+              </div>
+              <SheetDescription className="sr-only">{$t.menu.description}</SheetDescription>
+              <div className="mt-6"><Typography as="span" variant="section-label">{$t.menu.navigation}</Typography></div>
+              <nav aria-label={$t.menu.description} className="mt-3 flex flex-col divide-y divide-foreground/15">
+                {links.map(({ id, label, href }) => (
+                  <SheetClose asChild key={id}>
+                    <Link href={href} onClick={() => setActiveId(id)} aria-current={id === currentId ? "location" : undefined} className={cn("block py-3 decoration-foreground/60 underline-offset-8 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2", id === currentId && "underline")}>
+                      <Typography as="span" variant="menu">{label}</Typography>
+                    </Link>
+                  </SheetClose>
+                ))}
+              </nav>
+              <div className="mt-auto pt-8">
+                <div className="flex items-center justify-between gap-4 border-t border-foreground/20 py-3">
+                  <ThemeToggle className={menuItemClassName} />
+                  <a href={$t.links.ai} target="_blank" rel="noopener noreferrer" className={menuItemClassName}>
+                    <MessageCircle aria-hidden="true" className="size-5 shrink-0" />
+                    <Typography as="span" variant="menu">{$t.controls.myAi}</Typography>
+                    <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
+                  </a>
+                </div>
+                <div className="flex flex-wrap gap-x-6 gap-y-3 border-t border-foreground/20 pt-5">
+                  <a href={$t.links.linkedIn} target="_blank" rel="noopener noreferrer" aria-label={$t.controls.linkedIn} className="inline-flex min-h-11 items-center gap-2 underline decoration-foreground/30 underline-offset-4 hover:decoration-foreground">
+                    <Typography as="span" variant="menu">{$t.menu.linkedIn}</Typography><ArrowUpRight aria-hidden="true" className="size-3.5" />
+                  </a>
+                  <a href={$t.links.resume} target="_blank" rel="noopener noreferrer" aria-label={$t.controls.resume} className="inline-flex min-h-11 items-center gap-2 underline decoration-foreground/30 underline-offset-4 hover:decoration-foreground">
+                    <Typography as="span" variant="menu">{$t.menu.resume}</Typography><ArrowUpRight aria-hidden="true" className="size-3.5" />
+                  </a>
+                </div>
+              </div>
             </SheetContent>
-        </Sheet>
-    ), [$t, MenuToggleOpen, MenuToggleClose, MobileTabletNavigation, isPressed]);
-
-    return (<>
-        <MobileTabletOnly>
-            {MobileTabletMenu}
-        </MobileTabletOnly>
-        <DesktopOnly>
-            { DesktopNavigation }
-        </DesktopOnly>
-    </>)
-};
-
-export default memo(Menu);
+          </Sheet>
+        </div>
+    </>
+  );
+}

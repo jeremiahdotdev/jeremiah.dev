@@ -25,7 +25,7 @@ const FALLBACK_LANGUAGE_COLORS = [
     "#8b5cf6",
 ];
 
-export function parseLanguages(languages?: RawGithubLanguages): Languages {
+function parseLanguages(languages?: RawGithubLanguages): Languages {
     if (!languages) return [];
     const totalBytes = Object.values(languages).reduce((acc, bytes)=>acc+=bytes, 0)
 
@@ -39,7 +39,7 @@ export function parseLanguages(languages?: RawGithubLanguages): Languages {
         .sort((a, b) => b.value - a.value)
 }
 
-export function parseProject(project: InternalGithubProject): Project {
+function parseProject(project: InternalGithubProject): Project {
     const languages = parseLanguages(project.languages);
     const parsedProject: Project = {
         name: project.name,

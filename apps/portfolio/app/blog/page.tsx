@@ -35,7 +35,7 @@ export default async function BlogPage() {
   const posts = await getBlogPosts()
 
   return (
-    <PageSection id={$t.blog.id} variant={PageSectionVariant.Primary} showBorder={true}>
+    <PageSection id={$t.blog.id} variant={PageSectionVariant.Primary} fitViewport={false}>
       <PageSectionHeader>{$t.blog.heading}</PageSectionHeader>
       <PageSectionContent>
         <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 py-8">

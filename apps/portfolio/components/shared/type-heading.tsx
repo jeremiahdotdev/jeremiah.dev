@@ -1,17 +1,20 @@
 "use client"
-import { FC, useEffect, useState, memo, useMemo, useRef, useCallback } from "react";
+import { Typography } from "@/components/ui/typography";
+import { FC, useEffect, useState, memo, useMemo } from "react";
 
-interface ThemeToggleProps {
+interface TypeHeadingProps {
     className?: string,
     stack: string[],
     end: string,
 }
 
-const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleProps) => {
+const TypeHeading: FC<TypeHeadingProps> = ({className, stack, end}: TypeHeadingProps) => {
     // the duration in milliseconds
     const duration = 5000;
 
     const { sharedText, newStack } = useMemo(() => {
+        if (stack.length === 0) return { sharedText: "", newStack: [] };
+
         let nextSharedText = ""
         const minLength = Math.min(...stack.map(i => i.length))
 
@@ -32,67 +35,54 @@ const TypeHeading: FC<ThemeToggleProps> = ({className, stack, end}: ThemeToggleP
 
     const [title, setTitle] = useState<string>("")
     const [heading, setHeading] = useState<string>(" ")
-    const timeoutIds = useRef<number[]>([])
-    const hasStarted = useRef(false)
-    
-    const typeAhead = useCallback((index: number, length: number) => ((index % 2 === 0) || (index === length - 1)) ? "" : "|", [])
-
-    const typeWord = useCallback((word: string, action=setHeading) => {
-        const wordArray = word.split("");
-        wordArray.forEach((character, index) => {
-            const timeoutId = window.setTimeout(() => { 
-                action(`${wordArray.slice(0, index+1).join("")}${typeAhead(index, wordArray.length)}`)
-            }, index * 150)
-            timeoutIds.current.push(timeoutId)
-            
-            // When you reach the end of the stack, cease typing. 
-            if (index === wordArray.length - 1) return;
-        })    
-    }, [typeAhead])
-
-    const untypeWord = useCallback((word: string) => {
-        const wordArray = word.split("");
-        wordArray.forEach((character, index) => {
-            const timeoutId = window.setTimeout(() => { 
-                setHeading(`${wordArray.slice(0, wordArray.length-index-1).join("")}${typeAhead(index, wordArray.length)}`)
-            }, index * 150 + (duration/2))
-            timeoutIds.current.push(timeoutId)
-        })    
-    }, [duration, typeAhead])
-
-    const typeEffect = useCallback(() => {
-        if (hasStarted.current) return
-        hasStarted.current = true
-
-        newStack.forEach((sentence, index) => {
-            const timeoutId = window.setTimeout(() => { 
-                typeWord(sentence)
-                untypeWord(sentence)
-            }, index * duration)
-            timeoutIds.current.push(timeoutId)
-        })
-        const timeoutId = window.setTimeout(() => { 
-            typeWord(end, setTitle)
-        }, newStack.length * duration)
-        timeoutIds.current.push(timeoutId)
-    }, [end, newStack, typeWord, untypeWord])
 
     useEffect(() => {
-        typeEffect()
+        const timeoutIds: number[] = [];
+        const typeAhead = (index: number, length: number) => (
+            (index % 2 === 0) || (index === length - 1) ? "" : "|"
+        );
 
-        return () => {
-            timeoutIds.current.forEach((timeoutId) => window.clearTimeout(timeoutId))
-            timeoutIds.current = []
-            hasStarted.current = false
+        function typeWord(word: string, action = setHeading) {
+            const characters = Array.from(word);
+            characters.forEach((_, index) => {
+                timeoutIds.push(window.setTimeout(() => {
+                    action(`${characters.slice(0, index + 1).join("")}${typeAhead(index, characters.length)}`);
+                }, index * 150));
+            });
         }
-    }, [typeEffect])
+
+        function untypeWord(word: string) {
+            const characters = Array.from(word);
+            characters.forEach((_, index) => {
+                timeoutIds.push(window.setTimeout(() => {
+                    setHeading(`${characters.slice(0, characters.length - index - 1).join("")}${typeAhead(index, characters.length)}`);
+                }, index * 150 + duration / 2));
+            });
+        }
+
+        newStack.forEach((sentence, index) => {
+            timeoutIds.push(window.setTimeout(() => {
+                setTitle("");
+                typeWord(sentence);
+                untypeWord(sentence);
+            }, index * duration));
+        });
+        timeoutIds.push(window.setTimeout(() => {
+            setHeading("");
+            typeWord(end, setTitle);
+        }, newStack.length * duration));
+
+        return () => timeoutIds.forEach(window.clearTimeout);
+    }, [end, newStack]);
 
     const typeHeading = useMemo(() => (
-        <span className={`font-serif flex items-center justify-center ${className}`}>
-            <h1 className={`text-3xl md:text-4xl`}>
+        <div className={`flex items-center justify-center ${className}`}>
+          <div className="px-5 text-center">
+            <Typography as="h1" variant="page">
                 {sharedText}{heading}{title}
-            </h1>
-        </span>
+            </Typography>
+          </div>
+        </div>
     ), [className, sharedText, heading, title])
 
     return typeHeading

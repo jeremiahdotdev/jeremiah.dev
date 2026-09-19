@@ -1,15 +1,8 @@
 import ProjectDashboard from "@/components/projects/project-dashboard";
 import PageSection from "@/components/page/page-section";
 import { PageSectionVariant } from '@/types/page';
-import PageSectionHeader from "@/components/page/page-section-header";
-import PageSectionContent from "@/components/page/page-section-content";
 import { getProjectsData } from "@/server/getProjectsData";
 import type { Dictionary } from "@/types/dictionary";
-
-async function loadProjectData() {
-  const data = await getProjectsData()
-  return data
-}
 
 interface ProjectsProps {
   dictionary: Dictionary
@@ -17,16 +10,13 @@ interface ProjectsProps {
 
 export default async function Projects({ dictionary }: ProjectsProps) {
   const $t = dictionary;
-  const projects = await loadProjectData()
+  const projects = await getProjectsData()
 
   return (
-    <PageSection id={$t.projects.id} variant={PageSectionVariant.Secondary}>
-      <PageSectionHeader>{$t.projects.heading}</PageSectionHeader>
-      <PageSectionContent className="pb-6">
-        <div className="w-full lg:flex lg:min-h-0 lg:flex-1 lg:py-6">
-          <ProjectDashboard projects={projects}/>
-        </div>
-      </PageSectionContent>
+    <PageSection id={$t.projects.id} variant={PageSectionVariant.Secondary} compactContent>
+      <div className="flex w-full flex-1 flex-col overflow-x-clip py-4 lg:py-2">
+        <ProjectDashboard projects={projects}/>
+      </div>
     </PageSection>
   );
 }

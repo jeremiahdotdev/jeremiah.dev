@@ -27,6 +27,7 @@ export const academicRecord = defineType({
       type: 'array',
       of: [{
         type: 'object',
+        preview: {select: {title: 'name', subtitle: '_key'}},
         fields: [
           {name: 'type', title: 'Type', type: 'string'},
           {name: 'name', title: 'Name', type: 'string'},
@@ -45,6 +46,18 @@ export const academicRecord = defineType({
         fields: [
           {name: 'title', title: 'Title', type: 'string'},
           {name: 'subtitle', title: 'Subtitle', type: 'string'},
+          {name: 'label', title: 'Badge label', type: 'string', description: 'Compact badge text. Defaults to the subtitle followed by the title when omitted.'},
+          defineField({
+            name: 'focusKey',
+            title: 'Focus key',
+            type: 'string',
+            description: 'Use the key displayed beneath a focus name above. Leave blank to show this as a general commendation.',
+            validation: (rule) => rule.custom((value, context) => {
+              if (!value) return true
+              const focuses = context.document?.focuses as Array<{_key: string}> | undefined
+              return focuses?.some((focus) => focus._key === value) || 'Use the key of a focus in this academic record, or leave blank.'
+            }),
+          }),
           {name: 'tooltip', title: 'Tooltip', type: 'string'},
           {name: 'dates', title: 'Dates', type: 'string'},
           {name: 'iconKey', title: 'Icon key', type: 'string'},

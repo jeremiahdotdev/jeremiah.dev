@@ -1,6 +1,6 @@
 import { memo, useMemo, FC, ReactNode } from "react"
 
-export interface PageSectionContentProps {
+interface PageSectionContentProps {
     children?: ReactNode | ReactNode[]
     className?: string
 }

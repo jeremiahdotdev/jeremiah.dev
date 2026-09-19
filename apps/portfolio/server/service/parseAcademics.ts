@@ -13,7 +13,3 @@ export function parseAcademia(academics: ImportedAcademics, endDateDefault: stri
     }
     return parsedAcademics
 }
-
-export function parseAcademics(academics: ImportedAcademics[], endDateDefault: string): Academics[] {
-    return academics.map((record) => parseAcademia(record, endDateDefault))
-}

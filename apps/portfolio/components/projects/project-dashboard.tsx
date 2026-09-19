@@ -1,91 +1,84 @@
-"use client"
-import { Project } from "@/types/project";
-import { memo, FC } from "react"
-import ProjectCardList from "./project-card-list";
+"use client";
+
+import { useEffect, useEffectEvent, useState } from "react";
+import type { Project } from "@/types/project";
+import { useDictionary } from "@/components/content/content-provider";
+import { Carousel, CarouselContent, CarouselItem, CarouselNavigation, type CarouselApi } from "@/components/ui/carousel";
 import ProjectCard from "./project-card";
-import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/components/ui/carousel";
+import { formatTemplate } from "@/lib/format-template";
 
-interface ProjectDashboardProps {
-    projects: Project[];
+export default function ProjectDashboard({ projects }: { projects: Project[] }) {
+  const { projects: labels, carousel } = useDictionary();
+  const projectNames = projects.map(({ name }) => name);
+  const [api, setApi] = useState<CarouselApi>();
+  const [selected, setSelected] = useState(0);
+  const [moving, setMoving] = useState(false);
+  const syncSelection = useEffectEvent(() => {
+    setSelected(api?.selectedScrollSnap() ?? 0);
+  });
+
+  useEffect(() => {
+    if (!api) return;
+    let movementTimer = 0;
+    const onSelect = () => syncSelection();
+    const onSettle = () => {
+      window.clearTimeout(movementTimer);
+      setMoving(false);
+    };
+    const onMove = () => {
+      setMoving(true);
+      window.clearTimeout(movementTimer);
+      movementTimer = window.setTimeout(onSettle, 150);
+    };
+    api.on("select", onSelect);
+    api.on("scroll", onMove);
+    api.on("settle", onSettle);
+    api.on("reInit", onSettle);
+    api.on("reInit", onSelect);
+    const frame = window.requestAnimationFrame(onSelect);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(movementTimer);
+      api.off("select", onSelect);
+      api.off("scroll", onMove);
+      api.off("settle", onSettle);
+      api.off("reInit", onSettle);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
+
+  if (!projects.length) return null;
+
+  return (
+    <Carousel
+      setApi={setApi}
+      opts={{ align: "start", loop: true }}
+      aria-label={labels.heading}
+      className="flex w-full flex-1 flex-col"
+    >
+      <div className="flex flex-1 flex-col justify-start py-2 md:justify-center">
+        <CarouselContent className="ml-0 gap-8 lg:gap-16 lg:flex-1" viewportClassName="px-0 py-4 lg:flex lg:flex-1 lg:flex-col" fadeEdges={false}>
+          {projects.map((project, index) => (
+            <CarouselItem key={project.link.href} className="flex items-stretch px-5 sm:px-8 md:items-center lg:items-stretch lg:px-10 xl:px-12" aria-label={formatTemplate(carousel.position, { index: index + 1, total: projects.length })} inert={index !== selected}>
+              <ProjectCard
+                project={project}
+                index={index}
+                total={projects.length}
+                moving={moving}
+                mobileNavigation={<CarouselNavigation itemLabel={labels.item} itemNames={projectNames} />}
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </div>
+      <div className="hidden lg:block">
+        <CarouselNavigation
+          itemLabel={labels.item}
+          itemNames={projectNames}
+          className="mx-auto max-w-section shrink-0 px-5 sm:px-8 lg:px-10 xl:px-12"
+        />
+      </div>
+      <span className="sr-only" aria-live="polite" aria-atomic="true">{formatTemplate(labels.announcement, { index: selected + 1, total: projects.length, project: projects[selected]?.name ?? "" })}</span>
+    </Carousel>
+  );
 }
-
-function chunkProjects(projects: Project[], size: number) {
-    const pages: Project[][] = [];
-
-    for (let index = 0; index < projects.length; index += size) {
-        pages.push(projects.slice(index, index + size));
-    }
-
-    return pages;
-}
-  
-const ProjectDashboard: FC<ProjectDashboardProps> = ({ projects }: ProjectDashboardProps) => {
-    function handleOpenProject(href: string) {
-        window.open(href, "_blank", "noopener,noreferrer");
-    }
-
-    const mediumPages = chunkProjects(projects, 4);
-    const extraLargePages = chunkProjects(projects, 6);
-
-    return (
-        <>
-            <div className="hidden w-full md:block xl:hidden">
-                <Carousel
-                    opts={{
-                        align: "center",
-                        loop: false,
-                    }}
-                    className="w-full"
-                >
-                    <CarouselContent className="-ml-8 px-6 py-3 lg:px-10">
-                        {mediumPages.map((page, pageIndex) => (
-                            <CarouselItem key={`md-page-${pageIndex}`} className="basis-full pl-8">
-                                <div className="grid grid-cols-2 gap-x-10 gap-y-14">
-                                    {page.map((project) => (
-                                        <ProjectCard
-                                            key={project.name}
-                                            project={project}
-                                            handleClick={handleOpenProject}
-                                        />
-                                    ))}
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    {mediumPages.length > 1 && <CarouselDots label="Show project page" />}
-                </Carousel>
-            </div>
-            <div className="hidden w-full xl:block">
-                <Carousel
-                    opts={{
-                        align: "center",
-                        loop: false,
-                    }}
-                    className="w-full"
-                >
-                    <CarouselContent className="-ml-8 px-14 py-3">
-                        {extraLargePages.map((page, pageIndex) => (
-                            <CarouselItem key={`xl-page-${pageIndex}`} className="basis-full pl-8">
-                                <div className="grid grid-cols-3 gap-x-10 gap-y-14">
-                                    {page.map((project) => (
-                                        <ProjectCard
-                                            key={project.name}
-                                            project={project}
-                                            handleClick={handleOpenProject}
-                                        />
-                                    ))}
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    {extraLargePages.length > 1 && <CarouselDots label="Show project page" />}
-                </Carousel>
-            </div>
-            <div className="relative w-full overflow-x-hidden md:hidden">
-                <ProjectCardList projects={projects} handleClick={handleOpenProject} />
-            </div>
-        </>
-    );
-};
-
-export default memo(ProjectDashboard);

@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 import { Commendation } from "./commendation"
 import { Focus } from "./focus"
 
-export type AcademicEmblem = {
+type AcademicEmblem = {
     lightSrc: string,
     darkSrc: string,
     alt: string,

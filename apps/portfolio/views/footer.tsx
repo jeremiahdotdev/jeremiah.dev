@@ -1,9 +1,9 @@
 import PageSection from '@/components/page/page-section';
-import { TypographyMuted } from '@/components/ui/typography';
+import SectionContainer from '@/components/shared/section-container';
 import { PageSectionVariant } from '@/types/page';
 import type { Dictionary } from '@/types/dictionary';
-import packageJson from '@/package.json';
 import Link from 'next/link';
+import { Typography } from '@/components/ui/typography';
 
 interface FooterProps {
   dictionary: Dictionary
@@ -12,18 +12,27 @@ interface FooterProps {
 export default function Footer({ dictionary }: FooterProps) {
   const $t = dictionary;
   const currentYear = new Date().getFullYear();
-  const sanityVersion = packageJson.dependencies.sanity.replace(/^[^\d]*/, '');
+  const linkClassName = "rounded-sm underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring";
 
   return (
     <PageSection id="footer" variant={PageSectionVariant.Footer}>
-      <div className='p-2 flex flex-col gap-1 items-center justify-between w-full sm:flex-row'>
-        <TypographyMuted variant="footer">
-          &copy; {currentYear} {$t.footer.copyright}
-        </TypographyMuted>
-          <TypographyMuted variant="footer">
-            {$t.footer.captcha.label} <a href={$t.footer.captcha.url} target="_blank" rel="noopener noreferrer" className='underline'>{$t.footer.captcha.captcha}</a>, <Link href="/studio" className="underline">Sanity v{sanityVersion}</Link>
-          </TypographyMuted>
-      </div>
+      <SectionContainer className="flex items-center justify-between gap-x-4 gap-y-2 py-3 text-left sm:flex-wrap sm:gap-x-8 lg:py-3">
+        <p className="flex min-w-0 flex-wrap items-baseline justify-start gap-x-3 gap-y-1">
+          <Typography as="span" variant="footer">{$t.footer.copyright}</Typography>
+          <Typography as="span" variant="footer">&copy; {currentYear}</Typography>
+        </p>
+        <div className="flex min-w-0 flex-col items-end gap-x-4 gap-y-1 text-right sm:flex-row sm:flex-wrap sm:items-center sm:text-left">
+          <Typography variant="footer">
+            {$t.footer.captcha.label}{' '}
+            <a href={$t.footer.captcha.url} target="_blank" rel="noopener noreferrer" className={linkClassName}>
+              {$t.footer.captcha.captcha}
+            </a>
+          </Typography>
+          <Link href="/studio" className={`${linkClassName} sm:border-l sm:border-border sm:pl-4`}>
+            <Typography as="span" variant="footer">{$t.footer.studio}</Typography>
+          </Link>
+        </div>
+      </SectionContainer>
     </PageSection>
   );
 }
