@@ -30,11 +30,11 @@ export default async function Career({ dictionary }: CareerProps) {
 
   return (
     <PageSection id={$t.career.id} variant={PageSectionVariant.Primary}>
-      <SectionContainer>
-        <SectionCard className="pb-6 pt-14 sm:py-8">
+      <SectionContainer className="flex flex-1 flex-col justify-between gap-3">
+        <SectionCard className="shrink-0 pb-6 pt-14 sm:py-5">
           <SectionHeading as="h2" label={$t.career.heading} metadata={experienceLabel} />
           <div className="mt-4">
-            <Typography variant="title">{$t.career.intro}</Typography>
+            <Typography variant="career-intro">{$t.career.intro}</Typography>
           </div>
         </SectionCard>
         <Timeline milestones={milestones} skills={skills} />

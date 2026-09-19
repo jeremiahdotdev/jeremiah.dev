@@ -16,8 +16,8 @@ export default async function Academics({ dictionary: $t }: { dictionary: Dictio
   const generalCommendations = academics.commendations.filter((commendation) => !commendation.focusKey || !focusKeys.has(commendation.focusKey));
 
   return (
-    <PageSection id={$t.academics.id} variant={PageSectionVariant.Secondary}>
-      <SectionContainer className="grid flex-1 grid-rows-[auto_1fr] gap-x-10 gap-y-6 lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+    <PageSection id={$t.academics.id} variant={PageSectionVariant.Secondary} compactContent>
+      <SectionContainer className="grid flex-1 grid-rows-[auto_1fr] gap-x-10 gap-y-6 md:grid-rows-[auto_auto_1fr] lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-12 xl:gap-x-16">
         <header className="py-4 sm:py-5 lg:col-span-2">
           <SectionHeading label={$t.academics.heading} metadata={`${startYear}–${endYear}`} />
           <div className="mt-4">
@@ -47,8 +47,8 @@ export default async function Academics({ dictionary: $t }: { dictionary: Dictio
                       </>
                     )}
                   </div>
-                  <div className="mt-1"><Typography as="h4" variant="title">{focus.name}</Typography></div>
-                  <div className="mt-2"><Typography as="div" variant="body-muted">{focus.description}</Typography></div>
+                  <div className="mt-1"><Typography as="h4" variant="academic-focus">{focus.name}</Typography></div>
+                  <div className="mt-2"><Typography as="div" variant="academic-body">{focus.description}</Typography></div>
                   {commendations.length > 0 && <AcademicBadges awards={commendations} label={$t.academics.awardsLabel} />}
                 </article>
               );
@@ -56,7 +56,7 @@ export default async function Academics({ dictionary: $t }: { dictionary: Dictio
             {generalCommendations.length > 0 && <AcademicBadges awards={generalCommendations} label={$t.academics.awardsLabel} />}
           </div>
         </div>
-        <div className="hidden min-w-0 lg:block">
+        <div className="hidden min-w-0 md:block">
           <AcademicPerspective content={$t.academics.perspective} />
         </div>
       </SectionContainer>

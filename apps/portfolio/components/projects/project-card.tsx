@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useDictionary } from "@/components/content/content-provider";
 import { Typography } from "@/components/ui/typography";
 import type { Project } from "@/types/project";
@@ -9,15 +10,17 @@ import ProjectLinks from "./project-links";
 import SectionHeading from "@/components/shared/section-heading";
 import { parseProjectDescription, splitProjectDescription } from "@/lib/project-description";
 import ProjectStatusBadge from "./project-status-badge";
+import ProjectTitle from "./project-title";
 
 interface ProjectCardProps {
   project: Project;
   index?: number;
   total?: number;
   moving?: boolean;
+  mobileNavigation?: ReactNode;
 }
 
-export default function ProjectCard({ project, index = 0, total = 1, moving = false }: ProjectCardProps) {
+export default function ProjectCard({ project, index = 0, total = 1, moving = false, mobileNavigation }: ProjectCardProps) {
   const { projects: labels } = useDictionary();
   const technologies = [...new Set(project.topics ?? [])].slice(0, 6);
   const languages = project.languages ?? [];
@@ -35,10 +38,11 @@ export default function ProjectCard({ project, index = 0, total = 1, moving = fa
         <ProjectPreview project={project} moving={moving} />
       </div>
       <div className="min-w-0 py-1">
+        {mobileNavigation && <div className="lg:hidden">{mobileNavigation}</div>}
         <header>
           <div className="hidden lg:block">{heading}</div>
           <div className="mt-5 border-b border-foreground/40 pb-5">
-            <Typography as="h3" variant="display">{project.name}</Typography>
+            <ProjectTitle name={project.name} />
             {intro && (
               <div className="mt-3">
                 <Typography variant="project-intro">{intro}</Typography>

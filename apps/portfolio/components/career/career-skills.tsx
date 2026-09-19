@@ -114,7 +114,7 @@ export default function CareerSkills({ skills, autoPlay = true }: { skills: Skil
         aria-live={automaticallyAdvancing ? "off" : "polite"}
       >
         {skills.map((skill, index) => (
-          <CarouselItem key={`${index}-${skill.subtitle}`} className="flex min-w-32 basis-32 sm:min-w-36 sm:basis-36" aria-label={formatTemplate($t.carousel.position, { index: index + 1, total: skills.length })}>
+          <CarouselItem key={`${index}-${skill.subtitle}`} className="flex min-w-32 basis-32 sm:min-w-[clamp(7rem,calc(4rem_+_7vh),9rem)] sm:basis-[clamp(7rem,calc(4rem_+_7vh),9rem)]" aria-label={formatTemplate($t.carousel.position, { index: index + 1, total: skills.length })}>
             <SkillCard skill={skill} />
           </CarouselItem>
         ))}

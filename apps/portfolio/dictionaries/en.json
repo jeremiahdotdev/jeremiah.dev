@@ -1,8 +1,8 @@
 {
     "theme": {
         "toggle": "Toggle theme",
-        "light": "light",
-        "dark": "dark",
+        "light": "Light",
+        "dark": "Dark",
         "system": "system",
         "keys": {"light": "light", "dark": "dark", "dev": "dev"}
     },
@@ -14,10 +14,11 @@
         "heading":"jeremiah.dev",
         "description":"Links to all sections of the site.",
         "linkedIn": "LinkedIn",
-        "resume": "Résumé"
+        "resume": "Résumé",
+        "resources": "Resources"
     },
     "controls": {
-        "askAi": "Ask My AI",
+        "myAi": "My AI",
         "askAiPrompt": "Have a question? Ask my AI...",
         "linkedIn": "View LinkedIn Profile",
         "resume": "View Resume"

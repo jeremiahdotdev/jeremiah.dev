@@ -45,7 +45,7 @@ export default async function BlogPostPage({params}: BlogParams) {
   if (!post) notFound()
 
   return (
-    <PageSection id="blog-post" variant={PageSectionVariant.Primary}>
+    <PageSection id="blog-post" variant={PageSectionVariant.Primary} fitViewport={false}>
       <PageSectionHeader>{post.title}</PageSectionHeader>
       <PageSectionContent>
         <article className="mx-auto w-full max-w-3xl px-4 py-8 text-sm leading-7 text-muted-foreground md:px-8 md:py-10 [&_a]:text-foreground [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-primary/30 [&_blockquote]:pl-4 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_li]:ml-5 [&_li]:list-disc [&_p+_p]:mt-4">

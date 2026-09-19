@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Typography } from "@/components/ui/typography";
 import type { Dictionary } from "@/types/dictionary";
 
@@ -15,11 +16,33 @@ function PerspectiveItem({ content }: { content: PerspectiveContent["mathematics
   );
 }
 
+function CircleSurface() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-[1%] -z-10 hidden rounded-full border border-black/10 bg-white bg-[linear-gradient(to_right,rgba(0,0,0,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.045)_1px,transparent_1px)] bg-[size:24px_24px] bg-center shadow-[inset_0_3px_6px_rgba(0,0,0,0.16),inset_0_12px_24px_rgba(0,0,0,0.12),inset_0_-1px_0_rgba(255,255,255,0.4)] dark:bg-[#eee8dc] dark:shadow-[inset_0_4px_8px_rgba(0,0,0,0.28),inset_0_16px_28px_rgba(0,0,0,0.18),inset_0_-1px_0_rgba(255,255,255,0.3)] md:block" />
+  );
+}
+
+function TabletCircle({ content }: { content: PerspectiveContent["mathematics"] }) {
+  return (
+    <div className="relative isolate flex aspect-square min-w-0 flex-col items-center justify-center rounded-full px-3 text-center [--foreground:210_12%_13%] [--muted-foreground:210_10%_26%]">
+      <CircleSurface />
+      <PerspectiveItem content={content} />
+    </div>
+  );
+}
+
 export default function AcademicPerspective({ content }: { content: PerspectiveContent }) {
   return (
-    <figure aria-label={content.label} className="flex h-full items-center justify-center py-4 sm:py-5 lg:[--foreground:210_12%_13%] lg:[--muted-foreground:210_10%_26%]">
-      <div className="relative isolate grid aspect-square w-full place-items-center">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-[1%] -z-10 hidden rounded-full border border-black/10 bg-white bg-[linear-gradient(to_right,rgba(0,0,0,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.045)_1px,transparent_1px)] bg-[size:24px_24px] bg-center shadow-[inset_0_3px_6px_rgba(0,0,0,0.16),inset_0_12px_24px_rgba(0,0,0,0.12),inset_0_-1px_0_rgba(255,255,255,0.4)] dark:bg-[#eee8dc] dark:shadow-[inset_0_4px_8px_rgba(0,0,0,0.28),inset_0_16px_28px_rgba(0,0,0,0.18),inset_0_-1px_0_rgba(255,255,255,0.3)] lg:block" />
+    <figure aria-label={content.label} className="flex h-full items-center justify-center py-4 sm:py-5">
+      <div className="grid w-full max-w-[60rem] grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)_3rem_minmax(0,1fr)] items-center lg:hidden">
+        <TabletCircle content={content.mathematics} />
+        <ArrowRight aria-hidden="true" className="h-5 w-full text-foreground/40" strokeWidth={1} />
+        <TabletCircle content={content.software} />
+        <ArrowLeft aria-hidden="true" className="h-5 w-full text-foreground/40" strokeWidth={1} />
+        <TabletCircle content={content.faith} />
+      </div>
+      <div className="relative isolate hidden aspect-square w-full max-w-[44rem] place-items-center [--foreground:210_12%_13%] [--muted-foreground:210_10%_26%] lg:grid">
+        <CircleSurface />
         <div className="h-[60%] w-[76%]">
           <div className="flex h-full min-h-0 w-full flex-col justify-center">
             <div className="grid shrink-0 gap-y-4 text-center sm:grid-cols-2 sm:gap-x-4">

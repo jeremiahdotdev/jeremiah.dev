@@ -22,12 +22,12 @@ export default function Timeline({ milestones, skills }: { milestones: CareerMil
   if (!milestones.length) return null;
 
   return (
-    <div className="mt-3">
-      <Carousel opts={{ align: "start", loop: false }} aria-label={$t.career.timeline.label} className="text-foreground">
+    <>
+      <Carousel opts={{ align: "start", loop: false }} aria-label={$t.career.timeline.label} className="shrink-0 text-foreground">
         <CarouselContent className="items-stretch" viewportClassName="px-1 pb-1" fadeEdges={false}>
           {milestones.map((milestone, index) => (
-            <CarouselItem key={milestone.id} aria-label={formatTemplate($t.career.timeline.roleAria, { role: milestone.role.title, employer: milestone.role.employer })} style={{ flexBasis: "clamp(14.5rem, 19vw, 18rem)" }} className={cn("flex flex-col", accents[milestone.employerIndex % accents.length])}>
-              <div className="relative flex h-28 shrink-0 flex-col items-center pt-2">
+            <CarouselItem key={milestone.id} aria-label={formatTemplate($t.career.timeline.roleAria, { role: milestone.role.title, employer: milestone.role.employer })} className={cn("flex basis-[clamp(15rem,calc(13.5rem_+_6.75vw),18rem)] flex-col", accents[milestone.employerIndex % accents.length])}>
+              <div className="relative flex h-20 shrink-0 flex-col items-center pt-2">
                 <Typography as="span" variant="detail-label">{milestone.year}</Typography>
                 <span aria-hidden="true" className={cn("absolute -left-4 right-0 top-12 h-px bg-career-accent/65", index === 0 && "left-1/2", index === milestones.length - 1 && "right-1/2")} />
                 <span aria-hidden="true" className="absolute top-9 flex size-6 items-center justify-center rounded-full border border-career-accent bg-background">
@@ -39,11 +39,11 @@ export default function Timeline({ milestones, skills }: { milestones: CareerMil
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselNavigation itemLabel={$t.career.timeline.item} className="mt-2 px-1" />
+        <CarouselNavigation itemLabel={$t.career.timeline.item} className="mt-2 shrink-0 px-1" />
       </Carousel>
-      <div className="mt-3">
+      <div className="shrink-0">
         <CareerSkills skills={skills} />
       </div>
-    </div>
+    </>
   );
 }

@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, MessageCircle, ExternalLink, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, BriefcaseBusiness, Code2, Home, Mail, Menu as MenuIcon, MessageCircle, X } from "lucide-react";
 import { Typography } from "@/components/ui/typography";
 import { useDictionary } from "@/components/content/content-provider";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import ThemeToggle from "@/components/theme/theme-toggle";
 import { cn } from "@/lib/utils";
+import ResourcesMenu from "./resources-menu";
 
-const menuItemClassName = "flex shrink-0 items-center gap-2 whitespace-nowrap border-b border-transparent px-3 py-2 hover:border-foreground/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4";
+const menuItemClassName = "flex shrink-0 items-center gap-2 whitespace-nowrap border-b border-transparent px-3 py-2 hover:border-foreground/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 lg:px-2 xl:px-3";
 
 export default function Menu() {
   const $t = useDictionary();
@@ -53,8 +54,9 @@ export default function Menu() {
 
   return (
     <>
-        <nav aria-label={$t.menu.description} className="fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-4 py-1.5 text-foreground shadow-sm shadow-foreground/10 lg:flex">
+        <nav aria-label={$t.menu.description} className="fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 items-center rounded-full border border-border/60 bg-background/90 px-2 py-1.5 text-foreground shadow-sm shadow-foreground/10 lg:flex xl:gap-1 xl:px-4">
           <ThemeToggle className={menuItemClassName} />
+          <ResourcesMenu className={menuItemClassName} />
           {links.map(({ id, label, href, icon }) => {
             const Icon = navigationIcons[id];
             return (
@@ -68,14 +70,15 @@ export default function Menu() {
           })}
           <a href={$t.links.ai} target="_blank" rel="noopener noreferrer" className={menuItemClassName}>
             <MessageCircle aria-hidden="true" className="size-5 shrink-0" />
-            <Typography as="span" variant="menu">{$t.controls.askAi}</Typography>
+            <Typography as="span" variant="menu">{$t.controls.myAi}</Typography>
+            <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
           </a>
         </nav>
-        <div className="fixed left-1/2 top-2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-4 py-1.5 text-foreground shadow-sm shadow-foreground/10 lg:hidden">
+        <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-40 flex -translate-x-1/2 items-center rounded-full border border-border/60 bg-background/90 px-1 text-foreground shadow-sm shadow-foreground/10 lg:hidden">
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger aria-label={$t.menu.toggle} className={menuItemClassName}>
-              <MenuIcon aria-hidden="true" className="size-5 shrink-0" />
-              <Typography as="span" variant="menu">{$t.menu.label}</Typography>
+            <SheetTrigger aria-label={$t.menu.toggle} className={cn(menuItemClassName, "min-h-11 gap-1.5")}>
+              <MenuIcon aria-hidden="true" className="size-4 shrink-0" />
+              <Typography as="span" variant="menu-trigger">{$t.menu.label}</Typography>
             </SheetTrigger>
             <SheetContent side="right" className="flex w-full flex-col gap-0 overflow-y-auto bg-background-secondary px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-foreground sm:max-w-md sm:px-8">
               <div className="flex items-center justify-between border-b border-foreground/20 pb-4">
@@ -98,15 +101,16 @@ export default function Menu() {
                   <ThemeToggle className={menuItemClassName} />
                   <a href={$t.links.ai} target="_blank" rel="noopener noreferrer" className={menuItemClassName}>
                     <MessageCircle aria-hidden="true" className="size-5 shrink-0" />
-                    <Typography as="span" variant="menu">{$t.controls.askAi}</Typography>
+                    <Typography as="span" variant="menu">{$t.controls.myAi}</Typography>
+                    <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
                   </a>
                 </div>
                 <div className="flex flex-wrap gap-x-6 gap-y-3 border-t border-foreground/20 pt-5">
                   <a href={$t.links.linkedIn} target="_blank" rel="noopener noreferrer" aria-label={$t.controls.linkedIn} className="inline-flex min-h-11 items-center gap-2 underline decoration-foreground/30 underline-offset-4 hover:decoration-foreground">
-                    <Typography as="span" variant="menu">{$t.menu.linkedIn}</Typography><ExternalLink aria-hidden="true" className="size-3.5" />
+                    <Typography as="span" variant="menu">{$t.menu.linkedIn}</Typography><ArrowUpRight aria-hidden="true" className="size-3.5" />
                   </a>
                   <a href={$t.links.resume} target="_blank" rel="noopener noreferrer" aria-label={$t.controls.resume} className="inline-flex min-h-11 items-center gap-2 underline decoration-foreground/30 underline-offset-4 hover:decoration-foreground">
-                    <Typography as="span" variant="menu">{$t.menu.resume}</Typography><ExternalLink aria-hidden="true" className="size-3.5" />
+                    <Typography as="span" variant="menu">{$t.menu.resume}</Typography><ArrowUpRight aria-hidden="true" className="size-3.5" />
                   </a>
                 </div>
               </div>

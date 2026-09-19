@@ -40,9 +40,10 @@ export const siteSettings = defineType({
           {name: 'description', title: 'Description', type: 'string'},
           {name: 'linkedIn', title: 'LinkedIn link text', type: 'string'},
           {name: 'resume', title: 'Resume link text', type: 'string'},
+          {name: 'resources', title: 'Resources label', type: 'string'},
         ]}),
         defineField({name: 'controls', title: 'Controls', type: 'object', fields: [
-          {name: 'askAi', title: 'Ask AI label', type: 'string'},
+          {name: 'myAi', title: 'My AI label', type: 'string'},
           {name: 'askAiPrompt', title: 'Ask AI prompt', type: 'string'},
           {name: 'linkedIn', title: 'LinkedIn label', type: 'string'},
           {name: 'resume', title: 'Resume label', type: 'string'},

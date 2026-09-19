@@ -17,16 +17,18 @@ export default function ThemeToggle({ className }: { className?: string }) {
   const isDark = mounted && resolvedTheme === "dark";
   const nextTheme = isDark ? "light" : "dark";
   const Icon = isDark ? Sun : Moon;
+  const themeLabel = isDark ? $t.theme.light : $t.theme.dark;
+  const label = themeLabel.charAt(0).toUpperCase() + themeLabel.slice(1);
 
   return (
     <button
       type="button"
-      aria-label={isDark ? $t.theme.light : $t.theme.dark}
+      aria-label={label}
       onClick={() => setTheme(nextTheme)}
       className={cn("inline-flex items-center gap-2", className)}
     >
       <Icon aria-hidden="true" className="size-5 shrink-0" />
-      <Typography as="span" variant="menu">{isDark ? $t.theme.light : $t.theme.dark}</Typography>
+      <Typography as="span" variant="menu">{label}</Typography>
     </button>
   );
 }

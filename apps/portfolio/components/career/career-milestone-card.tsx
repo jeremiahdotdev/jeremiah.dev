@@ -15,9 +15,9 @@ export default function CareerMilestoneCard({ milestone }: { milestone: CareerMi
 
   return (
     <Dialog.Root>
-      <article className="relative flex min-h-64 flex-1 flex-col rounded-xl border border-career-accent/40 bg-card p-3 transition-colors hover:border-career-accent/75 motion-reduce:transition-none sm:min-h-72 sm:p-4">
+      <article className="relative flex min-h-56 flex-1 flex-col rounded-xl border border-career-accent/40 bg-card p-3 transition-colors hover:border-career-accent/75 motion-reduce:transition-none sm:min-h-64 sm:p-4">
         <div className="border-b border-black/25 dark:border-black/70">
-          <Typography variant="caption">{role.employer}</Typography>
+          <Typography variant="career-employer">{role.employer}</Typography>
         </div>
         <div className="border-b border-foreground/40 pb-3">
           <Typography as="h3" variant="role-title">

@@ -27,6 +27,7 @@ const config = {
         title: ["var(--font-title)", "Georgia", "serif"],
       },
       screens: {
+        'desktop-fit': { 'raw': '(min-width: 1024px) and (min-height: 800px)' },
         'sm-tall': { 'raw': '(min-height: 700px) and (max-width: 640px)' },
         'sm-short': { 'raw': '(max-height: 699px) and (max-width: 640px)' },
       },

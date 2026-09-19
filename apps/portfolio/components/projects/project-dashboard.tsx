@@ -56,9 +56,6 @@ export default function ProjectDashboard({ projects }: { projects: Project[] }) 
       aria-label={labels.heading}
       className="flex w-full flex-1 flex-col"
     >
-      <div className="px-5 sm:px-8 lg:hidden">
-        <CarouselNavigation itemLabel={labels.item} itemNames={projectNames} />
-      </div>
       <div className="flex flex-1 flex-col justify-start py-2 md:justify-center">
         <CarouselContent className="ml-0 gap-8 lg:gap-16 lg:flex-1" viewportClassName="px-0 py-4 lg:flex lg:flex-1 lg:flex-col" fadeEdges={false}>
           {projects.map((project, index) => (
@@ -68,6 +65,7 @@ export default function ProjectDashboard({ projects }: { projects: Project[] }) 
                 index={index}
                 total={projects.length}
                 moving={moving}
+                mobileNavigation={<CarouselNavigation itemLabel={labels.item} itemNames={projectNames} />}
               />
             </CarouselItem>
           ))}

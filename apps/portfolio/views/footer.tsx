@@ -16,12 +16,12 @@ export default function Footer({ dictionary }: FooterProps) {
 
   return (
     <PageSection id="footer" variant={PageSectionVariant.Footer}>
-      <SectionContainer className="flex flex-col items-center gap-2 py-3 text-center sm:flex-row sm:flex-wrap sm:justify-between sm:gap-x-8 sm:text-left lg:py-3">
-        <p className="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 sm:justify-start">
+      <SectionContainer className="flex items-center justify-between gap-x-4 gap-y-2 py-3 text-left sm:flex-wrap sm:gap-x-8 lg:py-3">
+        <p className="flex min-w-0 flex-wrap items-baseline justify-start gap-x-3 gap-y-1">
           <Typography as="span" variant="footer">{$t.footer.copyright}</Typography>
           <Typography as="span" variant="footer">&copy; {currentYear}</Typography>
         </p>
-        <div className="flex flex-col items-center gap-x-4 gap-y-1 sm:flex-row sm:flex-wrap">
+        <div className="flex min-w-0 flex-col items-end gap-x-4 gap-y-1 text-right sm:flex-row sm:flex-wrap sm:items-center sm:text-left">
           <Typography variant="footer">
             {$t.footer.captcha.label}{' '}
             <a href={$t.footer.captcha.url} target="_blank" rel="noopener noreferrer" className={linkClassName}>
