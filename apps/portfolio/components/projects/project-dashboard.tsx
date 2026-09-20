@@ -56,10 +56,10 @@ export default function ProjectDashboard({ projects }: { projects: Project[] }) 
       aria-label={labels.heading}
       className="flex w-full flex-1 flex-col"
     >
-      <div className="flex flex-1 flex-col justify-start py-2 md:justify-center">
+      <div className="flex flex-1 flex-col justify-start py-2 lg:justify-center">
         <CarouselContent className="ml-0 gap-8 lg:gap-16 lg:flex-1" viewportClassName="px-0 py-4 lg:flex lg:flex-1 lg:flex-col" fadeEdges={false}>
           {projects.map((project, index) => (
-            <CarouselItem key={project.link.href} className="flex items-stretch px-5 sm:px-8 md:items-center lg:items-stretch lg:px-10 xl:px-12" aria-label={formatTemplate(carousel.position, { index: index + 1, total: projects.length })} inert={index !== selected}>
+            <CarouselItem key={project.link.href} className="flex items-start px-5 sm:px-8 lg:items-stretch lg:px-10 xl:px-12" aria-label={formatTemplate(carousel.position, { index: index + 1, total: projects.length })} inert={index !== selected}>
               <ProjectCard
                 project={project}
                 index={index}

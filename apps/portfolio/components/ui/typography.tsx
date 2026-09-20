@@ -54,6 +54,8 @@ const typographyVariants = cva("not-italic", {
         "font-normal font-serif text-sm leading-normal tracking-widest normal-case text-foreground/75",
       caption:
         "font-normal font-sans text-sm leading-normal tracking-normal normal-case tabular-nums text-muted-foreground lg:text-[clamp(1rem,calc(1.171875*var(--type-vw,1vw)),1.125rem)]",
+      "topic-badge":
+        "inline-block whitespace-nowrap font-normal font-sans text-[length:min(var(--topic-badge-fit,1.125rem),var(--topic-badge-size))] [--topic-badge-size:0.875rem] lg:[--topic-badge-size:clamp(1rem,calc(1.171875*var(--type-vw,1vw)),1.125rem)] leading-normal tracking-[var(--topic-badge-tracking,0em)] normal-case tabular-nums text-muted-foreground",
       footer:
         "font-normal font-sans text-xs leading-normal tracking-normal normal-case tabular-nums text-muted-foreground",
       "skill-label":

@@ -12,8 +12,8 @@ export default function Contact({ dictionary }: ContactProps) {
   const $t = dictionary;
 
   return (
-    <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary}>
-      <SectionContainer className="flex flex-1 items-center py-6 lg:py-6">
+    <PageSection id={$t.contact.id} variant={PageSectionVariant.Primary} fitViewport={false} className="min-h-dvh lg:pb-0">
+      <SectionContainer className="flex flex-1 items-center justify-center py-20 lg:py-20">
         <ContactSectionClient />
       </SectionContainer>
     </PageSection>

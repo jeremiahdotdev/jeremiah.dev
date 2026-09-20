@@ -49,7 +49,7 @@ const ProjectPreview: FC<ProjectPreviewProps> = ({ project, moving = false }) =>
 
 
   return (
-    <div className="w-full aspect-video lg:flex-1 lg:aspect-auto dark:border-white/15 dark:shadow-black/25 relative flex flex-col overflow-hidden rounded-xl border border-foreground/20 bg-card shadow-md shadow-black/10">
+    <div className="w-full aspect-[4/3] sm:aspect-video lg:flex-1 lg:aspect-auto dark:border-white/15 dark:shadow-black/25 relative flex flex-col overflow-hidden rounded-xl border border-foreground/20 bg-card shadow-md shadow-black/10">
       <div className="border-black/10 bg-[#ededee] text-[#171a1e] dark:border-white/10 dark:bg-[#24272b] dark:text-[#e7e9ec] relative flex h-10 shrink-0 items-center gap-3 border-b px-3 sm:h-12 sm:gap-5 sm:px-5">
         <div aria-hidden="true" className="flex items-center gap-1.5 sm:gap-2">
           <span className="size-2.5 rounded-full bg-[#ff5f57] sm:size-3" />

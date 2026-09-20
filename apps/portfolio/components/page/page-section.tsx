@@ -9,9 +9,10 @@ interface PageSectionProps {
     backdrop?: ReactNode
     fitViewport?: boolean
     compactContent?: boolean
+    className?: string
 }
 
-const PageSection: FC<PageSectionProps> = ({children, variant, id, backdrop, fitViewport = true, compactContent = false}: PageSectionProps) => {
+const PageSection: FC<PageSectionProps> = ({children, variant, id, backdrop, fitViewport = true, compactContent = false, className}: PageSectionProps) => {
     const hasSplashBackdrop = variant === PageSectionVariant.Primary
 
     const getCSSForVariant = (variant: PageSectionVariant) => {
@@ -51,6 +52,7 @@ const PageSection: FC<PageSectionProps> = ({children, variant, id, backdrop, fit
                 fitViewport && "desktop-fit:h-svh desktop-fit:max-h-svh",
                 getCSSForVariant(variant),
                 hasSplashBackdrop ? "transition-colors duration-600 ease-out" : "border-y border-border/60 shadow-lg",
+                className,
             )}>
                 {backdrop}
                 <div className={cn(

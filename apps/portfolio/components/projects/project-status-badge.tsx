@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Typography } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { useDictionary } from "@/components/content/content-provider";
+import ProjectBadgeLabel from "./project-badge-label";
 
 export default function ProjectStatusBadge({ label }: { label: string }) {
   const { projects: labels } = useDictionary();
@@ -29,14 +30,14 @@ export default function ProjectStatusBadge({ label }: { label: string }) {
             type="button"
             onClick={() => setOpen(!open)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-4 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+              "inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full px-4 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
               !deprecated && !inProgress && "bg-foreground/10",
               deprecated && "bg-orange-500/15 text-orange-800 dark:bg-orange-400/15 dark:text-orange-300",
               inProgress && "bg-blue-500/15 text-blue-800 dark:bg-blue-400/15 dark:text-blue-300",
             )}
           >
             <Icon aria-hidden="true" className="size-4 shrink-0" />
-            <Typography as="span" variant="caption">{label}</Typography>
+            <ProjectBadgeLabel label={label} />
           </button>
         </TooltipTrigger>
         <Portal>
