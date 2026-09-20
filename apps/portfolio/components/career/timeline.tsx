@@ -26,7 +26,7 @@ export default function Timeline({ milestones, skills }: { milestones: CareerMil
       <Carousel opts={{ align: "start", loop: false }} aria-label={$t.career.timeline.label} className="shrink-0 text-foreground">
         <CarouselContent className="items-stretch" viewportClassName="px-1 pb-1" fadeEdges={false}>
           {milestones.map((milestone, index) => (
-            <CarouselItem key={milestone.id} aria-label={formatTemplate($t.career.timeline.roleAria, { role: milestone.role.title, employer: milestone.role.employer })} className={cn("flex basis-[clamp(15rem,calc(13.5rem_+_6.75vw),18rem)] flex-col", accents[milestone.employerIndex % accents.length])}>
+            <CarouselItem key={milestone.id} aria-label={formatTemplate($t.career.timeline.roleAria, { role: milestone.role.title, employer: milestone.role.employer })} className={cn("flex basis-[90%] flex-col sm:basis-[clamp(15rem,calc(13.5rem_+_6.75vw),18rem)]", accents[milestone.employerIndex % accents.length])}>
               <div className="relative flex h-20 shrink-0 flex-col items-center pt-2">
                 <Typography as="span" variant="detail-label">{milestone.year}</Typography>
                 <span aria-hidden="true" className={cn("absolute -left-4 right-0 top-12 h-px bg-career-accent/65", index === 0 && "left-1/2", index === milestones.length - 1 && "right-1/2")} />

@@ -11,6 +11,7 @@ import SectionHeading from "@/components/shared/section-heading";
 import { parseProjectDescription, splitProjectDescription } from "@/lib/project-description";
 import ProjectStatusBadge from "./project-status-badge";
 import ProjectTitle from "./project-title";
+import ProjectBadgeLabel from "./project-badge-label";
 
 interface ProjectCardProps {
   project: Project;
@@ -32,7 +33,7 @@ export default function ProjectCard({ project, index = 0, total = 1, moving = fa
   const heading = <SectionHeading as="h2" label={labels.heading} metadata={`${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`} />;
 
   return (
-    <article className="mx-auto grid w-full max-w-project items-start gap-x-8 gap-y-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] lg:gap-x-10 xl:gap-x-14 max-md:min-h-[calc(100svh-126px)] max-md:grid-rows-[auto_auto_1fr]">
+    <article className="mx-auto grid w-full max-w-project content-start items-start gap-x-8 gap-y-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] lg:content-stretch lg:gap-x-10 xl:gap-x-14">
       <div className="block lg:hidden">{heading}</div>
       <div className="min-w-0 max-md:self-stretch lg:flex lg:self-stretch">
         <ProjectPreview project={project} moving={moving} />
@@ -70,13 +71,13 @@ export default function ProjectCard({ project, index = 0, total = 1, moving = fa
               {(badges.length > 0 || technologies.length > 0) && (
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {badges.map((label) => (
-                    <li key={`status-${label}`}>
+                    <li key={`status-${label}`} className="min-w-0 max-w-full">
                       <ProjectStatusBadge label={label} />
                     </li>
                   ))}
                   {technologies.map((technology) => (
-                    <li key={technology} className="rounded-full bg-foreground/10 px-4 py-2">
-                      <Typography as="span" variant="caption">{technology.replace(/-/g, " ")}</Typography>
+                    <li key={technology} className="flex min-w-0 max-w-full items-center rounded-full bg-foreground/10 px-4 py-2">
+                      <ProjectBadgeLabel label={technology.replace(/-/g, " ")} />
                     </li>
                   ))}
                 </ul>
