@@ -38,7 +38,7 @@ const ProjectLanguageMeter: FC<ProjectLanguageMeterProps> = ({ languages }) => {
     >
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0 truncate">
-          <Typography as="span" variant="detail-label">
+          <Typography as="span" variant="eyebrow">
             {primaryLanguage.name}
           </Typography>
         </div>

@@ -87,9 +87,9 @@ export default function CareerSkills({ skills, autoPlay = true }: { skills: Skil
         if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false);
       }}
     >
-      <div className="flex min-h-9 items-center gap-4">
-        <div className="shrink-0">
-          <Typography as="span" variant="detail-label">
+      <div className="flex min-h-10 items-center hxl:min-h-16">
+        <div className="shrink-0 pr-4">
+          <Typography as="span" variant="label">
             {$t.career.skills.heading}
           </Typography>
         </div>
@@ -109,12 +109,11 @@ export default function CareerSkills({ skills, autoPlay = true }: { skills: Skil
       </div>
       <CarouselContent
         fadeEdges={false}
-        viewportClassName="px-0"
-        className="-ml-4 py-3"
+        viewportClassName="pl-5 pr-0 py-0 hlg:py-6 h2xl:py-8"
         aria-live={automaticallyAdvancing ? "off" : "polite"}
       >
         {skills.map((skill, index) => (
-          <CarouselItem key={`${index}-${skill.subtitle}`} className="flex min-w-32 basis-32 sm:min-w-[clamp(7rem,calc(4rem_+_7vh),9rem)] sm:basis-[clamp(7rem,calc(4rem_+_7vh),9rem)]" aria-label={formatTemplate($t.carousel.position, { index: index + 1, total: skills.length })}>
+          <CarouselItem key={`${index}-${skill.subtitle}`} className="mr-5 flex min-w-20 basis-24 pl-0 sm:basis-32" aria-label={formatTemplate($t.carousel.position, { index: index + 1, total: skills.length })}>
             <SkillCard skill={skill} />
           </CarouselItem>
         ))}

@@ -64,7 +64,7 @@
             "roleAria": "{role} at {employer}"
         },
         "skills": {
-            "heading": "Skills & tools",
+            "heading": "Skills",
             "label": "Career skills and tools",
             "play": "Play skills carousel",
             "pause": "Pause skills carousel",
@@ -122,6 +122,7 @@
         "languageValue": "{language}: {value}%",
         "preview": {
             "live": "Live",
+            "loading": "Loading preview",
             "reloadAria": "Reload {project} preview",
             "title": "{project} preview"
         },

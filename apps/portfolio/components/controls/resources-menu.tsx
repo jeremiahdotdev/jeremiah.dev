@@ -45,7 +45,7 @@ export default function ResourcesMenu({ className }: { className?: string }) {
       <summary ref={triggerRef} className={cn("flex cursor-pointer list-none items-center gap-2 text-foreground/75 hover:text-foreground [&::-webkit-details-marker]:hidden", className)}>
         <Folder aria-hidden="true" className="size-5 shrink-0 group-open:hidden" />
         <FolderOpen aria-hidden="true" className="hidden size-5 shrink-0 group-open:block" />
-        <Typography as="span" variant="menu">{$t.menu.resources}</Typography>
+        <Typography as="span" variant="navigation">{$t.menu.resources}</Typography>
       </summary>
       <nav aria-label={$t.menu.resources} className="absolute bottom-full left-0 mb-2 w-48 rounded-xl border border-border/60 bg-background p-2 shadow-lg">
         {links.map(({ href, label, ariaLabel, Icon }) => (
@@ -53,7 +53,7 @@ export default function ResourcesMenu({ className }: { className?: string }) {
             if (detailsRef.current) detailsRef.current.open = false;
           }} className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring">
             <Icon aria-hidden="true" className="size-5 shrink-0" />
-            <Typography as="span" variant="menu">{label}</Typography>
+            <Typography as="span" variant="navigation">{label}</Typography>
             <ArrowUpRight aria-hidden="true" className="ml-auto size-4 shrink-0" />
           </a>
         ))}

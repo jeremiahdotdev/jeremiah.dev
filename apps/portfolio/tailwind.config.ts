@@ -27,15 +27,28 @@ const config = {
         title: ["var(--font-title)", "Georgia", "serif"],
       },
       screens: {
-        'desktop-fit': { 'raw': '(min-width: 1024px) and (min-height: 800px)' },
-        'sm-tall': { 'raw': '(min-height: 700px) and (max-width: 640px)' },
-        'sm-short': { 'raw': '(max-height: 699px) and (max-width: 640px)' },
+        hxs: { raw: '(min-height: 568px)' },
+        hsm: { raw: '(min-height: 667px)' },
+        hmd: { raw: '(min-height: 736px)' },
+        hlg: { raw: '(min-height: 812px)' },
+        hxl: { raw: '(min-height: 896px)' },
+        'h2xl': { raw: '(min-height: 1024px)' },
       },
       animation: {
+        "preview-waves": "preview-waves 5s linear infinite",
+        "preview-ripple": "preview-ripple 5s ease-in-out infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       keyframes: {
+        "preview-waves": {
+          from: { backgroundPosition: "0 0" },
+          to: { backgroundPosition: "120px 120px" },
+        },
+        "preview-ripple": {
+          "0%, 60%, 100%": { transform: "translateY(0)", opacity: "0.85" },
+          "30%": { transform: "translateY(-1px)", opacity: "1" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },

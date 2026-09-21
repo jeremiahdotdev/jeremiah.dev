@@ -95,7 +95,7 @@ const FormLabel = React.forwardRef<
     <Typography
       {...props}
       as="label"
-      variant={error ? "error" : "detail-label"}
+      variant={error ? "error" : "eyebrow"}
       ref={ref}
       htmlFor={formItemId}
     />

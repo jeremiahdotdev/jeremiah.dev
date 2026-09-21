@@ -15,12 +15,12 @@ export default function ProjectTitle({ name }: { name: string }) {
 
     function fitTitle() {
       if (disposed || !heading || !text) return;
-      heading.style.removeProperty("--project-title-fit");
+      heading.style.fontSize = "";
       const availableWidth = heading.getBoundingClientRect().width;
       const textWidth = text.getBoundingClientRect().width;
       if (availableWidth > 0 && textWidth > availableWidth) {
         const fontSize = parseFloat(getComputedStyle(heading).fontSize);
-        heading.style.setProperty("--project-title-fit", `${fontSize * availableWidth / textWidth}px`);
+        heading.style.fontSize = `${fontSize * availableWidth / textWidth}px`;
       }
     }
 
@@ -40,7 +40,7 @@ export default function ProjectTitle({ name }: { name: string }) {
   }, [name]);
 
   return (
-    <Typography ref={headingRef} as="h3" variant="project-title">
+    <Typography ref={headingRef} as="h3" variant="display" noWrap>
       <span ref={textRef} className="inline-block">{name}</span>
     </Typography>
   );

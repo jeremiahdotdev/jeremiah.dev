@@ -78,7 +78,7 @@ const TypeHeading: FC<TypeHeadingProps> = ({className, stack, end}: TypeHeadingP
     const typeHeading = useMemo(() => (
         <div className={`flex items-center justify-center ${className}`}>
           <div className="px-5 text-center">
-            <Typography as="h1" variant="page">
+            <Typography as="h1" variant="heading">
                 {sharedText}{heading}{title}
             </Typography>
           </div>

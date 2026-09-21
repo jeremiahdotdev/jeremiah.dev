@@ -29,12 +29,12 @@ export default async function Career({ dictionary }: CareerProps) {
   const milestones = getCareerMilestones(jobs, $t.timeline.endDateDefault);
 
   return (
-    <PageSection id={$t.career.id} variant={PageSectionVariant.Primary}>
-      <SectionContainer className="flex flex-1 flex-col justify-between gap-3">
-        <SectionCard className="shrink-0 pb-6 sm:py-5">
+    <PageSection id={$t.career.id} variant={PageSectionVariant.Primary} fitViewport={false}>
+      <SectionContainer className="flex flex-1 flex-col justify-between gap-2 hlg:gap-3">
+        <SectionCard className="shrink-0 py-3 hlg:py-5">
           <SectionHeading as="h2" label={$t.career.heading} metadata={experienceLabel} />
-          <div className="mt-4">
-            <Typography variant="career-intro">{$t.career.intro}</Typography>
+          <div className="mt-2">
+            <Typography variant="intro">{$t.career.intro}</Typography>
           </div>
         </SectionCard>
         <Timeline milestones={milestones} skills={skills} />

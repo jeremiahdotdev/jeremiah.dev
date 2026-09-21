@@ -7,11 +7,11 @@ type PerspectiveContent = Dictionary["academics"]["perspective"];
 function PerspectiveItem({ content }: { content: PerspectiveContent["mathematics"] }) {
   return (
     <div className="min-w-0 max-w-full">
-      <Typography variant="diagram-label">{content.label}</Typography>
-      <Typography as="h3" variant="diagram-title">{content.heading}</Typography>
+      <Typography variant="label">{content.label}</Typography>
+      <Typography as="h3" variant="title">{content.heading}</Typography>
       {content.description && (
-        <div className="mx-auto max-w-xs">
-          <Typography variant="diagram-body">{content.description}</Typography>
+        <div className="mx-auto max-w-xs lg:hidden 2xl:inline-flex">
+          <Typography variant="eyebrow">{content.description}</Typography>
         </div>
       )}
     </div>
@@ -26,7 +26,7 @@ function CircleSurface() {
 
 function TabletCircle({ content }: { content: PerspectiveContent["mathematics"] }) {
   return (
-    <div className="relative isolate flex aspect-square min-w-0 flex-col items-center justify-center rounded-full px-3 text-center [--foreground:210_12%_13%] [--muted-foreground:210_10%_26%]">
+    <div className="academic-perspective-surface relative isolate flex aspect-square min-w-0 flex-col items-center justify-center rounded-full px-3 text-center">
       <CircleSurface />
       <PerspectiveItem content={content} />
     </div>
@@ -35,7 +35,7 @@ function TabletCircle({ content }: { content: PerspectiveContent["mathematics"] 
 
 export default function AcademicPerspective({ content }: { content: PerspectiveContent }) {
   return (
-    <figure aria-label={content.label} className="flex h-full items-center justify-center py-4 sm:py-5">
+    <figure aria-label={content.label} className="flex h-full items-center">
       <div className="grid w-full max-w-[60rem] grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)_3rem_minmax(0,1fr)] items-center lg:hidden">
         <TabletCircle content={content.mathematics} />
         <ArrowRight aria-hidden="true" className="h-5 w-full text-foreground/40" strokeWidth={1} />
@@ -43,13 +43,13 @@ export default function AcademicPerspective({ content }: { content: PerspectiveC
         <ArrowLeft aria-hidden="true" className="h-5 w-full text-foreground/40" strokeWidth={1} />
         <TabletCircle content={content.faith} />
       </div>
-      <div className="relative isolate hidden aspect-square w-full max-w-[44rem] place-items-center [--foreground:210_12%_13%] [--muted-foreground:210_10%_26%] lg:grid">
+      <div className="academic-perspective-surface relative isolate hidden aspect-square w-full place-items-center lg:grid">
         <CircleSurface />
         <div className="grid w-[76%] grid-cols-2 items-start gap-x-4 gap-y-3 py-12 text-center">
           <PerspectiveItem content={content.mathematics} />
           <PerspectiveItem content={content.faith} />
           <div className="col-span-2 min-w-0">
-            <svg aria-hidden="true" viewBox="0 0 400 168" preserveAspectRatio="none" className="h-[clamp(2rem,5vw,6rem)] w-full text-foreground/30">
+            <svg aria-hidden="true" viewBox="0 0 400 168" preserveAspectRatio="none" className="h-8 w-full text-foreground/30 sm:h-12 lg:h-20 xl:h-24">
               <path d="M100 0V24H300V0M200 24V168" fill="none" stroke="currentColor" vectorEffect="non-scaling-stroke" />
             </svg>
             <div className="relative pt-4">

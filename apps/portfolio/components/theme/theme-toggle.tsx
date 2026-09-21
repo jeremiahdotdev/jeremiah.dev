@@ -28,7 +28,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
       className={cn("inline-flex items-center gap-2", className)}
     >
       <Icon aria-hidden="true" className="size-5 shrink-0" />
-      <Typography as="span" variant="menu">{label}</Typography>
+      <Typography as="span" variant="navigation">{label}</Typography>
     </button>
   );
 }

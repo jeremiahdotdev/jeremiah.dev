@@ -140,6 +140,7 @@ export const siteSettings = defineType({
           {name: 'languageValue', title: 'Language percentage label', type: 'string', description: 'Use {language} and {value}.'},
           {name: 'preview', title: 'Preview labels', type: 'object', fields: [
             {name: 'live', title: 'Live label', type: 'string'},
+            {name: 'loading', title: 'Loading label', type: 'string'},
             {name: 'reloadAria', title: 'Reload accessible label', type: 'string', description: 'Use {project} for the project name.'},
             {name: 'title', title: 'Frame title', type: 'string', description: 'Use {project} for the project name.'},
           ]},

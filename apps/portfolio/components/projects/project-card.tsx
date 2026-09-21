@@ -33,61 +33,51 @@ export default function ProjectCard({ project, index = 0, total = 1, moving = fa
   const heading = <SectionHeading as="h2" label={labels.heading} metadata={`${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`} />;
 
   return (
-    <article className="mx-auto grid w-full max-w-project content-start items-start gap-x-8 gap-y-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] lg:content-stretch lg:gap-x-10 xl:gap-x-14">
+    <article className="mx-auto grid w-full content-start items-start gap-x-8 gap-y-3 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] lg:content-stretch lg:gap-x-10 xl:gap-x-14">
       <div className="block lg:hidden">{heading}</div>
       <div className="min-w-0 max-md:self-stretch lg:flex lg:self-stretch">
         <ProjectPreview project={project} moving={moving} />
       </div>
-      <div className="min-w-0 py-1">
+      <div className="min-w-0">
         {mobileNavigation && <div className="lg:hidden">{mobileNavigation}</div>}
-        <header>
-          <div className="hidden lg:block">{heading}</div>
-          <div className="mt-5 border-b border-foreground/40 pb-5">
+        <header className="flex flex-col gap-3 border-b border-foreground/40 pb-5">
+            <div className="hidden lg:block">{heading}</div>
             <ProjectTitle name={project.name} />
             {intro && (
-              <div className="mt-3">
-                <Typography variant="project-intro">{intro}</Typography>
-              </div>
+              <Typography variant="intro">{intro}</Typography>
             )}
-          </div>
         </header>
-        {remainder && (
-          <div className="mt-5">
-            <Typography variant="body-muted">{remainder}</Typography>
-          </div>
-        )}
-        <div className="mt-7 space-y-7 lg:mt-8 lg:space-y-8">
-          {hasSummary && (
-            <div>
-              <Typography as="h4" variant="detail-label">{labels.product}</Typography>
-              <div className="mt-3">
-                <Typography variant="body">{productSummary}</Typography>
-              </div>
+        <div className="flex flex-col pt-4 gap-4">
+          {badges.map((label) => (
+            <div key={`status-${label}`} className="min-w-0 max-w-full">
+              <ProjectStatusBadge label={label} />
             </div>
+          ))}
+          {remainder && (
+            <Typography variant="body">{remainder}</Typography>
+          )} 
+          {hasSummary && (
+            <>
+              <Typography as="h4" variant="eyebrow">{labels.product}</Typography>
+              <Typography variant="body">{productSummary}</Typography>
+            </>
           )}
           {(badges.length > 0 || technologies.length > 0 || languages.length > 0) && (
-            <div>
-              <Typography as="h4" variant="detail-label">{labels.topics}</Typography>
+            <>
+              <Typography as="h4" variant="eyebrow">{labels.topics}</Typography>
               {(badges.length > 0 || technologies.length > 0) && (
-                <ul className="mt-4 flex flex-wrap gap-2">
-                  {badges.map((label) => (
-                    <li key={`status-${label}`} className="min-w-0 max-w-full">
-                      <ProjectStatusBadge label={label} />
-                    </li>
-                  ))}
+                <ul className="inline-flex flex-nowrap gap-1">
                   {technologies.map((technology) => (
-                    <li key={technology} className="flex min-w-0 max-w-full items-center rounded-full bg-foreground/10 px-4 py-2">
+                    <li key={technology} className="flex min-w-0 max-w-full items-center rounded-full bg-foreground/10 px-3 py-2">
                       <ProjectBadgeLabel label={technology.replace(/-/g, " ")} />
                     </li>
                   ))}
                 </ul>
               )}
               {languages.length > 0 && (
-                <div className="mt-5">
-                  <ProjectLanguageMeter languages={languages} />
-                </div>
+                <ProjectLanguageMeter languages={languages} />
               )}
-            </div>
+            </>
           )}
           <ProjectLinks project={project} />
         </div>

@@ -71,7 +71,7 @@ export function ContactForm() {
       
   return (
       <SectionCard className="mx-auto w-full max-w-3xl sm:py-6">
-        <div className="text-center"><Typography as="h2" variant="section-label">{$t.contact.heading}</Typography></div>
+        <div className="text-center"><Typography as="h2" variant="label">{$t.contact.heading}</Typography></div>
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 flex w-full flex-col gap-5">
             <ContactFormField name="email" type="email" label={$t.contact.email.label} placeholder={$t.contact.email.placeholder} description={$t.contact.email.description} />

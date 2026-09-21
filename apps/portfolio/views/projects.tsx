@@ -13,7 +13,7 @@ export default async function Projects({ dictionary }: ProjectsProps) {
   const projects = await getProjectsData()
 
   return (
-    <PageSection id={$t.projects.id} variant={PageSectionVariant.Secondary} compactContent>
+    <PageSection id={$t.projects.id} variant={PageSectionVariant.Secondary}>
       <div className="flex w-full flex-1 flex-col overflow-x-clip py-4 lg:py-2">
         <ProjectDashboard projects={projects}/>
       </div>

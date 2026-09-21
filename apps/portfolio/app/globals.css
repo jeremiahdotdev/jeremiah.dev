@@ -106,6 +106,35 @@
 }
 
 @layer components {
+  .career-accent-green {
+    --career-accent: 153 30% 35%;
+  }
+
+  .career-accent-blue {
+    --career-accent: 208 38% 42%;
+  }
+
+  .career-accent-terracotta {
+    --career-accent: 12 35% 45%;
+  }
+
+  .dark .career-accent-green {
+    --career-accent: 151 30% 62%;
+  }
+
+  .dark .career-accent-blue {
+    --career-accent: 208 42% 66%;
+  }
+
+  .dark .career-accent-terracotta {
+    --career-accent: 12 40% 66%;
+  }
+
+  .academic-perspective-surface {
+    --foreground: 210 12% 13%;
+    --muted-foreground: 210 10% 26%;
+  }
+
 .home-transition-scope,
 .home-transition-scope *,
 .home-transition-scope *::before,

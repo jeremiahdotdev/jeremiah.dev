@@ -5,12 +5,13 @@ import { Portal } from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Typography } from "@/components/ui/typography";
 import type { Commendation } from "@/types/commendation";
+import { cx } from "class-variance-authority";
 
 type AcademicBadge = Pick<Commendation, "title" | "subtitle" | "label" | "dates" | "tooltip" | "link">;
 
 function AcademicBadgeItem({ award }: { award: AcademicBadge }) {
   const [open, setOpen] = useState(false);
-  const className = "inline-flex items-center gap-1.5 rounded-full border border-foreground/20 bg-foreground/5 px-2.5 py-1 hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 lg:px-3 lg:py-1.5";
+  const className = "flex w-full min-w-0 items-center border-l-2 border-foreground/30 rounded-r-lg bg-foreground/5 px-2.5 py-1 text-left tracking-tight hover:bg-foreground/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [overflow-wrap:anywhere]";
 
   const content = <Typography as="span" variant="caption">{award.label ?? `${award.subtitle} ${award.title}`}</Typography>;
 
@@ -24,7 +25,7 @@ function AcademicBadgeItem({ award }: { award: AcademicBadge }) {
         )}
       </TooltipTrigger>
       <Portal>
-        <TooltipContent className="max-w-[min(28rem,calc(100vw-2rem))] px-3 py-2" sideOffset={6}>
+        <TooltipContent className="px-3 py-2" sideOffset={6}>
           <Typography variant="caption">{award.title} · {award.subtitle}{award.dates && <span className="whitespace-nowrap"> · {award.dates}</span>}</Typography>
           {award.tooltip && <div className="mt-1"><Typography variant="caption">{award.tooltip}</Typography></div>}
         </TooltipContent>
@@ -33,11 +34,11 @@ function AcademicBadgeItem({ award }: { award: AcademicBadge }) {
   );
 }
 
-export default function AcademicBadges({ awards, label }: { awards: AcademicBadge[]; label: string }) {
+export default function AcademicBadges({ awards, label, classNames }: { awards: AcademicBadge[]; label: string; classNames?: string }) {
   return (
     <TooltipProvider delayDuration={150}>
-      <ul aria-label={label} className="mt-4 flex flex-wrap gap-1.5">
-        {awards.map((award) => <li key={`${award.subtitle}-${award.title}`}><AcademicBadgeItem award={award} /></li>)}
+      <ul aria-label={label} className={cx("ml-3 mt-2 grid min-w-0 grid-cols-1 gap-1 sm:ml-4", classNames)}>
+        {awards.map((award) => <li key={`${award.subtitle}-${award.title}`} className="min-w-0"><AcademicBadgeItem award={award} /></li>)}
       </ul>
     </TooltipProvider>
   );

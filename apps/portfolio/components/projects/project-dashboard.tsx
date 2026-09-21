@@ -75,7 +75,7 @@ export default function ProjectDashboard({ projects }: { projects: Project[] }) 
         <CarouselNavigation
           itemLabel={labels.item}
           itemNames={projectNames}
-          className="mx-auto max-w-section shrink-0 px-5 sm:px-8 lg:px-10 xl:px-12"
+          className="mx-auto shrink-0 px-5 sm:px-8 lg:px-10 xl:px-12"
         />
       </div>
       <span className="sr-only" aria-live="polite" aria-atomic="true">{formatTemplate(labels.announcement, { index: selected + 1, total: projects.length, project: projects[selected]?.name ?? "" })}</span>

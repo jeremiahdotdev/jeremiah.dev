@@ -254,13 +254,13 @@ function CarouselNavigation({
 
   if (state.snapCount <= 1) return null
 
-  const buttonClass = "flex min-h-11 items-center gap-4 rounded-sm hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 disabled:cursor-default disabled:opacity-30"
+  const buttonClass = "group/typography flex min-h-11 items-center gap-4 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 disabled:pointer-events-none disabled:cursor-default disabled:opacity-30"
 
   return (
     <div className={cn("flex w-full items-center justify-between gap-3 text-foreground", className)}>
       <button type="button" onClick={scrollPrev} disabled={!canScrollPrev} aria-label={formatTemplate(labels.previousAria, { item })} className={buttonClass}>
         <ArrowLeft aria-hidden="true" className="size-6" strokeWidth={1.5} />
-        <span className="hidden sm:inline"><Typography as="span" variant="detail-label">{labels.previous}</Typography></span>
+        <span className="hidden sm:inline"><Typography as="span" variant="label" hoverable>{labels.previous}</Typography></span>
       </button>
       <div className="flex w-1/2 max-w-md items-center justify-center gap-1 sm:gap-2">
         {Array.from({ length: state.snapCount }, (_, index) => (
@@ -270,7 +270,7 @@ function CarouselNavigation({
         ))}
       </div>
       <button type="button" onClick={scrollNext} disabled={!canScrollNext} aria-label={formatTemplate(labels.nextAria, { item })} className={buttonClass}>
-        <span className="hidden sm:inline"><Typography as="span" variant="detail-label">{labels.next}</Typography></span>
+        <span className="hidden sm:inline"><Typography as="span" variant="label" hoverable>{labels.next}</Typography></span>
         <ArrowRight aria-hidden="true" className="size-6" strokeWidth={1.5} />
       </button>
     </div>

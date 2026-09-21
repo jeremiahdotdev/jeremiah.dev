@@ -9,7 +9,7 @@ const PageSectionHeader: FC<PageSectionHeaderProps> = ({children}: PageSectionHe
     // Memoized component
     const header = useMemo(() => (
         <div className="flex w-full justify-center p-4 pt-8 sm:justify-end sm:px-16">
-          <Typography as="h2" variant="section-label">
+          <Typography as="h2" variant="label">
             {children}
           </Typography>
         </div>

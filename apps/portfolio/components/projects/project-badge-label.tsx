@@ -15,25 +15,25 @@ export default function ProjectBadgeLabel({ label }: { label: string }) {
 
     function fitLabel() {
       if (disposed || !container || !text) return;
-      container.style.removeProperty("--topic-badge-fit");
-      container.style.removeProperty("--topic-badge-tracking");
-      container.style.removeProperty("--topic-badge-width");
+      text.style.fontSize = "";
+      delete container.dataset.fitting;
+      container.style.minWidth = "";
       const availableWidth = container.clientWidth;
       if (availableWidth <= 0 || text.scrollWidth <= availableWidth) return;
 
       // Preserve the measured space while the surrounding badge sizes to its text.
-      container.style.setProperty("--topic-badge-width", `${availableWidth}px`);
-      container.style.setProperty("--topic-badge-tracking", "-0.03em");
+      container.style.minWidth = `${availableWidth}px`;
+      container.dataset.fitting = "";
       if (text.scrollWidth > availableWidth) {
         let minimum = 0;
         let maximum = parseFloat(getComputedStyle(text).fontSize);
         for (let step = 0; step < 10; step += 1) {
           const fontSize = (minimum + maximum) / 2;
-          container.style.setProperty("--topic-badge-fit", `${fontSize}px`);
+          text.style.fontSize = `${fontSize}px`;
           if (text.scrollWidth > availableWidth) maximum = fontSize;
           else minimum = fontSize;
         }
-        container.style.setProperty("--topic-badge-fit", `${minimum}px`);
+        text.style.fontSize = `${minimum}px`;
       }
     }
 
@@ -53,8 +53,8 @@ export default function ProjectBadgeLabel({ label }: { label: string }) {
   }, [label]);
 
   return (
-    <span ref={containerRef} className="block min-w-[var(--topic-badge-width,0px)] max-w-full">
-      <Typography ref={textRef} as="span" variant="topic-badge">{label}</Typography>
+    <span ref={containerRef} className="flex min-w-0 max-w-full">
+      <Typography ref={textRef} as="span" variant="caption" noWrap>{label}</Typography>
     </span>
   );
 }
