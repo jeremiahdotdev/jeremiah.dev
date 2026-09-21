@@ -6,6 +6,7 @@ export type Project = {
   name: string;
   description: string;
   summary: string;
+  badges: string[];
   link: Link;
   private: boolean;
   topics?: string[];

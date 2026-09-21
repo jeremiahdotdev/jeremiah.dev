@@ -1,7 +1,7 @@
-import { InternalGithubProject } from "@/types/github"
-import { Languages } from "@/types/languages"
-import { Project } from "@/types/project"
-import { RawGithubLanguages } from "@/types/github";
+import type { InternalGithubProject, RawGithubLanguages } from "@/types/github"
+import type { Languages } from "@/types/languages"
+import type { Project } from "@/types/project"
+import { parseProjectDescription } from "@/lib/project-description"
 
 const LANGUAGE_COLORS: Record<string, string> = {
     TypeScript: "#2563eb",
@@ -41,11 +41,17 @@ function parseLanguages(languages?: RawGithubLanguages): Languages {
 
 function parseProject(project: InternalGithubProject): Project {
     const languages = parseLanguages(project.languages);
+    const { description: rawDescription, badges } = parseProjectDescription(project.description ?? "");
+    const separatorIndex = rawDescription.indexOf(":");
+    const readableName = separatorIndex >= 0 ? rawDescription.slice(0, separatorIndex).trim() : "";
+    const name = readableName || project.name;
+    const description = readableName ? rawDescription.slice(separatorIndex + 1).trim() : rawDescription;
     const parsedProject: Project = {
-        name: project.name,
-        description: project.description ?? "",
-        summary: project.description ?? "",
-        icon: project.image ? { src: project.image, alt:project.name.split("-").map(e=>e[0].toUpperCase()).join("")} : undefined,
+        name,
+        description,
+        summary: description,
+        badges,
+        icon: project.image ? { src: project.image, alt: name } : undefined,
         private: project.private,
         link: { href: project.html_url, label: ""},
         demo: project.homepage ? { href: project.homepage, label: ""} : undefined,

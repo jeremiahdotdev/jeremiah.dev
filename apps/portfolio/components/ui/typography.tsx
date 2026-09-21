@@ -22,7 +22,7 @@ const typographyVariants = cva("not-italic", {
       caption:
         "font-light font-sans text-sm lg:text-base hsm:text-base hlg:text-lg h2xl:text-xl leading-normal tracking-normal normal-case tabular-nums text-muted-foreground [[data-fitting]_&]:tracking-tight",
       navigation:
-        "font-normal font-serif text-sm leading-normal tracking-widest normal-case text-foreground/75 sm:text-base lg:text-sm [[aria-current=location]_&]:text-foreground",
+        "font-normal font-serif text-md leading-normal tracking-wide normal-case text-foreground/75 sm:text-md lg:text-md [[aria-current=location]_&]:text-foreground",
       error:
         "font-normal font-sans text-sm leading-normal tracking-normal normal-case text-red-600 dark:text-red-400 lg:text-base",
     },

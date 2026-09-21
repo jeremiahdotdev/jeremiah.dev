@@ -18,6 +18,7 @@ interface ProjectPreviewProps {
 }
 
 const PREVIEW_VIEWPORT_WIDTH = 1440;
+const PREVIEW_RESIZE_SETTLE_MS = 200;
 
 function getProjectInitials(name: string) {
   return name
@@ -41,6 +42,7 @@ function getProjectHost(project: Project) {
 const ProjectPreview: FC<ProjectPreviewProps> = ({ project, moving = false }) => {
   const { projects: labels } = useDictionary();
   const [loadedFrame, setLoadedFrame] = useState<string | null>(null);
+  const [resizingFrame, setResizingFrame] = useState<string | null>(null);
   const [frameKey, setFrameKey] = useState(0);
   const viewportRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
@@ -50,13 +52,21 @@ const ProjectPreview: FC<ProjectPreviewProps> = ({ project, moving = false }) =>
   const frameId = `${demoHref ?? ""}:${frameKey}`;
   const frameReady = loadedFrame === frameId;
   const canPreviewDemo = Boolean(demoHref);
-  const showOverlay = moving || (canPreviewDemo && !frameReady);
+  const showOverlay = moving || (canPreviewDemo && (!frameReady || resizingFrame === frameId));
 
   useLayoutEffect(() => {
     const viewport = viewportRef.current;
     const frame = frameRef.current;
     if (!viewport || !frame) return;
     const desktop = window.matchMedia("(min-width: 1024px)");
+    let resizeTimer = 0;
+    let previousSize: { width: number; height: number } | undefined;
+
+    function showResizeLoader() {
+      window.clearTimeout(resizeTimer);
+      setResizingFrame(frameId);
+      resizeTimer = window.setTimeout(() => setResizingFrame(null), PREVIEW_RESIZE_SETTLE_MS);
+    }
 
     function fitPreview(width: number, height: number) {
       if (!frame || width <= 0 || height <= 0) return;
@@ -70,20 +80,33 @@ const ProjectPreview: FC<ProjectPreviewProps> = ({ project, moving = false }) =>
       if (viewport) fitPreview(viewport.clientWidth, viewport.clientHeight);
     }
 
+    function handleResize() {
+      showResizeLoader();
+      fitViewport();
+    }
+
     fitViewport();
     const observer = new ResizeObserver(([entry]) => {
-      fitPreview(entry.contentRect.width, entry.contentRect.height);
+      const { width, height } = entry.contentRect;
+      if (previousSize && (width !== previousSize.width || height !== previousSize.height)) {
+        showResizeLoader();
+      }
+      previousSize = { width, height };
+      fitPreview(width, height);
     });
     observer.observe(viewport);
-    desktop.addEventListener("change", fitViewport);
+    window.addEventListener("resize", handleResize);
+    desktop.addEventListener("change", handleResize);
     return () => {
+      window.clearTimeout(resizeTimer);
       observer.disconnect();
-      desktop.removeEventListener("change", fitViewport);
+      window.removeEventListener("resize", handleResize);
+      desktop.removeEventListener("change", handleResize);
     };
   }, [frameId]);
 
   return (
-    <div className="w-full aspect-[4/3] sm:aspect-video lg:flex-1 lg:aspect-auto dark:shadow-black/25 relative flex flex-col overflow-clip rounded-xl bg-muted shadow-md shadow-black/10">
+    <div className="w-full aspect-[4/3] sm:aspect-video lg:flex-1 lg:aspect-auto dark:shadow-[0_0_16px_rgba(255,255,255,0.1)] relative flex flex-col overflow-clip rounded-xl bg-muted shadow-md shadow-black/10">
       <div className="border-black/10 bg-[#ededee] text-[#171a1e] dark:border-white/10 dark:bg-[#24272b] dark:text-[#e7e9ec] relative flex h-10 shrink-0 items-center gap-3 border-b px-3 sm:h-12 sm:gap-5 sm:px-5">
         <div aria-hidden="true" className="flex items-center gap-1.5 sm:gap-2">
           <span className="size-2.5 rounded-full bg-[#ff5f57] sm:size-3" />
@@ -112,7 +135,7 @@ const ProjectPreview: FC<ProjectPreviewProps> = ({ project, moving = false }) =>
         )}
       </div>
       <span role="status" className="sr-only">
-        {canPreviewDemo && !frameReady && labels.preview.loading}
+        {canPreviewDemo && showOverlay && labels.preview.loading}
       </span>
       <div ref={viewportRef} aria-busy={showOverlay} className="relative min-h-0 flex-1 overflow-clip bg-muted">
         <Skeleton

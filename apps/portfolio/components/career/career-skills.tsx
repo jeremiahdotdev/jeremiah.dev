@@ -16,7 +16,7 @@ import type { Skill } from "@/types/skill";
 import SkillCard from "./skill-card";
 
 const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
-const carouselOptions = { align: "start" as const, loop: true, slidesToScroll: 1 };
+const carouselOptions = { align: "start" as const, loop: true, slidesToScroll: 3 };
 
 function subscribeToReducedMotion(onChange: () => void) {
   const media = window.matchMedia(reducedMotionQuery);
@@ -118,7 +118,15 @@ export default function CareerSkills({ skills, autoPlay = true }: { skills: Skil
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselNavigation itemLabel={$t.career.skills.item} itemNames={skills.map((skill) => skill.subtitle)} />
+      <CarouselNavigation
+        itemLabel={$t.career.skills.item}
+        itemNames={skills
+          .filter((_, index) => index % carouselOptions.slidesToScroll === 0)
+          .map((_, index) => skills
+            .slice(index * carouselOptions.slidesToScroll, (index + 1) * carouselOptions.slidesToScroll)
+            .map((skill) => skill.subtitle)
+            .join(", "))}
+      />
     </Carousel>
   );
 }

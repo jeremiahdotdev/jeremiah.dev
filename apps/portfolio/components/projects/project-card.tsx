@@ -8,7 +8,7 @@ import ProjectPreview from "./project-preview";
 import ProjectLanguageMeter from "./project-language-meter";
 import ProjectLinks from "./project-links";
 import SectionHeading from "@/components/shared/section-heading";
-import { parseProjectDescription, splitProjectDescription } from "@/lib/project-description";
+import { splitProjectDescription } from "@/lib/project-description";
 import ProjectStatusBadge from "./project-status-badge";
 import ProjectTitle from "./project-title";
 import ProjectBadgeLabel from "./project-badge-label";
@@ -25,8 +25,7 @@ export default function ProjectCard({ project, index = 0, total = 1, moving = fa
   const { projects: labels } = useDictionary();
   const technologies = [...new Set(project.topics ?? [])].slice(0, 6);
   const languages = project.languages ?? [];
-  const { description, badges } = parseProjectDescription(project.description);
-  const { description: summary } = parseProjectDescription(project.summary);
+  const { description, summary, badges } = project;
   const { intro, remainder } = splitProjectDescription(description);
   const productSummary = intro && summary.startsWith(intro) ? summary.slice(intro.length).trim() : summary;
   const hasSummary = productSummary && productSummary !== remainder;

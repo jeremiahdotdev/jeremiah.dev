@@ -44,7 +44,7 @@ export default function CareerMilestoneCard({ milestone }: { milestone: CareerMi
       </article>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60" />
-        <Dialog.Content className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-3xl -translate-y-1/2 overflow-y-auto rounded-2xl border border-border bg-card p-6 text-foreground shadow-2xl focus:outline-none sm:p-8">
+        <Dialog.Content className="fixed inset-x-4 top-1/2 z-50 mx-auto max-h-[85dvh] max-w-3xl -translate-y-1/2 overflow-y-auto rounded-2xl border border-border bg-card p-6 text-foreground shadow-2xl focus:outline-none sm:p-8 overflow-hidden">
           <div className="pr-10">
             <Typography variant="eyebrow">{role.type.replace(/-/g, " ")}</Typography>
             <div className="mt-3">
