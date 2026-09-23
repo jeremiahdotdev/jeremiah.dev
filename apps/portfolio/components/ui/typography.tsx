@@ -10,7 +10,9 @@ const typographyVariants = cva("not-italic", {
       heading:
         "font-light font-title text-4xl sm:text-5xl lg:text-6xl hlg:text-5xl lg:hlg:text-6xl h2xl:text-6xl lg:h2xl:text-7xl leading-tight tracking-tighter normal-case text-foreground [overflow-wrap:anywhere]",
       title:
-        "font-light font-title text-xl sm:text-3xl hsm:text-3xl hlg:text-4xl h2xl:text-5xl leading-tight tracking-tight normal-case text-foreground",
+        "font-light font-title text-2xl sm:text-3xl hsm:text-4xl hlg:text-4xl h2xl:text-5xl leading-tight tracking-tight normal-case text-foreground",
+      subtitle:
+        "font-light font-title text-xl sm:text-2xl hsm:text-2xl hlg:text-3xl h2xl:text-4xl leading-tight tracking-tight normal-case text-foreground",
       intro:
         "font-light font-title text-2xl sm:text-3xl lg:text-4xl hlg:text-3xl lg:hlg:text-4xl h2xl:text-4xl lg:h2xl:text-5xl leading-tight tracking-tight normal-case text-muted-foreground [overflow-wrap:anywhere]",
       body:
@@ -44,6 +46,7 @@ type TypographyProps<T extends TypographyElement = "p"> = {
   as?: T
   variant: TypographyVariant
   noWrap?: boolean
+  forceWrap?: boolean
   hoverable?: boolean
   className?: never
   style?: never
@@ -53,13 +56,16 @@ function Typography<T extends TypographyElement = "p">({
   as,
   variant,
   noWrap,
+  forceWrap,
   hoverable,
+  children,
   ...props
 }: TypographyProps<T>) {
   return React.createElement(as ?? "p", {
     ...props,
     // Also prevent styles injected by a composing component from overriding the variant.
     className: typographyVariants({ variant, noWrap, hoverable }),
+    children: forceWrap && (typeof children === "string") ? (<>{children.split(" ")?.[0]}<br/>{children.split(" ")?.slice(1, children.length).join(" ")}</>): children,
     style: undefined,
   })
 }

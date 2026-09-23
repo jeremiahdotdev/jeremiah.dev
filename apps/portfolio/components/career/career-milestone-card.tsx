@@ -12,12 +12,6 @@ export default function CareerMilestoneCard({ milestone }: { milestone: CareerMi
   const $t = useDictionary();
   const { role, summary } = milestone;
   const title = role.title.trim();
-  const words = title.split(/\s+/);
-  let breakAt = 1;
-  for (let index = 2; index < words.length; index++) {
-    const balance = (position: number) => Math.abs(words.slice(0, position).join(" ").length - words.slice(position).join(" ").length);
-    if (balance(index) < balance(breakAt)) breakAt = index;
-  }
 
   return (
     <Dialog.Root>
@@ -27,10 +21,8 @@ export default function CareerMilestoneCard({ milestone }: { milestone: CareerMi
         </div>
         <div className="flex w-full items-center border-b border-foreground/40 py-2 hlg:py-3">
           <div data-role-title className="relative w-full">
-            <Typography as="h3" variant="title">
-              <span aria-hidden="true" data-role-title-measure className="pointer-events-none invisible absolute left-0 top-0 whitespace-nowrap">{title}</span>
-              <span>{words.slice(0, breakAt).join(" ")}</span>
-              {words.length > 1 && <>{" "}<span className="group-data-[wrap-titles=true]/timeline:block">{words.slice(breakAt).join(" ")}</span></>}
+            <Typography as="h3" variant="title" forceWrap>
+              {title}
             </Typography>
           </div>
         </div>

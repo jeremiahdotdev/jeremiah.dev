@@ -8,7 +8,7 @@ function PerspectiveItem({ content }: { content: PerspectiveContent["mathematics
   return (
     <div className="min-w-0 max-w-full">
       <Typography variant="label">{content.label}</Typography>
-      <Typography as="h3" variant="title">{content.heading}</Typography>
+      <Typography as="h3" variant="subtitle">{content.heading}</Typography>
       {content.description && (
         <div className="mx-auto max-w-xs lg:hidden 2xl:inline-flex">
           <Typography variant="eyebrow">{content.description}</Typography>
@@ -35,7 +35,7 @@ function TabletCircle({ content }: { content: PerspectiveContent["mathematics"] 
 
 export default function AcademicPerspective({ content }: { content: PerspectiveContent }) {
   return (
-    <figure aria-label={content.label} className="flex h-full items-center">
+    <figure aria-label={content.label} className="flex w-full items-center justify-center">
       <div className="grid w-full max-w-[60rem] grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)_3rem_minmax(0,1fr)] items-center lg:hidden">
         <TabletCircle content={content.mathematics} />
         <ArrowRight aria-hidden="true" className="h-5 w-full text-foreground/40" strokeWidth={1} />

@@ -14,9 +14,9 @@ export default async function Academics({ dictionary: $t }: { dictionary: Dictio
   const endYear = academics.endDate.match(/\d{4}/)?.[0] ?? academics.endDate;
 
   return (
-    <PageSection id={$t.academics.id} variant={PageSectionVariant.Secondary}>
-      <SectionContainer className="grid flex-1 grid-rows-[auto_1fr] gap-x-10 gap-y-4 md:grid-rows-[auto_auto_1fr] lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-12 xl:gap-x-16 hsm:gap-y-6 hlg:gap-y-10 h2xl:gap-y-14">
-        <header className="lg:col-span-2">
+    <PageSection id={$t.academics.id} variant={PageSectionVariant.Secondary} className="lg:pb-0">
+      <SectionContainer className="grid flex-1 grid-rows-[auto_1fr] gap-x-10 gap-y-4 md:grid-rows-[auto_auto_1fr] lg:grid-cols-[minmax(0,11fr)_minmax(0,9fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:pb-4 xl:gap-x-16 hsm:gap-y-6 hlg:gap-y-10 h2xl:gap-y-14">
+        <header className="min-w-0">
           <SectionHeading label={$t.academics.heading} metadata={`${startYear}–${endYear}`} />
           <div className="mt-4 hlg:mt-6">
             <Typography as="h2" variant="heading">
@@ -29,7 +29,7 @@ export default async function Academics({ dictionary: $t }: { dictionary: Dictio
             </Typography>
           </div>
         </header>
-        <div className="flex min-w-0 flex-col justify-center">
+        <div className="flex min-w-0 flex-col justify-center lg:pb-20">
           <div className="sr-only"><Typography as="h3" variant="title">{$t.academics.focus.heading}</Typography></div>
           <div className="flex h-full flex-col justify-between">
             {academics.focuses.map((focus) => {
@@ -57,7 +57,7 @@ export default async function Academics({ dictionary: $t }: { dictionary: Dictio
             })}
           </div>
         </div>
-        <div className="hidden min-w-0 md:block">
+        <div className="hidden min-w-0 place-items-center md:grid lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <AcademicPerspective content={$t.academics.perspective} />
         </div>
       </SectionContainer>

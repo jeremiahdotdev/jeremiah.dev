@@ -21,38 +21,6 @@ export default function Timeline({ milestones, skills }: { milestones: CareerMil
   const $t = useDictionary();
   const timelineRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    const timeline = timelineRef.current;
-    if (!timeline) return;
-    let disposed = false;
-    const titles = Array.from(timeline.querySelectorAll<HTMLElement>("[data-role-title]"));
-
-    function syncTitleWrapping() {
-      if (disposed || !timeline) return;
-      // Measure the unbroken text so forcing a line break cannot toggle wrapping back off.
-      const shouldWrap = titles.some((title) => {
-        const text = title.querySelector<HTMLElement>("[data-role-title-measure]");
-        const width = title.getBoundingClientRect().width;
-        return width > 0 && Boolean(text && text.getBoundingClientRect().width > width);
-      });
-      timeline.dataset.wrapTitles = String(shouldWrap);
-    }
-
-    syncTitleWrapping();
-    const observer = new ResizeObserver(syncTitleWrapping);
-    titles.forEach((title) => observer.observe(title));
-    window.addEventListener("resize", syncTitleWrapping);
-    document.fonts.addEventListener("loadingdone", syncTitleWrapping);
-    void document.fonts.ready.then(syncTitleWrapping);
-
-    return () => {
-      disposed = true;
-      observer.disconnect();
-      window.removeEventListener("resize", syncTitleWrapping);
-      document.fonts.removeEventListener("loadingdone", syncTitleWrapping);
-    };
-  }, [milestones]);
-
   if (!milestones.length) return null;
 
   return (
