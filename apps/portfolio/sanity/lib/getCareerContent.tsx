@@ -1,7 +1,6 @@
-import { experiences as fallbackExperiences } from '@/data/career'
 import { ImportedCareerEvent } from '@/types/job'
 import { client } from '../client'
-import { hasSanityConfig } from '../env'
+import { requireSanityConfig } from '../env'
 import { careerEmployersQuery } from '../queries'
 import { PortableTextValue, renderPortableText } from './portableText'
 import { type SanitySkill, toSkill } from './skill'
@@ -30,37 +29,33 @@ function toDate(date?: string) {
 }
 
 export async function getCareerContent(): Promise<ImportedCareerEvent[]> {
-  if (!hasSanityConfig) return fallbackExperiences
+  requireSanityConfig()
 
-  try {
-    const employers = await client.fetch<SanityCareerEmployer[] | null>(
-      careerEmployersQuery,
-      {},
-      {next: {revalidate: 60}},
-    )
+  const employers = await client.fetch<SanityCareerEmployer[] | null>(
+    careerEmployersQuery,
+    {},
+    {next: {revalidate: 60}},
+  )
 
-    if (employers == null) return fallbackExperiences
+  if (employers == null) throw new Error('Sanity career query returned no result.')
 
-    return employers.map((employer) => ({
-      employer: employer.name || '',
-      icon: employer.icon?.asset?.url ? {
-        src: employer.icon.asset.url,
-        alt: employer.name || '',
-      } : undefined,
-      location: employer.location || '',
-      roles: (employer.roles || []).map((role) => ({
-        title: role.title || '',
-        type: role.employmentType || '',
-        startDate: toDate(role.startDate) || new Date(),
-        endDate: toDate(role.endDate),
-        summary: role.summary,
-        description: renderPortableText(role.description) || null,
-        skills: (role.skills || [])
-          .filter((skill): skill is SanitySkill => skill !== null)
-          .map(toSkill),
-      })),
-    }))
-  } catch (error) {
-    return fallbackExperiences
-  }
+  return employers.map((employer) => ({
+    employer: employer.name || '',
+    icon: employer.icon?.asset?.url ? {
+      src: employer.icon.asset.url,
+      alt: employer.name || '',
+    } : undefined,
+    location: employer.location || '',
+    roles: (employer.roles || []).map((role) => ({
+      title: role.title || '',
+      type: role.employmentType || '',
+      startDate: toDate(role.startDate) || new Date(),
+      endDate: toDate(role.endDate),
+      summary: role.summary,
+      description: renderPortableText(role.description) || null,
+      skills: (role.skills || [])
+        .filter((skill): skill is SanitySkill => skill !== null)
+        .map(toSkill),
+    })),
+  }))
 }

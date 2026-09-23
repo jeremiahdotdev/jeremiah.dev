@@ -5,7 +5,6 @@ export const siteSettings = defineType({
   title: 'Site Settings',
   type: 'document',
   fields: [
-    defineField({name: 'contentOwnershipVersion', type: 'number', hidden: true, readOnly: true}),
     defineField({name: 'title', title: 'Site title', type: 'string'}),
     defineField({name: 'description', title: 'Meta description', type: 'text', rows: 2}),
     defineField({
@@ -13,7 +12,7 @@ export const siteSettings = defineType({
       title: 'Career skills and tools',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'skill'}]}],
-      description: 'Skills displayed below the career timeline, in this order. Remove all entries to hide the list. Existing sites without this field use the fallback list.',
+      description: 'Skills displayed below the career timeline, in this order. Remove all entries to hide the list.',
     }),
     defineField({
       name: 'dictionary',

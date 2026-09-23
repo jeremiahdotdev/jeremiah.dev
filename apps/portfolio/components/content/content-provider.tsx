@@ -1,10 +1,9 @@
 "use client"
 
 import { createContext, ReactNode, useContext } from 'react'
-import fallbackDictionary from '@/dictionaries/en.json'
 import type { Dictionary } from '@/types/dictionary'
 
-const ContentContext = createContext<Dictionary>(fallbackDictionary)
+const ContentContext = createContext<Dictionary | null>(null)
 
 export function ContentProvider({
   children,
@@ -21,5 +20,7 @@ export function ContentProvider({
 }
 
 export function useDictionary() {
-  return useContext(ContentContext)
+  const dictionary = useContext(ContentContext)
+  if (!dictionary) throw new Error('useDictionary requires ContentProvider with Sanity content.')
+  return dictionary
 }

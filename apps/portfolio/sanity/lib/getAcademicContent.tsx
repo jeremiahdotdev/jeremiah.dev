@@ -1,19 +1,13 @@
-import { academics as fallbackAcademics } from '@/data/academics'
 import AcademicFocusIcon from '@/components/academics/academic-focus-icon'
 import { ImportedAcademics } from '@/types/academics'
 import { client } from '../client'
-import { hasSanityConfig } from '../env'
+import { requireSanityConfig } from '../env'
 import { academicRecordQuery } from '../queries'
 import { getCommendationIcon } from './iconMaps'
 import { PortableTextValue, renderPortableText } from './portableText'
 
 type SanityAcademicRecord = {
   degree?: string
-  emblem?: {
-    lightSrc?: string
-    darkSrc?: string
-    alt?: string
-  }
   institution?: string
   location?: string
   startDate?: string
@@ -60,49 +54,40 @@ function toFocusIcon(focus: {name?: string, icon?: {asset?: {url?: string}}}) {
 }
 
 export async function getAcademicContent(): Promise<ImportedAcademics> {
-  if (!hasSanityConfig) return fallbackAcademics
+  requireSanityConfig()
 
-  try {
-    const record = await client.fetch<SanityAcademicRecord | null>(
-      academicRecordQuery,
-      {},
-      {next: {revalidate: 60}},
-    )
+  const record = await client.fetch<SanityAcademicRecord | null>(
+    academicRecordQuery,
+    {},
+    {next: {revalidate: 60}},
+  )
 
-    if (!record) return fallbackAcademics
+  if (!record) throw new Error('Sanity academic record is missing.')
 
-    return {
-      degree: record.degree || '',
-      emblem: {
-        lightSrc: record.emblem?.lightSrc ?? fallbackAcademics.emblem?.lightSrc ?? '',
-        darkSrc: record.emblem?.darkSrc ?? fallbackAcademics.emblem?.darkSrc ?? '',
-        alt: record.emblem?.alt ?? fallbackAcademics.emblem?.alt ?? '',
-      },
-      institution: record.institution || '',
-      location: record.location || '',
-      startDate: toDate(record.startDate),
-      endDate: toDate(record.endDate),
-      description: renderPortableText(record.description) || null,
-      focuses: (record.focuses || []).map((focus) => ({
-        key: focus._key,
-        type: focus.type || '',
-        name: focus.name || '',
-        gpa: focus.gpa || '',
-        icon: toFocusIcon(focus),
-        description: renderPortableText(focus.description) || null,
-      })),
-      commendations: (record.commendations || []).map((commendation) => ({
-        title: commendation.title || '',
-        subtitle: commendation.subtitle || '',
-        label: commendation.label,
-        focusKey: commendation.focusKey,
-        tooltip: commendation.tooltip,
-        dates: commendation.dates || '',
-        link: commendation.link,
-        image: getCommendationIcon(commendation.iconKey),
-      })),
-    }
-  } catch {
-    return fallbackAcademics
+  return {
+    degree: record.degree || '',
+    institution: record.institution || '',
+    location: record.location || '',
+    startDate: toDate(record.startDate),
+    endDate: toDate(record.endDate),
+    description: renderPortableText(record.description) || null,
+    focuses: (record.focuses || []).map((focus) => ({
+      key: focus._key,
+      type: focus.type || '',
+      name: focus.name || '',
+      gpa: focus.gpa || '',
+      icon: toFocusIcon(focus),
+      description: renderPortableText(focus.description) || null,
+    })),
+    commendations: (record.commendations || []).map((commendation) => ({
+      title: commendation.title || '',
+      subtitle: commendation.subtitle || '',
+      label: commendation.label,
+      focusKey: commendation.focusKey,
+      tooltip: commendation.tooltip,
+      dates: commendation.dates || '',
+      link: commendation.link,
+      image: getCommendationIcon(commendation.iconKey),
+    })),
   }
 }

@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "sanity:seed": "node scripts/seed-sanity.mjs"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.679.0",

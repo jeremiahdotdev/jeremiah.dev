@@ -37,8 +37,21 @@ pnpm build
 pnpm lint:ai
 pnpm build:portfolio
 pnpm lint
-pnpm sanity:seed
 ```
+
+## Portfolio content
+
+Sanity owns the portfolio's site text, academics, career roles, and skills. Edit them in Studio; there are no local content defaults or reseeding scripts.
+
+Configure `apps/portfolio/.env.local` before running the site:
+
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=qnk05guu
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_READ_TOKEN=<server-side read token>
+```
+
+The career and academic records require authenticated reads. Local development can also use the existing `LOCAL_SANITY_API_EDIT_TOKEN`; tokens stay server-side. Missing configuration or failed content requests surface errors instead of substituting local copy. The local site reads production content, so Studio edits affect the live dataset.
 
 ## AI app setup
 
