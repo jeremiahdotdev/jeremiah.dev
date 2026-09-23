@@ -14,7 +14,9 @@ const typographyVariants = cva("not-italic", {
       intro:
         "font-light font-title text-2xl sm:text-3xl lg:text-4xl hlg:text-3xl lg:hlg:text-4xl h2xl:text-4xl lg:h2xl:text-5xl leading-tight tracking-tight normal-case text-muted-foreground [overflow-wrap:anywhere]",
       body:
-        "font-normal font-sans text-base sm:text-xl sm:hmd:text-xl sm:hsm:text-xl sm:h2xl:text-3xl md:text-4xl lg:text-4xl xl:text-6xl leading-relaxed tracking-normal normal-case text-muted-foreground",
+        "font-normal font-sans text-base sm:text-xl sm:hmd:text-xl sm:hsm:text-xl sm:h2xl:text-2xl md:text-4xl lg:text-4xl xl:text-6xl leading-relaxed tracking-normal normal-case text-muted-foreground",
+      alt:
+        "font-normal font-sans text-lg xl:text-xl 2xl:text-2xl leading-relaxed tracking-normal normal-case text-muted-foreground",
       label:
         "font-normal whitespace-nowrap font-mono text-base leading-normal tracking-widest uppercase tabular-nums text-foreground sm:text-lg",
       eyebrow:

@@ -49,7 +49,7 @@ export default async function Academics({ dictionary: $t }: { dictionary: Dictio
                     <Typography as="h4" variant="title">{focus.name}</Typography>
                   </div>
                   <div className="mt-2 hlg:mt-3">
-                    <Typography as="div" variant="body">{focus.description}</Typography>
+                    <Typography as="div" variant="alt">{focus.description}</Typography>
                   </div>
                   {commendations.length > 0 && <AcademicBadges awards={commendations} label={$t.academics.awardsLabel} classNames="hsm:mt-3 hlg:mt-4" />}
                 </article>
