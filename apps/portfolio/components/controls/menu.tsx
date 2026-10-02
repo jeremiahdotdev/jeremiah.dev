@@ -74,9 +74,9 @@ export default function Menu() {
           <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
         </a>
       </nav>
-      <div className="fixed bottom-0 left-1/2 z-40 flex -translate-x-1/2 items-center rounded-t-xl border border-b-0 border-border/60 bg-background/90 text-foreground shadow-sm shadow-foreground/10 lg:hidden">
+      <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-40 flex -translate-x-1/2 items-center rounded-full border border-border/60 bg-background/90 text-foreground shadow-sm shadow-foreground/10 lg:hidden">
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger aria-label={$t.menu.toggle} className="flex min-h-8 items-center justify-center rounded-t-xl px-4 pt-1 pb-[max(0.25rem,env(safe-area-inset-bottom))] hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+          <SheetTrigger aria-label={$t.menu.toggle} className="flex min-h-11 items-center justify-center rounded-full px-4 py-1 hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
             <Typography as="span" variant="navigation">{$t.menu.label}</Typography>
           </SheetTrigger>
           <SheetContent side="right" className="flex w-full flex-col gap-0 overflow-y-auto bg-background-secondary px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-foreground sm:max-w-md sm:px-8">
