@@ -106,7 +106,7 @@ const ProjectPreview: FC<ProjectPreviewProps> = ({ project, moving = false }) =>
   }, [frameId]);
 
   return (
-    <div className="w-full aspect-[4/3] sm:aspect-video lg:flex-1 lg:aspect-auto dark:shadow-[0_0_16px_rgba(255,255,255,0.1)] relative flex flex-col overflow-clip rounded-xl bg-muted shadow-md shadow-black/10">
+    <div className="min-h-0 w-full aspect-[4/3] sm:aspect-video lg:flex-1 lg:aspect-auto dark:shadow-[0_0_16px_rgba(255,255,255,0.1)] relative flex flex-col overflow-clip rounded-xl bg-muted shadow-md shadow-black/10">
       <div className="border-black/10 bg-[#ededee] text-[#171a1e] dark:border-white/10 dark:bg-[#24272b] dark:text-[#e7e9ec] relative flex h-10 shrink-0 items-center gap-3 border-b px-3 sm:h-12 sm:gap-5 sm:px-5">
         <div aria-hidden="true" className="flex items-center gap-1.5 sm:gap-2">
           <span className="size-2.5 rounded-full bg-[#ff5f57] sm:size-3" />
@@ -183,7 +183,7 @@ const ProjectPreview: FC<ProjectPreviewProps> = ({ project, moving = false }) =>
               loading="lazy"
               onLoad={() => setLoadedFrame(frameId)}
               width={PREVIEW_VIEWPORT_WIDTH}
-              className="absolute left-0 top-0 h-[900px] origin-top-left scale-0 border-0 lg:h-[calc(100%/0.75+24px)] lg:w-[calc(100%/0.75+24px)] lg:scale-75"
+              className="absolute left-0 top-0 h-[900px] origin-top-left scale-0 border-0 lg:h-[calc(100%/0.75)] lg:w-[calc(100%/0.75+24px)] lg:scale-75"
             />
           </div>
         )}

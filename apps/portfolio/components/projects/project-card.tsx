@@ -32,12 +32,12 @@ export default function ProjectCard({ project, index = 0, total = 1, moving = fa
   const heading = <SectionHeading as="h2" label={labels.heading} metadata={`${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`} />;
 
   return (
-    <article className="mx-auto grid w-full content-start items-start gap-x-8 gap-y-3 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] lg:content-stretch lg:gap-x-10 xl:gap-x-14">
+    <article className="mx-auto grid min-h-0 w-full content-start items-start gap-x-8 gap-y-3 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,0.85fr)] lg:grid-rows-[minmax(0,1fr)] lg:content-stretch lg:gap-x-10 xl:gap-x-14">
       <div className="block lg:hidden">{heading}</div>
-      <div className="min-w-0 max-md:self-stretch lg:flex lg:self-stretch">
+      <div className="min-h-0 min-w-0 max-md:self-stretch lg:flex lg:self-stretch">
         <ProjectPreview project={project} moving={moving} />
       </div>
-      <div className="min-w-0">
+      <div className="min-h-0 min-w-0 lg:self-stretch lg:overflow-y-auto">
         {mobileNavigation && <div className="lg:hidden">{mobileNavigation}</div>}
         <header className="flex flex-col gap-3 border-b border-foreground/40 pb-5">
             <div className="hidden lg:block">{heading}</div>

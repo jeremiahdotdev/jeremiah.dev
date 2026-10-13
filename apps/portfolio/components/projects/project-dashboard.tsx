@@ -54,12 +54,12 @@ export default function ProjectDashboard({ projects }: { projects: Project[] }) 
       setApi={setApi}
       opts={{ align: "start", loop: true }}
       aria-label={labels.heading}
-      className="flex w-full flex-1 flex-col"
+      className="flex min-h-0 w-full flex-1 flex-col"
     >
-      <div className="flex flex-1 flex-col justify-start py-2 lg:justify-center">
-        <CarouselContent className="ml-0 gap-8 lg:gap-16 lg:flex-1" viewportClassName="px-0 py-4 lg:flex lg:flex-1 lg:flex-col" fadeEdges={false}>
+      <div className="flex min-h-0 flex-1 flex-col justify-start py-2 lg:justify-center">
+        <CarouselContent className="ml-0 min-h-0 gap-8 lg:gap-16 lg:flex-1" viewportClassName="min-h-0 px-0 py-4 lg:flex lg:flex-1 lg:flex-col" fadeEdges={false}>
           {projects.map((project, index) => (
-            <CarouselItem key={project.link.href} className="flex items-start px-5 sm:px-8 lg:items-stretch lg:px-10 xl:px-12" aria-label={formatTemplate(carousel.position, { index: index + 1, total: projects.length })} inert={index !== selected}>
+            <CarouselItem key={project.link.href} className="flex min-h-0 items-start px-5 sm:px-8 lg:items-stretch lg:px-10 xl:px-12" aria-label={formatTemplate(carousel.position, { index: index + 1, total: projects.length })} inert={index !== selected}>
               <ProjectCard
                 project={project}
                 index={index}
@@ -71,7 +71,7 @@ export default function ProjectDashboard({ projects }: { projects: Project[] }) 
           ))}
         </CarouselContent>
       </div>
-      <div className="hidden lg:block">
+      <div className="hidden shrink-0 lg:block">
         <CarouselNavigation
           itemLabel={labels.item}
           itemNames={projectNames}
