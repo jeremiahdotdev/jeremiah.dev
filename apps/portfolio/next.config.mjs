@@ -21,7 +21,7 @@ const nextConfig = {
             headers: [
               {
                 key: 'Content-Security-Policy',
-                "value": "frame-ancestors 'self' https://*.jeremiahgage.me https://*.jeremiah.dev https://dateinyourcircle.com https://vestry.church https://ozarkhighlandshepherds.com"              },
+                "value": "frame-ancestors 'self' https://*.jeremiahgage.me https://*.jeremiah.dev https://dateinyourcircle.com https://vestry.church https://ozarkhighlandshepherds.com https://dateinyourcircle.com https://vestry.church https://*.vercel.app"              },
             ],
           },
         ];
