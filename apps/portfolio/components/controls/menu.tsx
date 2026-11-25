@@ -12,7 +12,7 @@ import ThemeToggle from "@/components/theme/theme-toggle";
 import { cn } from "@/lib/utils";
 import ResourcesMenu from "./resources-menu";
 
-const menuItemClassName = "flex shrink-0 items-center gap-2 whitespace-nowrap border-b border-transparent px-3 py-2 hover:border-foreground/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 lg:px-2 xl:px-3";
+const menuItemClassName = "flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap border-b border-transparent px-3 py-2 hover:border-foreground/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4";
 
 export default function Menu() {
   const $t = useDictionary();
@@ -29,7 +29,7 @@ export default function Menu() {
   }));
 
   useEffect(() => {
-    const desktopNavigation = window.matchMedia("(min-width: 1024px)");
+    const desktopNavigation = window.matchMedia("(min-width: 1280px)");
     function closeMobileMenu(event: MediaQueryListEvent) {
       if (event.matches) setOpen(false);
     }
@@ -54,7 +54,7 @@ export default function Menu() {
 
   return (
     <>
-      <nav aria-label={$t.menu.description} className="fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 text-foreground shadow-sm shadow-foreground/10 lg:flex xl:gap-2 xl:px-4">
+      <nav aria-label={$t.menu.description} className="fixed bottom-4 left-1/2 z-40 hidden w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-1 rounded-full border border-border/60 bg-background/90 px-2 py-1.5 text-foreground shadow-sm shadow-foreground/10 xl:flex">
         <ThemeToggle className={menuItemClassName} />
         <ResourcesMenu className={menuItemClassName} />
         {links.map(({ id, label, href, icon }) => {
@@ -74,19 +74,19 @@ export default function Menu() {
           <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
         </a>
       </nav>
-      <div className="fixed bottom-0.5 left-1/2 z-40 flex -translate-x-1/2 items-center rounded-xl border border-border/60 bg-background/90 text-foreground shadow-sm shadow-foreground/10 lg:hidden">
+      <div className="fixed bottom-4 left-1/2 z-40 flex w-max -translate-x-1/2 items-center rounded-xl border border-border/60 bg-background/90 text-foreground shadow-sm shadow-foreground/10 xl:hidden">
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger aria-label={$t.menu.toggle} className="flex min-h-8 items-center justify-center rounded-xl px-4 pt-1 pb-[max(0.25rem,env(safe-area-inset-bottom))] hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+          <SheetTrigger aria-label={$t.menu.toggle} className="flex min-h-11 items-center justify-center rounded-xl px-4 py-2 hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
             <Typography as="span" variant="navigation">{$t.menu.label}</Typography>
           </SheetTrigger>
           <SheetContent side="right" className="flex w-full flex-col gap-0 overflow-y-auto bg-background-secondary px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-foreground sm:max-w-md sm:px-8">
-            <div className="flex items-center justify-between border-b border-foreground/20 pb-4">
+            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-foreground/20 pb-4">
               <SheetTitle asChild><Typography as="h2" variant="title">{$t.menu.heading}</Typography></SheetTitle>
-              <SheetClose aria-label={$t.menu.close} className="flex size-11 items-center justify-center rounded-sm hover:bg-accent"><X className="size-5" /></SheetClose>
+              <SheetClose aria-label={$t.menu.close} className="flex size-11 shrink-0 items-center justify-center rounded-sm hover:bg-accent"><X className="size-5" /></SheetClose>
             </div>
             <SheetDescription className="sr-only">{$t.menu.description}</SheetDescription>
             <div className="mt-6"><Typography as="span" variant="label">{$t.menu.navigation}</Typography></div>
-            <nav aria-label={$t.menu.description} className="mt-3 flex flex-col divide-y divide-foreground/15">
+            <nav aria-label={$t.menu.description} className="mt-3 flex shrink-0 flex-col divide-y divide-foreground/15">
               {links.map(({ id, label, href }) => (
                 <SheetClose asChild key={id}>
                   <Link href={href} onClick={() => setActiveId(id)} aria-current={id === currentId ? "location" : undefined} className={cn("block py-3 decoration-foreground/60 underline-offset-8 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2", id === currentId && "underline")}>
@@ -95,8 +95,8 @@ export default function Menu() {
                 </SheetClose>
               ))}
             </nav>
-            <div className="mt-auto pt-8">
-              <div className="flex items-center justify-between gap-4 border-t border-foreground/20 py-3">
+            <div className="mt-auto shrink-0 pt-8">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-foreground/20 py-3">
                 <ThemeToggle className={menuItemClassName} />
                 <a href={$t.links.ai} target="_blank" rel="noopener noreferrer" className={menuItemClassName}>
                   <MessageCircle aria-hidden="true" className="size-5 shrink-0" />
